@@ -1,0 +1,254 @@
+
+    /* Table style */
+#example {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#example th,
+#example td {
+    /* border: 1px solid #ddd; */
+    padding: 8px;
+    text-align: center; /* Center align text */
+    font-weight: 800;
+}
+
+#example th {
+    /* background-color: #4B49AC; */
+    background-color: #840c0c;
+    color: #fff;
+}
+
+/* Test Design */
+#example td:hover {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    font-weight: 800;
+    background-color: #fde9b1;
+    font-family: 'Courier New', Courier, monospace;
+}
+#example td a{
+    color: #840c0c;
+}
+/* Add hover effect on table rows */
+#example tbody tr:hover {
+    background-color: #f2f2f2;
+}
+
+/* Button style */
+
+/* .btn {
+    border-radius: 4px;
+    padding: 6px 12px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    color: #fff;
+}
+
+.btn-secondary {
+    background-color: #5bc0de;
+    color: #fff;
+}
+
+.btn:hover {
+    background-color: #2980b9;
+    color: #fff;
+} */
+
+
+/* Page Css */
+
+.add-btn{
+    background-color: #840c0c;
+    font-weight: 600;
+    color: white;
+}
+
+.add-btn:hover{
+    background-color: #a34242;
+    color: white;
+}
+
+.eye-icon:hover{
+    background: #872828;
+}
+
+.tag-line{
+    color: #872828;
+    font-size: 15px;
+}
+
+
+.main-heading {
+    display: inline-block;
+    width: 100%;
+    border-bottom: 2px solid #872828;
+    padding-bottom: 0.1em; /* Adjust as needed */
+    margin-bottom: 10px;
+    /* font-family: fantasy; */
+}
+.underline-red {
+    /* border-bottom: 2px solid #840c0c; */
+    display: inline-block;
+    width: auto;
+    font-size:24px;
+}
+
+.border-red {
+    border-color: #840c0c;
+}
+
+/* Filter Selection CSS */
+.filter-select-css{
+    /* background-color: #4B49AC;  */
+    background-color: white; 
+    color: #840c0c;
+    text-align: center; 
+    border-color: #840c0c;
+    font-weight: 800;
+    padding-right: 40px;
+}
+    
+.radius-border{
+    border-radius:10px;
+}
+.search-input{
+    border-color: #840c0c;
+    color: #840c0c;
+}
+.search-input:focus {
+    border-color: #840c0c; /* Border color when input is focused */
+    color: #840c0c;
+}
+
+.button-search{
+    background-color: white; 
+    color: #840c0c;
+    text-align: center; 
+    border-color: #840c0c;
+    font-weight: 800;
+    padding-right: 40px;
+}
+
+.button-search:hover{
+    background-color: white; 
+    color: #840c0c;
+    text-align: center; 
+    border-color: #840c0c;
+    font-weight: 800;
+    padding-right: 40px;
+}
+
+.underline-css{
+    display: inline-block;
+    width: 100%;
+    border-bottom: 2px solid #872828;
+    padding-bottom: 0.1em; /* Adjust as needed */
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+
+.block-logo-div{
+    width: 50%;
+    /* height: auto; */
+    height: 73px;
+    text-align: right;
+    padding-left: 50px;
+}
+
+.block-logo{
+    color:#840c0c;
+    width:"200px";
+    height:"150px";
+}
+
+.block-text-css{
+    font-size: 30px;
+    font-weight: bold;
+    color: brown;
+}
+
+
+/* Nodal Dashboard CSS */
+
+.text-color{
+    color: #872828;
+}
+
+.text-color:hover{
+    color: #872828;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+
+
+
+
+/* Start Table Eye Icon CSS */
+.link-with-icon {
+    position: relative;
+    display: inline-block;
+    padding: 5px 10px;
+    border: none;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+.link-with-icon:hover {
+    /* background-color: #840c0c; */
+}
+/* End Table Eye Icon CSS */
+
+
+
+
+
+
+
+.complain-detail-description{
+    border: #872828 1px solid;
+    border-radius: 10px;
+    justify-content: baseline;
+    font-size: 1rem;
+    color: #000000 !important;
+    font-weight: 400;
+    font-family: -apple-system,BlinkMacSystemFont,segoe ui,Roboto,helvetica neue,Arial,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol;
+    padding: 40px;
+    margin: 20px;
+    row-gap: 3px;
+}
+
+.text-css404{
+    border: #872828 1px solid;
+    border-radius: 10px;
+    font-size: 1rem;
+    color: rgb(192, 38, 38) !important;
+    font-weight: 400;
+    font-family: -apple-system,BlinkMacSystemFont,segoe ui,Roboto,helvetica neue,Arial,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol;
+}
+
+.detail-card{
+    background-color: #fdfaf7;
+}
+
+.loop-document-detail{
+    margin: 0px 0px 0px 0px;
+}
+
+.card-description{
+    font-size: 1rem;
+    color: #000000 !important;
+    font-weight: 400;
+    font-family: -apple-system,BlinkMacSystemFont,segoe ui,Roboto,helvetica neue,Arial,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol;
+    row-gap: 3px;
+}
+
+.complain-no{
+    font-weight:700;
+    color: #840c0c;
+}
