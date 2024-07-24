@@ -380,8 +380,8 @@ class ComposerStaticInitb3e4a427f5c94e0f9a18aba5efe988a4
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -619,6 +619,7 @@ class ComposerStaticInitb3e4a427f5c94e0f9a18aba5efe988a4
         'App\\Http\\Controllers\\StaticController' => __DIR__ . '/../..' . '/app/Http/Controllers/StaticController.php',
         'App\\Http\\Controllers\\User\\ComplaintController' => __DIR__ . '/../..' . '/app/Http/Controllers/User/ComplaintController.php',
         'App\\Http\\Controllers\\User\\DashboardController' => __DIR__ . '/../..' . '/app/Http/Controllers/User/DashboardController.php',
+        'App\\Http\\Controllers\\WorkCenterController' => __DIR__ . '/../..' . '/app/Http/Controllers/WorkCenterController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\CheckUserRole' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckUserRole.php',
@@ -635,12 +636,14 @@ class ComposerStaticInitb3e4a427f5c94e0f9a18aba5efe988a4
         'App\\Http\\Requests\\ProfileUpdateRequest' => __DIR__ . '/../..' . '/app/Http/Requests/ProfileUpdateRequest.php',
         'App\\Jobs\\SendOtpEmail' => __DIR__ . '/../..' . '/app/Jobs/SendOtpEmail.php',
         'App\\Mail\\SendOtp' => __DIR__ . '/../..' . '/app/Mail/SendOtp.php',
+        'App\\Models\\CenterDepartment' => __DIR__ . '/../..' . '/app/Models/CenterDepartment.php',
         'App\\Models\\Complain' => __DIR__ . '/../..' . '/app/Models/Complain.php',
         'App\\Models\\DetailedStatus' => __DIR__ . '/../..' . '/app/Models/DetailedStatus.php',
         'App\\Models\\File' => __DIR__ . '/../..' . '/app/Models/File.php',
         'App\\Models\\NodalAdditionalDetail' => __DIR__ . '/../..' . '/app/Models/NodalAdditionalDetail.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Models\\UserAdditionalDetail' => __DIR__ . '/../..' . '/app/Models/UserAdditionalDetail.php',
+        'App\\Models\\WorkCenter' => __DIR__ . '/../..' . '/app/Models/WorkCenter.php',
         'App\\Policies\\FilePolicy' => __DIR__ . '/../..' . '/app/Policies/FilePolicy.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
@@ -765,6 +768,7 @@ class ComposerStaticInitb3e4a427f5c94e0f9a18aba5efe988a4
         'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
         'Database\\Seeders\\RolesAndPermissionsSeeder' => __DIR__ . '/../..' . '/database/seeders/RolesAndPermissionsSeeder.php',
         'Database\\Seeders\\UsersSeeder' => __DIR__ . '/../..' . '/database/seeders/UsersSeeder.php',
+        'Database\\Seeders\\WorkCenterSeeder' => __DIR__ . '/../..' . '/database/seeders/WorkCenterSeeder.php',
         'DateError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateError.php',
         'DateException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateException.php',
         'DateInvalidOperationException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateInvalidOperationException.php',

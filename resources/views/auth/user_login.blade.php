@@ -41,8 +41,8 @@
             </div>
 
           </form>
-
-          <p class="para">Mobile Number Not Registered ? <a href="" class="register" data-bs-toggle="modal" data-bs-target="#exampleModal"> Register now</a> </p>
+          <!-- <p class="para">Mobile Number Not Registered ? <a  class="register" data-bs-toggle="modal" data-bs-target="#exampleModal"> Register now</a> </p> -->
+          <p class="para">Mobile Number Not Registered ? <a href="{{ route('register') }}" class="register" > Register now</a> </p>
           <img src="{{ asset('assets/theme/image/welcome page bottom image.png') }}" alt="" class="img-fluid bottom-img">
 
           <div class="button" style="margin-bottom: 120px;">

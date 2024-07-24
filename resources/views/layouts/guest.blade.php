@@ -15,6 +15,15 @@
   <link rel="stylesheet" type="text/css" href="{{ asset('assets/theme/css/responsive/style.css') }}">
   
   <title> {{ config('app.name', 'Laravel') }} </title>
+
+  <style>
+    .error-text {
+    color: red;
+    font-weight: bold;
+    margin-top: 8px; /* Adjust the margin as needed */
+}
+
+  </style>
 </head>
 
 <body>
