@@ -1,0 +1,13 @@
+@media screen and (max-width:991px){
+    #welcomepage{
+        height: 100% !important;
+        overflow-x: hidden;
+        overflow-y: visible;
+    }
+    .down-button{
+        margin-bottom: 100px;
+    }
+    .welcome-log-in {
+        padding: 0 20px;
+    }
+}

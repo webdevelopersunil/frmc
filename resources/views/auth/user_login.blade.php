@@ -1,75 +1,50 @@
 <x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+  
+  <!-- Session Status -->
+  <x-auth-session-status class="mb-4" :status="session('status')" />
 
-      <div class="box-root padding-top--24 flex-flex flex-direction--column" style="flex-grow: 1; z-index: 9;">
+  <div id="welcomepage">
+    <div class="container">
+      <div class="row" style="height: 100%;">
+        <div class="col-lg-6" style="height: 100%;position: relative;padding: 0 !important;">
+          <img src="{{ asset('assets/theme/image/boat 1.png')}}" alt="" class="img-fluid welcome-img">
+          <img src="{{ asset('assets/theme/image/logo.png') }}" alt="" class="img-fluid logo-img">
+        </div>
 
-      <div class="box-root padding-top--48 padding-bottom--24 flex-flex flex-justifyContent--center">
-          <h1 style="text-align: center;">
-              <img src="https://presentations.gov.in/wp-content/uploads/2020/06/ONGC-Preview.png" class="logo-image mr-2" alt="logo">
-              <a href="" rel="dofollow">FRMC</a>
-          </h1>
-      </div>
-        
-        <div class="formbg-outer">
+        <div class="col-lg-6" style="position: relative;">
+          <h1 class="heading login">Welcome</h1>
+          <div class="row welcome-log-in">
+            <div class="col-lg-12">
 
-          <div class="formbg">
+              <div class="mb-3 d-flex" style="gap: 15px;">
+                <P style="margin-bottom: 0.5rem;">IND</P>
+                <label for="exampleFormControlInput1" class="form-label">Phone Number</label>
+              </div>
 
-            <div class=" padding-top--48 padding-bottom--24 flex-flex flex-justifyContent--center">
-              <h1>
-                <!-- <img src="{{ asset('assets/images/sidebar-logo/favicon.png') }}" alt=""> -->
-                <a href="#" style="color:#840c0c;" rel="dofollow">FRMC Portal</a>
-              </h1>
-            </div>
-            <div class="formbg-inner padding-horizontal--48">
-
-              <!-- <span class="padding-bottom--15">Sign in to your account</span> -->
-              <form method="POST" action="{{ route('login') }}">
-                @csrf
-
-                <div class="field padding-bottom--24">
-                    <x-input-label for="username" :value="__('Mobile Number')" />
-                    <x-text-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username') ? old('username') : '8259950403'" required autofocus />
-                    <x-input-error :messages="$errors->get('username')" class="mt-2" />
-                </div>
-
-                <div class="field padding-bottom--24">
-
-                  <div class="grid--50-50">
-
-                  <x-input-label for="password" :value="__('Password')" />
-                    <div class="reset-pass">
-                      <a href="{{ route('password.request') }}">Forgot your password?</a>
-                    </div>
-                  </div>
-
-                    <x-text-input id="password" class="block mt-1 w-full"
-                                    type="password"
-                                    name="password"
-                                    value="password"
-                                    required autocomplete="current-password" />
-                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
-                  
-                </div>
-
-                <div class="field field-checkbox padding-bottom--24 flex-flex align-center">
-                  <label for="checkbox">
-                    <input type="checkbox" name="checkbox"> Remember me
-                  </label>
-                </div>
-                <div class="field padding-bottom--24">
-                  <input class="add-btn" type="submit" name="submit" value="Login">
-                </div>
-                <div class="field">
-                  <a class="ssolink" href="{{ route('admin.login') }}">← Login as Admin</a>
-                </div>
-              </form>
-
-              <!-- For Footer Information Links -->
-              @include('includes/footer_links')
+              <div class="mb-3 d-flex" style="gap: 15px;">
+                <p style="margin-bottom: 0 !important;padding: 7px;background: #fff;border: 1px solid #ccc;border-radius: 10px;"> +91 </p>
+                <div class="input-container">
+                  <input type="number" class="form-control ph-no" id="exampleFormControlInput1" placeholder="9744448548252">
+                </div>  
+              </div>
 
             </div>
           </div>
+
+          <div class="log-in-button">
+            <a href="" class="btn4" data-bs-toggle="modal" data-bs-target="#exampleModal2">Login</a>
+          </div>
+
+          <p class="para">Mobile Number Not Registered ? <a href="" class="register" data-bs-toggle="modal" data-bs-target="#exampleModal"> Register now</a> </p>
+          <img src="{{ asset('assets/theme/image/welcome page bottom image.png') }}" alt="" class="img-fluid bottom-img">
+
+          <div class="button" style="margin-bottom: 120px;">
+            <a href="{{ route('welcome') }}" class="btn1">Home</a>
+          </div>
+
         </div>
 
+      </div>
+    </div>
+  </div>
 </x-guest-layout>

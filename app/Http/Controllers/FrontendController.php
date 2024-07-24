@@ -12,13 +12,17 @@ class FrontendController extends Controller{
     
     public function index(){
 
-        // return view('welcome');
-        return redirect('login');
+        return view('auth.welcome');
     }
 
     public function adminLogin(){
 
-        return view('auth.login');
+        return view('auth.admin-login');
+    }
+
+    public function adminWelcome(){
+        
+        return view('auth.admin-welcome');
     }
 
     public function complainantLogin(){

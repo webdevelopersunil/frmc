@@ -17,6 +17,7 @@ use App\Http\Controllers\User\ComplaintController as UserComplaintController;
 use App\Http\Controllers\Fco\DashboardController as FcoDashboardController;
 use App\Http\Controllers\Fco\ComplainantController as FcoComplaintController;
 
+use App\Http\Controllers\TestController;
 
 use App\Services\OtpService;
 
@@ -34,7 +35,8 @@ use App\Services\OtpService;
 Route::get('/audits',                                   [AuditController::class, 'index'])->name('audit');
 Route::get('/view/audits/{id}',                         [AuditController::class, 'viewAudit'])->name('view.audit');
 
-Route::get('/',                                         [FrontendController::class, 'index']);
+Route::get('/',                                         [FrontendController::class, 'index'])->name('welcome');
+Route::get('/admin',                                    [FrontendController::class, 'adminWelcome'])->name('admin');
 Route::get('/user/login',                               [FrontendController::class, 'userLogin'])->name('user.login');
 Route::get('/admin/login',                              [FrontendController::class, 'adminLogin'])->name('admin.login');
 Route::get('complainant/login',                         [FrontendController::class, 'complainantLogin'])->name('complainant.login');
@@ -109,7 +111,6 @@ Route::get('/send-otp', function () {
 
 
 Route::fallback([ProfileController::class, 'dashboard']);
-
 
 
 require __DIR__.'/auth.php';
