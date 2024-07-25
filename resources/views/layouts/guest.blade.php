@@ -35,5 +35,34 @@
   <!-- Option 1: Bootstrap Bundle with Popper -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
+<script>
+
+  const errorElements = document.querySelectorAll('.x-input-error');
+    errorElements.forEach(element => {
+        setTimeout(() => {
+            element.style.display = 'none';
+        }, 2000);
+    });
+  
+  function appendAsterisk() {
+    const labels = document.querySelectorAll('.redStar');
+    labels.forEach(label => {
+        const asterisk = document.createElement('span');
+        asterisk.style.color = 'red';
+        asterisk.textContent = ' *';
+        label.appendChild(asterisk);
+    });
+  }
+
+
+
+  document.addEventListener('DOMContentLoaded', () => {  
+      appendAsterisk();
+      hideErrorMessage();
+  });
+    
+</script>
+  
+
 </body>
 </html>
