@@ -14,7 +14,15 @@
         <div class="col-lg-6" style="position: relative;">
           <h1 class="heading login">Welcome</h1>
 
-          <form method="POST" action="{{ route('send-otp') }}" id="login">
+
+            <form method="POST" action="{{ route('send-otp') }}" id="resendOtp">
+                @csrf
+                <input type="hidden" name="username" value="{{$phone}}" >
+            </form>
+
+
+          <form method="POST" action="{{ route('login') }}" id="otp_verification">
+
             @csrf
 
             <div class="row welcome-log-in">
@@ -26,17 +34,18 @@
                 </div>
 
                 <div class="mb-3 d-flex" style="gap: 15px;">
+
                   <p style="margin-bottom: 0 !important;padding: 7px;background: #fff;border: 1px solid #ccc;border-radius: 10px;"> +91 </p>
+
                   <div class="input-container">
-                    <x-text-input class="form-control ph-no" id="exampleFormControlInput1" type="number" name="username" :value="old('username') ? old('username') : session('phone')" placeholder="9744448548252" required autofocus />
+                    <input class="form-control ph-no" id="exampleFormControlInput1" name="username" type="number" value="{{ old('username', $phone) }}" required disabled>
                   </div>
-                  
+
                 </div>
+
                 <x-input-error :messages="$errors->get('username')" style="color:red;" class="mt-2 x-input-error"  />
 
-<!-- 
                 <div class="mb-3 d-flex" style="gap: 15px;">
-                  
                     <div class="otp mb-3" id="_otp" >
                       <div class="row">
                         <div class="col-lg-12">
@@ -44,41 +53,40 @@
                         </div>
                         <div class="col-lg-6">
                           <div class="mb-3">
-                            <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="Enter OTP">
+                            <input type="number" name="otp" max="6" min="6" class="form-control" id="exampleFormControlInput1" placeholder="Enter OTP" >
+                            <input type="hidden" name="username" value="{{$phone}}" >
                           </div>
                         </div>
                         <div class="col-lg-4 d-flex" style="gap: 15px;">
                           <div class="mb-3">
-                            <a href="Complainant.html">
+                            <a href="javascript:void(0)" onclick="otpVerification();" >
                               <div class="button-otp">
                                 Submit OTP
                               </div>
                             </a>
                           </div>
                           <div class="mb-3">
-                            <a href="">
-                              <div class="button-otp" style="background: #FFC700;">
-                                Resend OTP
-                              </div>
+                            <a href="javascript:void(0)" onclick="resendOtp();">
+                                <div class="button-otp" style="background: #FFC700;"  > 
+                                    Resend OTP 
+                                </div>
                             </a>
                           </div>
                         </div>
+                        <x-input-error :messages="$errors->get('otp')" style="color:red;" class="mt-2 x-input-error"  />
                       </div>
                     </div>
-                  
-                </div> -->
-
-
+                </div>
               </div>
             </div>
 
-            <div class="log-in-button">
+            <!-- <div class="log-in-button">
               <a href="Javascript:void(0)" class="btn4" data-bs-toggle="modal" data-bs-target="#exampleModal2" onclick="submitForm()" >Login</a>
-            </div>
+            </div> -->
 
           </form>
           <!-- <p class="para">Mobile Number Not Registered ? <a  class="register" data-bs-toggle="modal" data-bs-target="#exampleModal"> Register now</a> </p> -->
-          <p class="para">Mobile Number Not Registered ? <a href="{{ route('register') }}" class="register" > Register now</a> </p>
+          <!-- <p class="para">Mobile Number Not Registered ? <a href="{{ route('register') }}" class="register" > Register now</a> </p> -->
           <img src="{{ asset('assets/theme/image/welcome page bottom image.png') }}" alt="" class="img-fluid bottom-img">
 
           <div class="button" style="margin-bottom: 120px;">
@@ -92,7 +100,8 @@
   </div>
 
   <script>
-    function submitForm() { document.getElementById('login').submit(); }
+    function resendOtp() { document.getElementById('resendOtp').submit(); }
+    function otpVerification() { document.getElementById('otp_verification').submit(); }
   </script>
 
 </x-guest-layout>

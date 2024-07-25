@@ -46,7 +46,6 @@ class OtpService{
  
         $url = "http://10.205.48.190:13013/cgi-bin/sendsms?username=ongc&password=ongc12&from=ONGC&to=$mobile&text=".urlencode($otpmessage)."+\nRegards+Ongc&charset=UTF-8&meta-data=%3Fsmpp%3FEntityID%3D1001186049255234740%26ContentID%3D1407165363567411666";
 
-        $status = Http::get($url);
-       
+        return Http::get($url);
     }    
 }

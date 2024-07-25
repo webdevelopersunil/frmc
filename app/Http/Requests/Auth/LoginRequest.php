@@ -12,6 +12,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Route;
 use LdapRecord\Container;
 use App\Models\User;
+use Ichtrojan\Otp\Otp;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Hash;
@@ -34,12 +35,14 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'password' => 'required|string',
-            'username' => 'required|string',
+            // 'password' => 'required|string',
+            'username' => 'required|integer',
+            'otp' => 'required|integer',
         ];
 
         return $rules;
     }
+
 
     /**
      * Attempt to authenticate the request's credentials.
@@ -47,6 +50,85 @@ class LoginRequest extends FormRequest
      * @throws \Illuminate\Validation\ValidationException
      */
     public function authenticate(): void{
+
+        $this->ensureIsNotRateLimited();
+
+        $isUserFound =   User::where('username', $this->input('username'))->first();
+
+        if( $isUserFound ){
+
+            
+            if( (new Otp)->validate($this->input('username'), $this->input('otp'))->status === false ){
+
+                RateLimiter::hit($this->throttleKey());
+
+                throw ValidationException::withMessages([
+                    'username' => trans('auth.failed'),
+                ]);
+
+            }else{
+                
+                Auth::attempt(['username' => $this->input('username'), 'password' => "password" ]);
+            }
+
+            // if (! Auth::attempt(['username' => $this->input('username'), 'password' => $password ])) {
+
+            //     RateLimiter::hit($this->throttleKey());
+
+            //     throw ValidationException::withMessages([
+            //         'username' => trans('auth.failed'),
+            //     ]);
+            // }
+
+        }else{
+            
+            try {
+
+                // $status =   $this->validateLdapRegisterUser($this->input('username'), $this->input('password'));
+
+                $connection = Container::getConnection('default');
+                $record = $connection->query()->findBy('samaccountname', $this->input('username') );
+
+                if(!$record) {
+
+                    // User not found, throw validation exception
+                    throw ValidationException::withMessages([
+                        'username' => trans('auth.user_not_found'),
+                    ]);
+        
+                }else{
+                    
+                    $user = User::create([
+                        'name' => $record['name'][0],
+                        'email' => $record['mail'][0],
+                        'username' => $this->input('username'),
+                        'is_phone_verified' =>  '1',
+                        'password' => Hash::make($this->input('password')),
+                    ])->assignRole('user');
+                }
+
+                \Auth::attempt(['username' => $this->input('username'), 'password' => $this->input('password')]);
+
+            } catch (\Exception $e) {
+                
+                // In case user not registered
+                throw ValidationException::withMessages([
+                    'username' => trans('auth.failed'),
+                ]);
+            }
+        }
+        
+        RateLimiter::clear($this->throttleKey());
+    }
+
+
+
+    /**
+     * Attempt to authenticate the request's credentials.
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function authenticate_old(): void{
 
         $this->ensureIsNotRateLimited();
 
