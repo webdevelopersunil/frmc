@@ -57,9 +57,9 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'username' => $request->username,
             'address' => $request->address,
-            'password' => Hash::make($request->password),
+            // 'password' => Hash::make($request->password),
+            'password' => Hash::make("password"),
         ])->assignRole('user');
-
 
         $otp    =   (new Otp)->generate($request->username, 'numeric', 6, 15);
 
@@ -74,7 +74,6 @@ class RegisteredUserController extends Controller
         return redirect(RouteServiceProvider::OTP.'/'.Crypt::encryptString($request->username));
         
         // Auth::login($user);
-
         // return redirect(RouteServiceProvider::USER);
     }
 

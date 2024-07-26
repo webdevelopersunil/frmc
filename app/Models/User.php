@@ -28,7 +28,18 @@ class User extends Authenticatable implements Auditable {
         'username',
         'cpfNo',
         'address',
-        'phone'
+        'phone',
+        'dob',
+        'house_number',
+        'area',
+        'landmark',
+        'city',
+        'state',
+        'pincode',
+        'phone_verified',
+        'email_verified',
+        'phone_otp',
+        'email_otp'
     ];
 
     /**
@@ -39,6 +50,11 @@ class User extends Authenticatable implements Auditable {
     protected $hidden = [
         'password',
         'remember_token',
+
+        'phone_verified',
+        'email_verified',
+        'phone_otp',
+        'email_otp'
     ];
 
     /**

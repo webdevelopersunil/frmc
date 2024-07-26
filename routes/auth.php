@@ -35,6 +35,11 @@ Route::middleware('guest')->group(function () {
     Route::get('otp/{token}', [SendOtpController::class, 'otpVerificationForm'])->name('otp');
 
     Route::post('otp/verification', [SendOtpController::class, 'otpVerification'])->name('otp.verification');
+
+
+
+    Route::post('/send-phone-otp', [SendOtpController::class, 'sendPhoneOtp'])->name('send-phone-otp');
+
 });
 
 

@@ -68,33 +68,33 @@ class SendOtpController extends Controller
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
         }
-        
+
     }
 
 
+    public function sendPhoneOtp(Request $request) {
 
-    // public function otpVerification(Request $request){
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|numeric|exists:users,username',
+        ]);
 
-    //     $username   =   $decrypted = Crypt::decryptString($request->token);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first('username'),
+            ], 400);
+        }
 
-    //     $isVerified =   User::where('username',$username)->first('is_phone_verified');
+        $phone = $request->input('username');
+        $otp = (new Otp)->generate($phone, 'numeric', 6, 15);
 
-    //     if($isVerified->is_phone_verified == '1'){
+        // Simulate OTP sending logic
+        // $this->otpService->sendOtp(intval($phone), strval($otp->token));
 
-    //         if (Auth::check()) {
-    //             // If user is logged in, redirect to dashboard
-    //             return redirect()->route('user.dashboard');
-    //         } else {
-    //             // If user is not logged in, redirect to login route
-    //             return redirect()->route('login');
-    //         }
+        return response()->json([
+            'success' => true,
+            'message' => 'OTP sent successfully!',
+        ]);
+    }
 
-    //     }else{
-
-    //         $otp        =   DB::table('otps')->where('identifier', $username)->value('token');
-            
-    //         return view('auth.otp_verification', compact('username','otp'));
-    //     }
-        
-    // }
 }

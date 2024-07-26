@@ -54,11 +54,20 @@
     });
   }
 
+  function hideErrorMessages() {
+            const errorElements = document.querySelectorAll('.err_mdy');
+            errorElements.forEach(element => {
+                setTimeout(() => {
+                    element.style.display = 'none';
+                }, 3000);
+            });
+        }
+
 
 
   document.addEventListener('DOMContentLoaded', () => {  
       appendAsterisk();
-      hideErrorMessage();
+      hideErrorMessages();
   });
     
 </script>

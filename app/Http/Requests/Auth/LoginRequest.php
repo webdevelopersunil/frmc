@@ -37,7 +37,7 @@ class LoginRequest extends FormRequest
         $rules = [
             // 'password' => 'required|string',
             'username' => 'required|integer',
-            'otp' => 'required|integer',
+            'otp' => 'required|integer'
         ];
 
         return $rules;
