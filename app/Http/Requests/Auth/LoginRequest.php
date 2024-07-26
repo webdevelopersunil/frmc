@@ -36,8 +36,8 @@ class LoginRequest extends FormRequest
     {
         $rules = [
             // 'password' => 'required|string',
-            'username' => 'required|integer',
-            'otp' => 'required|integer'
+            'username' => 'required|string',
+            'otp' => 'integer'
         ];
 
         return $rules;
@@ -52,33 +52,31 @@ class LoginRequest extends FormRequest
     public function authenticate(): void{
 
         $this->ensureIsNotRateLimited();
-
         $isUserFound =   User::where('username', $this->input('username'))->first();
 
-        if( $isUserFound ){
-
+        if ( !empty($this->input('username')) && !empty($this->input('otp'))) {
             
-            if( (new Otp)->validate($this->input('username'), $this->input('otp'))->status === false ){
+            if ((new Otp)->validate($this->input('username'), $this->input('otp'))->status === false) {
+                RateLimiter::hit($this->throttleKey());
+        
+                throw ValidationException::withMessages([
+                    'otp' => 'Invalid OTP',
+                ]);
+            } else {
+                Auth::attempt(['username' => $this->input('username'), 'password' => 'password']);
+            }
+        }
+
+        if( $isUserFound ){
+            
+            if (! Auth::attempt(['username' => $this->input('username'), 'password' => $this->input('password') ])) {
 
                 RateLimiter::hit($this->throttleKey());
 
                 throw ValidationException::withMessages([
                     'username' => trans('auth.failed'),
                 ]);
-
-            }else{
-                
-                Auth::attempt(['username' => $this->input('username'), 'password' => "password" ]);
             }
-
-            // if (! Auth::attempt(['username' => $this->input('username'), 'password' => $password ])) {
-
-            //     RateLimiter::hit($this->throttleKey());
-
-            //     throw ValidationException::withMessages([
-            //         'username' => trans('auth.failed'),
-            //     ]);
-            // }
 
         }else{
             
