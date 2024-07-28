@@ -1,124 +1,160 @@
 <x-app-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
 
-      <div class="content-wrapper">
-        <div class="row">
-          <div class="col-md-12 grid-margin stretch-card">
-            <div class="card">
-              <div class="card-body">
-                <h4 class="card-title">New Complaint</h4>
-                <br>
-                
-                <!-- Error Section Start Here 'message-block' -->
-                    @include('includes/message-block')
-                <!-- Error Section Ends Here -->
 
-                <form class="forms-sample" action="{{ route('user.complaint.store') }}" method="post" enctype="multipart/form-data"> 
+<div class="row top-heading padding-30px">
+    <div class="col-lg-6 d-flex align-items-center">
+        <h1 class="complainant-heading">Your Registered Complaints</h1>
+    </div>
 
-                    @csrf
-
-                  <div class="row">
-                      <div class="col-md-12">
-                          <div class="form-group">
-                              <label for="exampleInputUsername1">Complaint No.</label>
-                              <input type="text" name="complain_no" class="form-control" readonly="TRUE" value="{{$complainNo}}" id="exampleInputUsername1" required >
-                          </div>
-                      </div>
-                  </div>
-
-                  <div class="row">
-                      <div class="col-md-12">
-                          <div class="form-group">
-                              <label for="exampleInputUsername1">Description of Complaint</label>
-                              <textarea name="description" class="form-control" id="exampleInputUsername1" required cols="30" rows="4">Description of Complaint</textarea>
-                          </div>
-                    </div>
-                  </div>
-
-                    <div class="row">
-                      <div class="col-md-4">
-                          <div class="form-group">
-                              <label for="exampleInputUsername1">ONGC Work Centre</label>
-                              <select class="form-control form-control-lg" name="work_centre" id="workCentreSelect" required>
-
-                                    <option selected disabled>Please Select</option>  
-                                    @if($workCenters->isNotEmpty())
-                                        @foreach($workCenters as $index => $workCenter)
-                                            <option value="{{ $workCenter->id }}">{{ $workCenter->name }}</option>
-                                        @endforeach
-                                    @endif
-                              </select>
-                          </div>
-                      </div>
-
-                      <div class="col-md-4">
-                          <div class="form-group">
-                              <label for="exampleInputUsername1">Department/Section</label>
-                              <select name="department_section" class="form-control form-control-lg" id="departmentSelect" onchange="handleSelectChange()" required>
-                                  <option selected disabled>Please Select</option>
-                                  <option value="Others" >Others</option>
-                              </select>
-                          </div>
-                      </div>
-                      
-                      <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="exampleInputUsername1"> Department (If clicked Others) </label>
-                            <input type="text" name="department_section_other" id="others-show" disabled class="form-control" id="exampleInputUsername1" placeholder="Department/Section" required>
-                        </div>
-                      </div>
-                  </div>
-
-                  <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="exampleInputUsername1">Against Whom</label>
-                            <input type="text" name="against_persons" class="form-control" value="user 1, User 2" id="exampleInputUsername1" placeholder="Against Users names" required>
-                        </div>
-                      </div>
-                  </div>
-
-                  <br>
-
-                  <!-- Additional Input -->
-                  
-                  <div id="rowContainer">
-                    <div class="row dub-row">
-                        <div class="col-md-5">
-                            <div class="form-group">
-                                <label for="exampleInputUsername1">Document</label>
-                                <input type="file" class="form-control" name="document[]" id="exampleInputUsername1" placeholder="file">
-                            </div>
-                        </div>
-                        <div class="col-md-5">
-                            <div class="form-group">
-                                <label for="exampleInputUsername1">Document Description</label>
-                                <textarea name="additional_detail[]" class="form-control" id="exampleInputUsername1" cols="30" rows="2"></textarea>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group button-here ">
-                                <label for="exampleInputUsername1">&nbsp;&nbsp;</label>
-                                <input type="button" class="form-control addRowBtn btn btn-primary add-btn" value="Add">
-                            </div>
-                        </div>
-                    </div>
-                  </div> 
-
-                  <button type="submit" class="btn btn-primary mr-2 add-btn">Submit</button>
-                    <a class="btn btn-light" href="{{ route('user.complaints') }}">Cancel</a>
-
-                </form>
-              </div>
-            </div>
-          </div>
+    <div class="col-lg-6 d-flex justify-content-end" style="gap: 25px;">
+        <div class="bell">
+            <a href=""><img src="{{ asset('assets/theme/image/Notification.png') }}" alt="" class="img-fluid"></a>
+            <p class="show-notification">2</p>
         </div>
-      </div>
-      <!-- content-wrapper ends -->
+        <div class="profile">
+            <img src="{{ asset('assets/theme/image/profile.png') }}" alt="" class="img-fluid">
+        </div>
+        <div class="profile-name d-flex justify-content-center align-items-center" style="gap: 10px;">
+            <a href="profile.html" class="d-flex justify-content-center align-items-center" style="gap: 10px;">
+            <h2 class="profile-name ">Profile Name</h2>
+            <img src="{{ asset('assets/theme/image/down arrow.png') }}" alt="">
+            </a>
+        </div>
+    </div>
+</div>
+
+<div style="margin-top: 50px;" ></div>
 
 
-      <script>
+
+<form class="forms-sample" action="{{ route('user.complaint.store') }}" method="post" enctype="multipart/form-data"> 
+
+    @csrf
+
+    <div class="row padding-30px">
+        <div class="col-lg-12">
+            <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Complaint Number</label>
+            <div class="input-container1">
+                <input type="text" class="form-control placeholder-green-color" readonly="TRUE" id="exampleFormControlInput1" value="{{$complainNo}}" required>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row padding-30px">
+        <div class="col-lg-12">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label"> Description of Complaint </label>
+                <div class="input-container1">
+                    <textarea class="form-control placeholder-green-color" name="description" placeholder="Description of Complaint" id="exampleFormControlInput1" required cols="30" rows="4"></textarea>
+                </div>
+                <x-input-error :messages="$errors->get('description')" style="color:red;" class="mt-2 err_mdy" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row padding-30px">
+        <div class="col-lg-4">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">ONGC Work Centre</label>
+                <div class="input-container1">
+                    <!-- <input type="text"   placeholder="Mumbai"> -->
+                    <select class="form-control placeholder-green-color" name="work_centre" id="workCentreSelect"  required>
+                        <option selected disabled><span style="color:green;" >Please Select</span></option>
+                        @if($workCenters->isNotEmpty())
+                            @foreach($workCenters as $index => $workCenter)
+                                <option value="{{ $workCenter->id }}">{{ $workCenter->name }}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div>
+                <x-input-error :messages="$errors->get('work_centre')" style="color:red;" class="mt-2 err_mdy" />
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Department/Section</label>
+                <div class="input-container1">
+                    <select name="department_section" class="form-control placeholder-green-color" id="departmentSelect" onchange="handleSelectChange()" required>
+                        <option selected disabled>Please Select</option>
+                        <option value="Others" >Others</option>
+                    </select>
+                </div>
+                <x-input-error :messages="$errors->get('department_section')" style="color:red;" class="mt-2 err_mdy" />
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label"> Department (If clicked Others) </label>
+                <div class="input-container1">
+                    <input type="text" name="department_section_other" id="others-show" disabled class="form-control placeholder-green-color" id="exampleInputUsername1" placeholder="Department/Section" required>
+                </div>
+                <x-input-error :messages="$errors->get('department_section_other')" style="color:red;" class="mt-2 err_mdy" />
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row padding-30px">
+        <div class="col-lg-12">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label"> Against Whom </label>
+                <div class="input-container1">
+                    <input type="text" name="against_persons" class="form-control placeholder-green-color" id="exampleFormControlInput1" placeholder="Against Users names" required>
+                </div>
+                <x-input-error :messages="$errors->get('against_persons')" style="color:red;" class="mt-2 err_mdy" />
+            </div>
+        </div>
+    </div>
+
+    <div id="rowContainer" class="row padding-30px" >
+        <div class="row dub-row">
+
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label for="exampleInputUsername1" ="form-label" >Document</label>
+                    <input type="file" class="form-control" name="document[]" id="exampleInputUsername1" placeholder="file">
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label for="exampleInputUsername1">Document Description</label>
+                    <textarea name="additional_detail[]" class="form-control" id="exampleInputUsername1" cols="30" rows="2"></textarea>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group button-here ">
+                    <label for="exampleInputUsername1">&nbsp;&nbsp;</label>
+                    <input type="button" class="form-control addRowBtn btn btn-primary add-btn" style="background: transparent;border: 1px solid #000;color: #5A5A5A;" value="Add">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 50px;" ></div>
+
+    <div class="modal-footer justify-content-center" style="padding-top: 0;">
+        <a href="{{ route('user.dashboard') }}" data-bs-dismiss="modal">
+            <div class="button-otp" style="background: transparent;border: 1px solid #000;color: #5A5A5A;">
+                Cancel
+            </div>
+        </a>
+        <a href="javascript:void(0)" onclick="submitCurrentForm()"> <div class="button-otp"> Save </div> </a>
+
+    </div>
+
+</form>
+
+<script>
+    function submitCurrentForm() {
+        
+            // Get the closest form element
+            var form = document.querySelector('form');
+            // Submit the form
+            form.submit();
+        }
+
         
         function toggleOtherInput() {
             var selectElement = document.getElementById("departmentSelect");
@@ -129,7 +165,7 @@
                 otherInput.disabled = true;
             }
         }
-// Need to remove
+        // Need to remove
         document.addEventListener('DOMContentLoaded', function() {
           document.querySelector('.addRowBtn').addEventListener('click', function() {
               var row = document.querySelector('.dub-row');
@@ -164,54 +200,49 @@
               othersInput.disabled = true;
           }
         }
-    </script>
-
-
-<script>
-    
-    const workCentreOptions = {
-
-        '1': ['Delhi Department 1', 'Delhi Department 2'],
-        '3': ['Dehradun Department 1', 'Dehradun Department 2'],
-        '2': ['Mumbai Department 1', 'Mumbai Department 2'],
-        '4': ['Ahmedabad Department 1', 'Ahmedabad Department 2']
-    };
-
-    // Function to update department options based on selected work centre
-    function updateDepartmentOptions() {
-
-        const workCentreSelect = document.getElementById('workCentreSelect');
-        const departmentSelect = document.getElementById('departmentSelect');
-        const selectedWorkCentre = workCentreSelect.value;
-
-        var othersInput = document.getElementById('others-show');
-        othersInput.disabled = true;
-
-        // Clear existing options
-        departmentSelect.innerHTML = '<option selected disabled>Please Select</option>';
-
-        // Add options based on selected work centre
-        workCentreOptions[selectedWorkCentre].forEach(option => {
-            const optionElement = document.createElement('option');
-            optionElement.value = option;
-            optionElement.textContent = option;
-            departmentSelect.appendChild(optionElement);
-            // departmentSelect.appendChild('<option value="Others" >Others</option>');
-        });
-
-        var othersOption = document.createElement('option');
-        othersOption.value = 'Others';
-        othersOption.textContent = 'Others';
-        departmentSelect.appendChild(othersOption);
         
-    }
+        const workCentreOptions = {
 
-    // Event listener to update department options when work centre is changed
-    document.getElementById('workCentreSelect').addEventListener('change', updateDepartmentOptions);
+            '1': ['Delhi Department 1', 'Delhi Department 2'],
+            '3': ['Dehradun Department 1', 'Dehradun Department 2'],
+            '2': ['Mumbai Department 1', 'Mumbai Department 2'],
+            '4': ['Ahmedabad Department 1', 'Ahmedabad Department 2']
+        };
 
-    // Initial call to update department options based on default selected work centre
-    updateDepartmentOptions();
-</script>
+        // Function to update department options based on selected work centre
+        function updateDepartmentOptions() {
 
+            const workCentreSelect = document.getElementById('workCentreSelect');
+            const departmentSelect = document.getElementById('departmentSelect');
+            const selectedWorkCentre = workCentreSelect.value;
+
+            var othersInput = document.getElementById('others-show');
+            othersInput.disabled = true;
+
+            // Clear existing options
+            departmentSelect.innerHTML = '<option selected disabled>Please Select</option>';
+
+            // Add options based on selected work centre
+            workCentreOptions[selectedWorkCentre].forEach(option => {
+                const optionElement = document.createElement('option');
+                optionElement.value = option;
+                optionElement.textContent = option;
+                departmentSelect.appendChild(optionElement);
+                // departmentSelect.appendChild('<option value="Others" >Others</option>');
+            });
+
+            var othersOption = document.createElement('option');
+            othersOption.value = 'Others';
+            othersOption.textContent = 'Others';
+            departmentSelect.appendChild(othersOption);
+            
+        }
+
+        // Event listener to update department options when work centre is changed
+        document.getElementById('workCentreSelect').addEventListener('change', updateDepartmentOptions);
+
+        // Initial call to update department options based on default selected work centre
+        updateDepartmentOptions();
+    </script>
 
 </x-app-layout>

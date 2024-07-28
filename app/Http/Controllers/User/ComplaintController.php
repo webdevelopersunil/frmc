@@ -69,6 +69,8 @@ class ComplaintController extends Controller{
             'department_section'            => ['required'],
             'against_persons'               => ['required'],
             'work_centre'                   => ['required'],
+            'document.*'                    => ['nullable', 'file', 'max:2048'],
+            'additional_detail.*'           => ['nullable', 'string'],
         ]);
 
         try {

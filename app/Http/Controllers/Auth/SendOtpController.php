@@ -35,9 +35,9 @@ class SendOtpController extends Controller
         }
 
         $phone = $request->username;
-        $otp = (new Otp)->generate($phone, 'numeric', 6, 15);
+        $otp = (new Otp)->generate($phone, 'numeric', 6, 5);
 
-        $this->otpService->sendOtp(intval($phone), strval($otp->token));
+        // $this->otpService->sendOtp(intval($phone), strval($otp->token));
 
         $status = 'otp-sent';
 
