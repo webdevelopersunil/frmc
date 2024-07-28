@@ -38,7 +38,6 @@ Route::get('/admin',                                    [FrontendController::cla
 Route::get('/user/login',                               [FrontendController::class, 'userLogin'])->name('user.login');
 Route::get('/admin/login',                              [FrontendController::class, 'adminLogin'])->name('admin.login');
 Route::get('complainant/login',                         [FrontendController::class, 'complainantLogin'])->name('complainant.login');
-Route::get('/otp-verification/{token}',                 [FrontendController::class, 'otpVerification'])->name('otp-verification');
 Route::post('/confirm/otp-verification',                [RegisteredUserController::class, 'confirmOtpVerification'])->name('confirm.otp-verification');
 
 Route::middleware(['auth', 'verified', 'role:user,nodal,fco'])->group(function () {

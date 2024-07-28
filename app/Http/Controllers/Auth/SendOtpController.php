@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Crypt;
+use App\Models\User;
 
 class SendOtpController extends Controller
 {
@@ -72,29 +73,41 @@ class SendOtpController extends Controller
     }
 
 
-    public function sendPhoneOtp(Request $request) {
+    public function sendPhoneOtp(Request $request){
 
-        $validator = Validator::make($request->all(), [
-            'username' => 'required|numeric|exists:users,username',
-        ]);
-
-        if ($validator->fails()) {
+        // Validate if phone number is already existed
+        $isUsernameFound = User::where('username', $request->input('username'))->first();
+        if ($isUsernameFound) {
             return response()->json([
                 'success' => false,
-                'message' => $validator->errors()->first('username'),
+                'message' => "Phone number already registered",
             ], 400);
         }
 
-        $phone = $request->input('username');
-        $otp = (new Otp)->generate($phone, 'numeric', 6, 15);
+        // Validate if email address is already existed
+        $isUserEmailFound = User::where('email', $request->input('email'))->first();
+        if ($isUserEmailFound) {
+            return response()->json([
+                'success' => false,
+                'message' => "Email address already registered",
+            ], 400);
+        }
+    
+        $phone_otp = (new Otp)->generate($request->input('username'), 'numeric', 6, 5);
+        // Send Otp to Un-registered phone number
+        $status = $this->otpService->sendOtp(intval($request->input('username')), strval($phone_otp->token));
+        
+        $email_otp = (new Otp)->generate($request->input('email'), 'numeric', 6, 5);
 
+    
         // Simulate OTP sending logic
-        // $this->otpService->sendOtp(intval($phone), strval($otp->token));
-
+        // $this->otpService->sendOtp(intval($username), strval($otp->token));
+    
         return response()->json([
             'success' => true,
             'message' => 'OTP sent successfully!',
         ]);
     }
+    
 
 }
