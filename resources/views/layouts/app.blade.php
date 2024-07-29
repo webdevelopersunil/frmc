@@ -11,6 +11,47 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/theme/css/style.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/theme/css/responsive/style.css') }}">
+        <style>
+            .profile-name {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%; /* Position below the profile name */
+    right: 0;
+    background: #fff; /* Background color for the dropdown */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    display: none; /* Initially hidden */
+}
+
+.profile-name:hover .dropdown-menu {
+    display: block; /* Show dropdown on hover */
+}
+
+.dropdown-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-list li {
+    padding: 10px;
+}
+
+.dropdown-list a {
+    text-decoration: none;
+    color: #00744A; /* Customize color */
+    display: block;
+}
+
+.dropdown-list a:hover {
+    background: #f0f0f0; /* Hover effect */
+}
+
+        </style>
     </head>
 
 <body>
@@ -37,12 +78,27 @@
                     <div class="profile">
                         <img src="./image/profile.png" alt="" class="img-fluid">
                     </div>
+
+                    <!-- Profile DropDown Button -->
                     <div class="profile-name d-flex justify-content-center align-items-center" style="gap: 10px;">
-                        <a href="{{ route('profile.edit') }}" class="d-flex justify-content-center align-items-center" style="gap: 10px;">
-                        <h2 class="profile-name ">Profile Name</h2>
-                        <img src="{{ asset('assets/theme/image/down arrow.png') }}" alt="">
+                        <a href="javascript:void(0)" class="d-flex justify-content-center align-items-center" style="gap: 10px;">
+                            <h2 class="profile-name">Profile Name</h2>
+                            <img src="{{ asset('assets/theme/image/down arrow.png') }}" alt="">
                         </a>
+                        <div class="dropdown-menu">
+                            <ul class="dropdown-list">
+                                <li><a href="{{ route('profile.edit') }}">Edit Profile</a></li>
+                                <li>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                    <a href="#" onclick="document.getElementById('logout-form').submit(); return false;">Logout</a>
+                                    
+                                </li>
+                            </ul>
+                        </div>
                     </div>
+
                 </div>
             </div>
                 
@@ -89,6 +145,17 @@
       hideErrorMessages();
   });
     
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const profileName = document.querySelector('.profile-name');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+
+        profileName.addEventListener('click', function() {
+            dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+        });
+    });
 </script>
 
 </body>
