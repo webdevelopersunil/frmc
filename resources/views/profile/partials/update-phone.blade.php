@@ -1,93 +1,88 @@
-<section>
-    <header>
-        <!-- <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Update Phone Number') }}
-        </h2> -->
-        <h2 class="text-lg font-medium text-gray-900 main-heading">
-            {{ __('Update Phone Number') }}
-        </h2>
-
-        <p class="mt-1 text-sm text-gray-600 tag-line">
-            {{ __("Update your phone number.") }}
-        </p>
-
-    </header>
-
-    @if (session('status') === 'otp-sent')
-        <form method="post" action="{{ route('otp.verification') }}" class="mt-6 space-y-6">
-        @method('post')
-    @else
-        <form method="post" action="{{ route('phone.update') }}" class="mt-6 space-y-6">
-        @method('patch')
-    @endif
-    
-        @csrf
-        
-        <div>
-            <x-input-label for="username" :value="__('Phone')" />
-            <x-text-input readonly id="username" name="username" type="text" class="mt-1 block w-full" :value="old('username', $user->username)" required autofocus autocomplete="username" />
-            <x-input-error class="mt-2" :messages="$errors->get('username')" />
+<div class="row padding-30px">
+    <div class="col-lg-12" style="padding: 15px 0;">
+        <p style="color: #08AF73;">Personal Information <span style="color: #AB3336;">(*Update Your Account Profile Information & Email Address)</span></p>
+    </div>
+    <div class="col-lg-5" style="padding: 0;">
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Name</label>
+            <div class="input-container input-container1">
+                <input type="text" class="form-control" id="exampleFormControlInput1" value="{{old('name', $user->name)}}" placeholder="Pritam Ghosh">
+            </div>
         </div>
-
-        <div>
-            <x-input-label for="phone" :value="__('New Phone Number')" />
-            <!-- <x-text-input id="phone" name="phone" type="tel" class="mt-1 block w-full" :value="isset($phone) ? $phone : old('phone')" required autocomplete="phone" /> -->
-            <x-text-input 
-                id="phone" 
-                name="phone" 
-                type="tel" 
-                class="mt-1 block w-full" 
-                :value="session('status') === 'otp-sent' ? session('phone') : null" 
-                required 
-                autocomplete="phone" 
-            />
-
-            
-
-            <x-input-error class="mt-2" :messages="$errors->get('phone')" />
+    </div>
+    <div class="col-lg-5">
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Date of birth</label>
+            <div class="input-container input-container2">
+                <input type="date" class="form-control" id="exampleFormControlInput1" value="{{old('dob', $user->dob)}}">
+            </div>
         </div>
-
-            @if (session('status') === 'otp-sent')
-            
-                <div>
-                    <x-input-label for="otp" :value="__('OTP (Please provide OTP)')" />
-                    <x-text-input 
-                        id="otp" 
-                        name="otp" 
-                        type="number" 
-                        class="mt-1 block w-full"  
-                        required 
-                        autocomplete="otp" 
-                    />
-                    <x-input-error class="mt-1 block w-full"  :messages="$errors->get('otp')" />
+    </div>
+    <div class="col-lg-2">
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label" style="visibility: hidden;">Emailid</label>
+            <a href="">
+                <div class="button-otp">
+                    Send OTP
                 </div>
-            @endif
-
-        <div class="flex items-center gap-4">
-        
-        <x-primary-button class="add-btn" >
-            {{ (session('status') === 'otp-sent') ? __('Verify Otp') : __('Send Otp') }}
-        </x-primary-button >
-
-            @if (session('status') === 'profile-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
-                >{{ __('Saved.') }}</p>
-            @endif
-
-            @if (session('err') === 'failed')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
-                >{{ __('Please Enter Valid OTP.') }}</p>
-            @endif
+            </a>
         </div>
-    </form>
-</section>
+    </div>
+
+    <div class="col-lg-12" style="padding: 15px 0;">
+        <p style="color: #08AF73;">Contact Information <span style="color: #AB3336;">(*Update Your Phone Number)</span></p>
+    </div>
+
+    <div class="col-lg-5" style="padding: 0;">
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Current Phone Number</label>
+            <div class="input-container">
+                <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="7776776877">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">New Phone Number</label>
+            <div class="input-container">
+                <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-2">
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label" style="visibility: hidden;">Emailid</label>
+            <a href="">
+                <div class="button-otp">
+                    Send OTP
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-12" style="padding: 15px 0;">
+        <p style="color: #08AF73;">Others</p>
+    </div>
+
+    <div class="col-lg-10" style="padding: 0;">
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Postal Address</label>
+            <div class="input-container input-container3">
+                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Mumbai">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-2">
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label" style="visibility: hidden;">Emailid</label>
+            <a href="">
+                <div class="button-otp">
+                    Send OTP
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
