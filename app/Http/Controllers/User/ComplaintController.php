@@ -50,7 +50,8 @@ class ComplaintController extends Controller{
 
         $lists  =   $query->paginate(10)->withQueryString();
 
-        return view('user.list', compact('lists'));
+        return view('user.dashboard', compact('lists'));
+        // return view('user.list', compact('lists'));
     }
 
     public function create(Request $request){

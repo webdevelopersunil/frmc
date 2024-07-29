@@ -1,34 +1,9 @@
 <x-app-layout>
 
-    <div class="row padding-30px">
-        <div class="col-lg-3 d-flex align-items-center" style="gap: 10px;">
-            <span>show</span>
-            <select class="form-select" aria-label="Default select example" style="width: auto !important;">
-                <option selected>21</option>
-                <option value="1">2</option>
-                <option value="2">3</option>
-                <option value="3">4</option>
-            </select>
-            <span>entries</span>
-        </div>
-        
-        <div class="col-lg-7">
-            <div class="input-container-new">
-                <input type="text" class="form-control ph-no" id="exampleFormControlInput1" placeholder="Search...">
-                <a href=""><img src="{{ asset('assets/theme/image/Search.png') }}" alt="" class="img-fluid search-icon"></a>
-            </div>
-        </div>
-
-        <div class="col-lg-2">
-            <select class="form-select" aria-label="Default select example"
-                style="width: auto !important;background-color: #9C3132;border-radius: 12px;color: #fff;background-image: url('./image/down\ arrow\ white.png');background-size: 16px 16px;">
-                <option selected>Filter</option>
-                <option value="1">Filter1</option>
-                <option value="2">Filter2</option>
-                <option value="3">Filter3</option>
-            </select>
-        </div>
-    </div>
+    <!-- File Section Start Here 'message-block' -->
+        @include('filters.complain', ['route' => 'user.complaints'])
+    <!-- File Section Start Here 'message-block' -->
+    
 
     <div class="row padding-15px" style="background: #fff;margin: 0 20px;">
 
@@ -68,7 +43,7 @@
                 <tbody>
 
                     @foreach($lists as $index => $list)
-                        <tr onclick="window.location.href='viewcomplainant.html'" 
+                        <tr onclick="window.location.href='{{ route('user.complaint.view', $list->id) }}'" 
                             @if(($index + 1) % 2 != 0) style="cursor: pointer;background: #08AE72;color: #fff;" @else style="background: #FFC700;color:#000;" @endif >
                             <td scope="row" style="border-top-left-radius: 11px;border-bottom-left-radius: 11px;">#{{ ($lists->currentPage() - 1) * $lists->perPage() + $loop->iteration }}</td>
                             <td>{{ $list->complain_no }}</td>
@@ -88,10 +63,15 @@
                     @endforeach
 
                 </tbody>
+                
             </table>
+            
         </div>
+        
+        
     </div>
 
+    
 
     <div class="row justify-content-center" style="background: #fff;margin: 0 20px;padding-bottom: 20px;">
         <div class="col-lg-6 a-color-white d-flex justify-content-between align-items-center" style="background: #00744A;color: #fff;padding: 10px 15px;">
@@ -112,7 +92,9 @@
                 <img src="{{ asset('assets/theme/image/right arrow only.png') }}" alt="">
             </a>
         </div>
-    </div>    
+    </div>
+    
+
 </div>
 
 </x-app-layout>
