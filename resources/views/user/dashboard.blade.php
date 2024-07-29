@@ -31,6 +31,7 @@
     </div>
 
     <div class="row padding-15px" style="background: #fff;margin: 0 20px;">
+
         <div class="col-lg-12 d-flex justify-content-between align-items-center" style="margin: 20px 0;">
             <h3 class="profile-name">Complaint List</h3>
             <div class="add-complaint-button">
@@ -41,11 +42,19 @@
             </div>
         </div>
 
+        <!-- Error Section Start Here 'message-block' -->
+            @include('includes/message-block')
+        <!-- Error Section Ends Here -->
+
+        
+
+
         <div class="col-lg-12">
             <table class="table table-striped complainant-table">
                 <thead>
                     <tr>
                         <th style="border-top-left-radius: 11px;border-bottom-left-radius: 11px;" scope="col">ID</th>
+                        <th scope="col" >complain_no</th>
                         <th scope="col">Date of Complaint</th>
                         <th scope="col">Complaint Against</th>
                         <th scope="col">Department/<br>Section</th>
@@ -56,56 +65,29 @@
                     </tr>
                     <tr style="height: 15px;"></tr>
                 </thead>
-
                 <tbody>
 
-                    <tr onclick="window.location.href='viewcomplainant.html'"
-                        style="cursor: pointer;background: #08AE72;color: #fff;">
-                        <td scope="row" style="border-top-left-radius: 11px;border-bottom-left-radius: 11px;">#01</td>
-                        <td>21.06.24</td>
-                        <td>Example</td>
-                        <td>Example</td>
-                        <td>Example</td>
-                        <td>Example</td>
-                        <td>Example</td>
-                        <td style="border-top-right-radius: 11px;border-bottom-right-radius: 11px;">
-                        <a data-bs-toggle="modal" data-bs-target="#exampleModal2" href="{{ route('user.complaint.view', 1) }}"
-                            onclick="event.stopPropagation();"><img src="{{ asset('assets/theme/image/white view.png') }}" alt=""></a>
-                        </td>
-                    </tr>
-
-                    <tr style="height: 15px;"></tr>
-
-                    <tr style="background: #FFC700;color:#000;">
-                        <td scope="row" style="border-top-left-radius: 11px;border-bottom-left-radius: 11px;">#01</td>
-                        <td>21.06.24</td>
-                        <td>Example</td>
-                        <td>Example</td>
-                        <td>Example</td>
-                        <td>Example</td>
-                        <td>Example</td>
-                        <td style="border-top-right-radius: 11px;border-bottom-right-radius: 11px;">
-                            <a href="" ><img src="{{ asset('assets/theme/image/View.png') }}" alt=""></a>
-                        </td>
-                    </tr>
-
-                    <tr style="height: 15px;"></tr>
-
-                    <tr style="cursor: pointer;background: #08AE72;color: #fff;">
-                        <td scope="row" style="border-top-left-radius: 11px;border-bottom-left-radius: 11px;">#01</td>
-                        <td>21.06.24</td>
-                        <td>Example</td>
-                        <td>Example</td>
-                        <td>Example</td>
-                        <td>Example</td>
-                        <td>Example</td>
-                        <td style="border-top-right-radius: 11px;border-bottom-right-radius: 11px;"><a href="">
-                            <img src="{{ asset('assets/theme/image/white view.png') }}" alt=""></a>
-                        </td>
-                    </tr>
+                    @foreach($lists as $index => $list)
+                        <tr onclick="window.location.href='viewcomplainant.html'" 
+                            @if(($index + 1) % 2 != 0) style="cursor: pointer;background: #08AE72;color: #fff;" @else style="background: #FFC700;color:#000;" @endif >
+                            <td scope="row" style="border-top-left-radius: 11px;border-bottom-left-radius: 11px;">#{{ ($lists->currentPage() - 1) * $lists->perPage() + $loop->iteration }}</td>
+                            <td>{{ $list->complain_no }}</td>
+                            <td>{{ \Carbon\Carbon::parse($list->created_at)->format('d F Y') }}</td>
+                            <td>{{ $list->against_persons }}</td>
+                            <td>{{ $list->department_section }}</td>
+                            <td>{{ $list->work_centre }}</td>
+                            <td>{{ $list->complaint_status }}</td>
+                            <td>{{ $list->public_status ? $list->public_status : '---' }}</td>
+                            <td style="border-top-right-radius: 11px;border-bottom-right-radius: 11px;">
+                                <a  href="{{ route('user.complaint.view', $list->id) }}">
+                                    <img src="{{ asset('assets/theme/image/white view.png') }}" alt="">
+                                </a>
+                            </td>
+                        </tr>
+                        <tr style="height: 15px;"></tr>
+                    @endforeach
 
                 </tbody>
-
             </table>
         </div>
     </div>

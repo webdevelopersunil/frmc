@@ -25,19 +25,20 @@
 
 <div style="margin-top: 50px;" ></div>
 
+<!-- Error Section Start Here 'message-block' -->
+    @include('includes/message-block')
+<!-- Error Section Ends Here -->
 
-
-<form class="forms-sample" action="{{ route('user.complaint.store') }}" method="post" enctype="multipart/form-data"> 
-
+<form class="form-control" action="{{ route('user.complaint.store') }}" method="post" enctype="multipart/form-data">
     @csrf
 
     <div class="row padding-30px">
         <div class="col-lg-12">
             <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">Complaint Number</label>
-            <div class="input-container1">
-                <input type="text" class="form-control placeholder-green-color" readonly="TRUE" id="exampleFormControlInput1" value="{{$complainNo}}" required>
-            </div>
+                <label for="exampleFormControlInput1" class="form-label">Complaint Number</label>
+                <div class="input-container1">
+                    <input type="text" class="form-control placeholder-green-color" name="complain_no" readonly="TRUE" id="exampleFormControlInput1" value="{{ $complainNo }}" required>
+                </div>
             </div>
         </div>
     </div>
@@ -45,7 +46,7 @@
     <div class="row padding-30px">
         <div class="col-lg-12">
             <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label"> Description of Complaint </label>
+                <label for="exampleFormControlInput1" class="form-label">Description of Complaint</label>
                 <div class="input-container1">
                     <textarea class="form-control placeholder-green-color" name="description" placeholder="Description of Complaint" id="exampleFormControlInput1" required cols="30" rows="4"></textarea>
                 </div>
@@ -59,9 +60,8 @@
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">ONGC Work Centre</label>
                 <div class="input-container1">
-                    <!-- <input type="text"   placeholder="Mumbai"> -->
-                    <select class="form-control placeholder-green-color" name="work_centre" id="workCentreSelect"  required>
-                        <option selected disabled><span style="color:green;" >Please Select</span></option>
+                    <select class="form-control placeholder-green-color" name="work_centre" id="workCentreSelect" required>
+                        <option selected disabled>Please Select</option>
                         @if($workCenters->isNotEmpty())
                             @foreach($workCenters as $index => $workCenter)
                                 <option value="{{ $workCenter->id }}">{{ $workCenter->name }}</option>
@@ -74,11 +74,11 @@
         </div>
         <div class="col-lg-4">
             <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">Department/Section</label>
+                <label for="exampleFormControlInput1" class="form-label">Department/Section</label>
                 <div class="input-container1">
                     <select name="department_section" class="form-control placeholder-green-color" id="departmentSelect" onchange="handleSelectChange()" required>
                         <option selected disabled>Please Select</option>
-                        <option value="Others" >Others</option>
+                        <option value="Others">Others</option>
                     </select>
                 </div>
                 <x-input-error :messages="$errors->get('department_section')" style="color:red;" class="mt-2 err_mdy" />
@@ -86,20 +86,19 @@
         </div>
         <div class="col-lg-4">
             <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label"> Department (If clicked Others) </label>
+                <label for="exampleFormControlInput1" class="form-label">Department (If clicked Others)</label>
                 <div class="input-container1">
-                    <input type="text" name="department_section_other" id="others-show" disabled class="form-control placeholder-green-color" id="exampleInputUsername1" placeholder="Department/Section" required>
+                    <input type="text" name="department_section_other" id="others-show" disabled class="form-control placeholder-green-color" placeholder="Department/Section">
                 </div>
                 <x-input-error :messages="$errors->get('department_section_other')" style="color:red;" class="mt-2 err_mdy" />
             </div>
         </div>
     </div>
 
-
     <div class="row padding-30px">
         <div class="col-lg-12">
             <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label"> Against Whom </label>
+                <label for="exampleFormControlInput1" class="form-label">Against Whom</label>
                 <div class="input-container1">
                     <input type="text" name="against_persons" class="form-control placeholder-green-color" id="exampleFormControlInput1" placeholder="Against Users names" required>
                 </div>
@@ -108,12 +107,11 @@
         </div>
     </div>
 
-    <div id="rowContainer" class="row padding-30px" >
+    <div id="rowContainer" class="row padding-30px">
         <div class="row dub-row">
-
             <div class="col-md-5">
                 <div class="form-group">
-                    <label for="exampleInputUsername1" ="form-label" >Document</label>
+                    <label for="exampleInputUsername1" class="form-label">Document</label>
                     <input type="file" class="form-control" name="document[]" id="exampleInputUsername1" placeholder="file">
                 </div>
             </div>
@@ -124,7 +122,7 @@
                 </div>
             </div>
             <div class="col-md-2">
-                <div class="form-group button-here ">
+                <div class="form-group button-here">
                     <label for="exampleInputUsername1">&nbsp;&nbsp;</label>
                     <input type="button" class="form-control addRowBtn btn btn-primary add-btn" style="background: transparent;border: 1px solid #000;color: #5A5A5A;" value="Add">
                 </div>
@@ -132,29 +130,19 @@
         </div>
     </div>
 
-    <div style="margin-top: 50px;" ></div>
-
     <div class="modal-footer justify-content-center" style="padding-top: 0;">
         <a href="{{ route('user.dashboard') }}" data-bs-dismiss="modal">
             <div class="button-otp" style="background: transparent;border: 1px solid #000;color: #5A5A5A;">
                 Cancel
             </div>
         </a>
-        <a href="javascript:void(0)" onclick="submitCurrentForm()"> <div class="button-otp"> Save </div> </a>
-
+        <button type="submit" class="btn btn-primary mr-2 add-btn">Submit</button>
     </div>
-
 </form>
 
-<script>
-    function submitCurrentForm() {
-        
-            // Get the closest form element
-            var form = document.querySelector('form');
-            // Submit the form
-            form.submit();
-        }
 
+
+<script>
         
         function toggleOtherInput() {
             var selectElement = document.getElementById("departmentSelect");

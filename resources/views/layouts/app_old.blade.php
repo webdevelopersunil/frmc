@@ -16,7 +16,7 @@
       
       <link rel="stylesheet" href="{{ asset('assets/css/custom-table.css') }}">
       <!-- Themify Icon -->
-        <link rel="stylesheet" href="{{ asset('assets/vendors/ti-icons/css/themify-icons.css') }}">
+      <link rel="stylesheet" href="{{ asset('assets/vendors/ti-icons/css/themify-icons.css') }}">
       <!-- Themify Icon -->
   </head>
 

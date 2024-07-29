@@ -61,7 +61,7 @@ class ComplaintController extends Controller{
         return view('user.create', compact('complainNo', 'workCenters'));
     }
 
-    public function store(Request $request){
+    public function store_old(Request $request){
         
         $attributes = request()->validate([
             'complain_no'                   => ['required'],
@@ -82,7 +82,7 @@ class ComplaintController extends Controller{
             $complain->work_centre          =   $request->work_centre;
             $complain->department_section   =   $request->department_section === 'Others' ? $request->department_section_other : $request->department_section;
             $complain->against_persons      =   $request->against_persons;
-            $complain->public_status        =   $request->public_status;
+            // $complain->public_status        =   $request->public_status;
             $complain->save();
 
             if ($request->hasFile('document')) {
@@ -100,15 +100,67 @@ class ComplaintController extends Controller{
                         $userAdditionalDetail->save();
                 }
             }
+            dd($userAdditionalDetail);
 
             return redirect()->route('user.complaints')->with('success', 'Complaint has been created and the complaint number is ' . $complain->complain_no);
             
         } catch (\Exception $e) {
+            dd($e);
             
             return redirect()->route('user.complaint.create')->with('error', 'Failed to register complaint: '.$e->getMessage());
         }
 
     }
+
+    public function store(Request $request)
+{
+    // Validate the input data
+    $attributes = $request->validate([
+        'complain_no'           => ['required'],
+        'description'           => ['required'],
+        'department_section'    => ['required'],
+        'against_persons'       => ['required'],
+        'work_centre'           => ['required'],
+        'document.*'            => ['nullable', 'file', 'max:2048'],
+        'additional_detail.*'   => ['nullable', 'string'],
+    ]);
+
+    try {
+        // Create a new complaint
+        $complain = new Complain();
+        $complain->complain_no = $request->complain_no;
+        $complain->complainant_id = Auth::user()->id;
+        $complain->description = $request->description;
+        $complain->work_centre = $request->work_centre;
+        $complain->department_section = $request->department_section === 'Others' ? $request->department_section_other : $request->department_section;
+        $complain->against_persons = $request->against_persons;
+        // $complain->public_status = $request->public_status; // Uncomment if needed
+        $complain->save();
+
+        // Check if there are any documents to upload
+        if ($request->hasFile('document')) {
+            foreach ($request->file('document') as $index => $file) {
+                // Upload the file and save its details
+                $uploadedFile = File::upload($file, $complain->complain_no . '/user/additional-document/');
+                
+                // Save the additional details
+                $userAdditionalDetail = new UserAdditionalDetail();
+                $userAdditionalDetail->complain_id = $complain->id;
+                $userAdditionalDetail->complainant_id = Auth::user()->id;
+                $userAdditionalDetail->description = $request->additional_detail[$index] ?? '';
+                $userAdditionalDetail->file_id = $uploadedFile->id;
+                $userAdditionalDetail->save();
+            }
+        }
+
+        return redirect()->route('user.dashboard')->with('success', 'Complaint has been created and the complaint number is ' . $complain->complain_no);
+        
+    } catch (\Exception $e) {
+        \Log::error('Complaint creation failed: ' . $e->getMessage());
+        return redirect()->route('user.complaint.create')->with('error', 'Failed to register complaint: ' . $e->getMessage());
+    }
+}
+
 
     public function view($complain_id){
  
