@@ -62,8 +62,9 @@
     function submitForm() {
         document.getElementById('search-form').submit();
     }
+    
     function redirectToDashboard() {
-        window.location.href = "{{ route('user.dashboard') }}";
+        window.location.href = "{{ route($route) }}";
     }
 
     function updateUrl(param, value) {
