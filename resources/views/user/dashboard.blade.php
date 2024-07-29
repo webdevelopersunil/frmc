@@ -73,6 +73,8 @@
 
     
 
+    
+
     <div class="row justify-content-center" style="background: #fff;margin: 0 20px;padding-bottom: 20px;">
         <div class="col-lg-6 a-color-white d-flex justify-content-between align-items-center" style="background: #00744A;color: #fff;padding: 10px 15px;">
             <a href=""><img src="{{ asset('assets/theme/image/left arrow.png') }}" alt=""></a>
