@@ -1,12 +1,12 @@
 <x-app-layout>
-<div style="margin-top: 50px;" ></div>
 
+<div style="margin-top: 50px;" ></div>
 
 <div class="row padding-15px" style="background: #fff;margin: 0 20px;">
     <div class="row padding-30px">
         @include('user/includes/complain_detail')
 
-        <div style="margin-top: 50px;" ></div>
+        @include('nodal.includes.preliminary_reports')
 
         @include('nodal/includes/complain_detail')
 
@@ -16,10 +16,9 @@
                     Cancel
                 </div>
             </a>
-            <a href="javascript:void(0)" onclick="submitCurrentForm()"> <div class="button-otp"> Edit </div> </a>
+            <a href="{{ route('nodal.complaint.edit',$complain->id) }}"> <div class="button-otp"> Edit </div> </a>
         </div>
     </div>
 </div>
-
 
 </x-app-layout>
