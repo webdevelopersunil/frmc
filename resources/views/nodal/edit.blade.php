@@ -5,6 +5,10 @@
 <div class="row padding-15px" style="background: #fff;margin: 0 20px;">
     <div class="row padding-30px">
 
+    <!-- Error Section Start Here 'message-block' -->
+    @include('includes/message-block')
+    <!-- Error Section Ends Here -->
+
       <form class="forms-sample" action="{{ route('nodal.complaint.update') }}" id="nodalComplainUpdate" method="post" enctype="multipart/form-data">
         @csrf            
         <input type="hidden" value="{{$list_id}}" name="id">

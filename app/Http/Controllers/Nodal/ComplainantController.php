@@ -110,7 +110,7 @@ class ComplainantController extends Controller{
                 }
             }
         
-            return redirect()->route('nodal.complaints')->with('success', 'Complain has been updated');
+            return redirect()->route('user.nodal.view',$request->id)->with('success', 'Complain has been updated');
 
         } catch (\Exception $e) {
 
