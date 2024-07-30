@@ -82,7 +82,7 @@
                     <!-- Profile DropDown Button -->
                     <div class="profile-name d-flex justify-content-center align-items-center" style="gap: 10px;">
                         <a href="javascript:void(0)" class="d-flex justify-content-center align-items-center" style="gap: 10px;">
-                            <h2 class="profile-name">Profile Name</h2>
+                            <h2 class="profile-name">Profile</h2>
                             <img src="{{ asset('assets/theme/image/down arrow.png') }}" alt="">
                         </a>
                         <div class="dropdown-menu">

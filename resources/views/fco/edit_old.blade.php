@@ -2,9 +2,15 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-
     <div class="content-wrapper">
           <div class="row">
+
+          <div class="card-body">
+            <!-- <h4 class="card-title">Complaint Detail</h4> -->
+            <div class="d-flex justify-content-end mb-3">
+                <a class="btn btn-primary add-btn" href="{{ route('fco.complaints') }}"> Go Back</a>
+            </div>
+          </div>
 
             @include('includes/complain_detail')
             @include('includes/nodal_complain_detail')
@@ -52,7 +58,6 @@
                         </div>
                     </div> -->
 
-
                     <div class="row">
                         <div class="col-md-12">
                           <div class="form-group">
@@ -72,27 +77,23 @@
                     </div>
 
                     <br> <br>
-
                     <h5 class="card-title">Updation by the office of FCO</h5>
                     <br><br>
                     <div id="rowContainer">
                       <div class="row dub-row">
-
                           <div class="col-md-6">
                               <div class="form-group">
                                   <label for="exampleInputUsername1">Public – Visible to all users</label>
                                   <textarea class="form-control" id="exampleInputUsername1" name="public" cols="30" rows="4">{{ isset($detailedStatus->public) ? $detailedStatus->public : null }}</textarea>
                               </div>
                           </div>
-
                           <div class="col-md-6">
                               <div class="form-group">
                                   <label for="exampleInputUsername1">Private – Visible to only the users associated with the office of FCO</label>
                                   <textarea class="form-control" id="exampleInputUsername1" name="private" cols="30" rows="4">{{ isset($detailedStatus->private) ? $detailedStatus->private : null }}</textarea>
                               </div>
                           </div>
-                          
-                      </div>
+                        </div>
                     </div>  
 
                     <button type="submit" style="color:white; border:none;" class="btn add-btn mr-2">Submit</button>
@@ -101,9 +102,6 @@
                 </div>
               </div>
             </div>
-                    
-            
-            
           </div>
         </div>
 </x-app-layout>

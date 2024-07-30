@@ -88,7 +88,7 @@ class ComplainantController extends Controller{
             DB::commit();
 
             // Redirect with success message
-            return redirect()->route('fco.complaints')->with('success', 'Complaint has been updated');
+            return redirect()->route('fco.complaint.edit',$complain->id)->with('success', 'Complaint has been updated');
             
         } catch (\Exception $e) {
             // Rollback the transaction in case of any exception
