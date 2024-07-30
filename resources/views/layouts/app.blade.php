@@ -113,6 +113,12 @@
     
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
+
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/theme/css/responsive/style.css') }}">
+
+<!-- <script src="{{ asset('assets/theme/js/responsive/script.js') }}"></script> -->
+
+
 <script>
     const errorElements = document.querySelectorAll('.x-input-error');
         errorElements.forEach(element => {

@@ -15,7 +15,7 @@
         </div>
 
         <div class="modal-footer justify-content-center" style="padding-top: 0;">
-            <a href="">
+            <a href="javascript:void(0)" onclick=" document.getElementById('formSubmitProfileUpdate').submit(); " >
                 <div class="button-otp"> 
                     Submit
                 </div>

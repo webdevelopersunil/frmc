@@ -1,4 +1,4 @@
-<!-- @if($errors->any())
+@if($errors->any())
     <div class="mt-3 alert alert-primary alert-dismissible fade show" role="alert" style="background-color:#ffa4a4;" id="alert-errors">
         <span class="alert-text text-black">
             {{$errors->first()}}
@@ -7,7 +7,7 @@
             <i class="fa fa-close" aria-hidden="true"></i>
         </button>
     </div>
-@endif -->
+@endif
 
 @if(session('success'))
     <div class="m-3 alert alert-success alert-dismissible fade show" id="alert-success" role="alert">

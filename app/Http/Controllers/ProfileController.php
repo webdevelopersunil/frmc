@@ -50,30 +50,56 @@ class ProfileController extends Controller{
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
+    public function update(Request $request): RedirectResponse {
+    
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            // 'email' => 'required|email|nullable|unique:users,email,' . $request->user()->id,
+            'state' => 'nullable|string|max:255',
+            'pincode' => 'nullable|numeric|digits:6',
+            'dob' => 'nullable|date|before:today',
+            'house_number' => 'nullable',
+            'address' => 'nullable',
+            'landmark' => 'nullable',
+            'city' => 'nullable',
+            
+        ]);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
+        $user               =   $request->user();
+        
+        $user->name         =   $request->name;
+        $user->state        =   $request->state;
+        $user->pincode      =   $request->pincode;
+        $user->area         =   $request->area;
+        $user->dob          =   $request->dob;
+        $user->house_number =   $request->house_number;
+        $user->address      =   $request->address;
+        $user->landmark     =   $request->landmark;
+        $user->city         =   $request->city;
 
-        $request->user()->save();
+        // Check if the email has changed and reset email_verified_at if it has
+        // if ($user->isDirty('email')) {
+        //     $user->email_verified_at = null;
+        // }
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        $user->save();
+
+        return Redirect::route('profile.edit')->with('success', 'Profile successfully updated');
     }
 
-    public function updatePhone(PhoneUpdateRequest $request): RedirectResponse
-    {
+
+
+    public function updatePhone(PhoneUpdateRequest $request): RedirectResponse {
+
         $otp    =   (new Otp)->generate($request->phone, 'numeric', 6, 15);
         
         // OTP Sending
         $status = $this->otpService->sendOtp(intval($request->phone), strval($otp->token));
-        $phone   =   $request->phone;
-        $form   =   'otp_sent';
+
+        $phone      =   $request->phone;
+        $form       =   'otp_sent';
         
         return Redirect::route('profile.edit')->with(['status'=>'otp-sent','phone'=>$request->phone]);
-        // return view('profile.edit', compact('form'));
     }
 
     public function otpVerification(Request $request){
