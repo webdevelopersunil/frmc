@@ -27,6 +27,8 @@ class ComplainantController extends Controller{
 
         $query  =   Complain::query();
 
+        $perPage = 10;
+
         // Onclick Filteration
         if (isset($request->work_centre) && !empty($request->work_centre)) {
             $query->where('work_centre', 'LIKE', '%' . $request->work_centre . '%');
@@ -53,9 +55,15 @@ class ComplainantController extends Controller{
             
         }
 
-        $lists  =   $query->with('preliminaryReport')->paginate(10)->withQueryString();
+        
+        // Pagination Objects Start
+        // $lists  =   $query->paginate($perPage)->withQueryString();
+        $lists          =   $query->with('preliminaryReport')->paginate($perPage)->withQueryString();
+        $totalRecords   =   $lists->total();
+        $totalPages     =   ceil($totalRecords / $perPage);
+        // Pagination Objects End
 
-        return view('nodal.list', compact('lists'));
+        return view('nodal.list', compact('lists','perPage','totalRecords','totalPages'));
     }
 
     public function edit($list_id){

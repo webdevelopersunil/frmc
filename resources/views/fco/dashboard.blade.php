@@ -66,12 +66,7 @@
                 </table>
             </div>
             
-        </div>
-
-        <!-- Dashboard Information Block Start -->
-        @include('includes/pagination')
-        <!-- Dashboard Information Block End -->
-        
+        </div>        
     </div>
 
 </x-app-layout>
