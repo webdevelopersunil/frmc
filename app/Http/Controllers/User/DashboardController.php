@@ -42,7 +42,7 @@ class DashboardController extends Controller
             
         }
 
-        $lists  =   $query->paginate(1)->withQueryString();
+        $lists  =   $query->paginate(10)->withQueryString();
 
         return view('user.dashboard', compact('lists'));
         // return view('user.list', compact('lists'));

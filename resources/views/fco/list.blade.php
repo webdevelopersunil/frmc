@@ -9,12 +9,12 @@
 
     <div class="col-lg-12 d-flex justify-content-between align-items-center" style="margin: 20px 0;">
         <h3 class="profile-name">Complaint List</h3>
-        <div class="add-complaint-button">
+        <!-- <div class="add-complaint-button">
             <a  href="{{ route('user.complaint.create') }}" >+ Add Complaints</a>
-            <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Launch demo modal
-            </button> -->
-        </div>
+            </button>
+        </div> -->
     </div>
 
     <!-- Error Section Start Here 'message-block' -->
