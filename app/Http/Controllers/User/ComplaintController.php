@@ -19,6 +19,8 @@ class ComplaintController extends Controller{
 
         $query  =   Complain::query();
 
+        $perPage = 10;
+
         $query->where('complainant_id', Auth::user()->id);
 
         // Onclick Filteration
@@ -48,9 +50,13 @@ class ComplaintController extends Controller{
             
         }
 
-        $lists  =   $query->paginate(10)->withQueryString();
+        // Pagination Objects Start
+        $lists  =   $query->paginate($perPage)->withQueryString();
+        $totalRecords = $lists->total();
+        $totalPages = ceil($totalRecords / $perPage);
+        // Pagination Objects End
 
-        return view('user.list', compact('lists'));
+        return view('user.list', compact('lists','perPage','totalRecords','totalPages'));
     }
 
     public function create(Request $request){
