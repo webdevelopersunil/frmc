@@ -37,14 +37,14 @@
               <div class="col-md-5">
                   <div class="form-group">
                       <label for="exampleInputUsername1" class="form-label">Document</label>
-                      <input type="file" class="form-control" name="document[]" id="exampleInputUsername1" placeholder="file">
+                      <input type="file" class="form-control" name="files[]" id="exampleInputUsername1" placeholder="file">
                   </div>
               </div>
               
               <div class="col-md-5">
                   <div class="form-group">
                       <label for="exampleInputUsername1">Document Description</label>
-                      <textarea name="additional_detail[]" class="form-control placeholder-green-color" id="exampleInputUsername1" cols="30" rows="2" placeholder="Enter document description"></textarea>
+                      <textarea name="details[]" class="form-control placeholder-green-color" id="exampleInputUsername1" cols="30" rows="2" placeholder="Enter document description"></textarea>
                   </div>
               </div>
               <div class="col-md-2">

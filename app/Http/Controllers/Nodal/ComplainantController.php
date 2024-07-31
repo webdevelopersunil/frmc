@@ -78,10 +78,10 @@ class ComplainantController extends Controller{
     public function update(Request $request){
 
         try {
+
+            $complain = Complain::find($request->id);
             
             if($request->hasFile('preliminary_report')){
-
-                $complain = Complain::find($request->id);
 
                 if ($complain) {
 
@@ -97,7 +97,7 @@ class ComplainantController extends Controller{
             
             if( $request->hasFile('files') ){
                 foreach( $request->file('files') as $index => $file ){
-
+                    
                     $file       =   File::upload($file, '/nodal/'.$complain->complain_no.'/additional_document/');
                     
                     $nodalAdditionalDetail                  =   new NodalAdditionalDetail();
@@ -113,7 +113,7 @@ class ComplainantController extends Controller{
             return redirect()->route('user.nodal.view',$request->id)->with('success', 'Complain has been updated');
 
         } catch (\Exception $e) {
-
+dd($e);
             // Log the error
             \Log::error('Error updating complaint: ' . $e->getMessage());
 
