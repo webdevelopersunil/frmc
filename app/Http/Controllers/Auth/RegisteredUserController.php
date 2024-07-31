@@ -167,7 +167,7 @@ class RegisteredUserController extends Controller
         }
     }
 
-    public function verifiedOtp(Request $request){
+    public function verifiedOtp_otp(Request $request){
 
 
         $username   =   $request->username;
@@ -204,5 +204,43 @@ class RegisteredUserController extends Controller
 
         return redirect(RouteServiceProvider::HOME);
 
+    }
+
+    public function verifiedOtp(Request $request) {
+
+        
+        if(isset($request->username) && isset($request->phone_otp) ){
+            
+            $phoneOtpStatus     =   (new Otp)->validate($request->username, $request->phone_otp);
+            $phoneStatus        =   $phoneOtpStatus->status;
+            
+            if ($phoneStatus === false) {
+                return redirect()->back()->withErrors(['phone' => 'Please provide valid OTP.']);
+            }
+
+            $user = User::where(['username' => $request->username])->first();
+            
+            $phoneVerifiedStatus = true;
+
+            return redirect()->back()->withErrors(['phone' => 'Phone number has been verified.']);
+        }
+
+        if(isset($request->email) && isset($request->email_otp) ){
+            
+            $emailOtpStatus     =   (new Otp)->validate($request->email, $request->email_otp);
+            $emailStatus        =   $emailOtpStatus->status;
+            
+            if ($emailStatus === false) {
+                return redirect()->back()->withErrors(['email' => 'Please provide valid OTP.']);
+            }
+
+            $emailVerifiedStatus = true;
+
+            return redirect()->back()->withErrors(['phone' => 'Email Address has been verified.']);
+            
+        }
+
+        return redirect()->back();
+        
     }
 }

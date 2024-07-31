@@ -35,34 +35,37 @@
                 <x-input-error :messages="$errors->get('username')" style="color:red;" class="mt-2 x-input-error"  />
 
                 <div class="mb-3 d-flex" style="gap: 15px;">
-                    <div class="otp mb-3" id="_otp" >
-                      <div class="row">
-                        <div class="col-lg-12"> <p style="color: #FF0000;">OTP Expires in: <span style="color: #00744A;"> 01:51</span></p> </div>
-                        <div class="col-lg-6">
-                          <div class="mb-3">
-                            <!-- OTP Input Field -->
-                            <input type="number" name="otp" max="6" min="6" class="form-control" id="exampleFormControlInput1" placeholder="Enter OTP" >
-                            <input type="hidden" name="username" value="{{$phone}}" >
-                          </div>
-                        </div>
-
-                        <div class="col-lg-4 d-flex" style="gap: 15px;">
-                          <div class="mb-3">
-                            <!-- Submit Button -->
-                            <a href="javascript:void(0)" onclick="otpVerification();" > <div class="button-otp"> Submit OTP </div> </a>
-                          </div>
-
-                          <div class="mb-3">
-                            <!-- OTP Resend Button -->
-                            <a href="javascript:void(0)" onclick="resendOtp();"> <div class="button-otp" style="background: #FFC700;"  >  Resend OTP  </div> </a>
-                          </div>
-                        </div>
-
-                        <x-input-error :messages="$errors->get('otp')" style="color:red;" class="mt-2 x-input-error"  />
-
+                  <div class="otp mb-3" id="_otp" >
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <p style="color: #FF0000;">OTP Expires in: <span style="color: #00744A;"> 01:51</span></p> 
                       </div>
+                      <div class="col-lg-6">
+                        <div class="mb-3">
+                          <!-- OTP Input Field -->
+                          <input type="number" name="otp" max="6" min="6" class="form-control" id="exampleFormControlInput1" placeholder="Enter OTP" >
+                          <input type="hidden" name="username" value="{{$phone}}" >
+                        </div>
+                      </div>
+
+                      <div class="col-lg-4 d-flex" style="gap: 15px;">
+                        <div class="mb-3">
+                          <!-- Submit Button -->
+                          <a href="javascript:void(0)" onclick="otpVerification();" > <div class="button-otp"> Submit OTP </div> </a>
+                        </div>
+
+                        <div class="mb-3">
+                          <!-- OTP Resend Button -->
+                          <a href="javascript:void(0)" onclick="resendOtp();"> <div class="button-otp" style="background: #FFC700;"  >  Resend OTP  </div> </a>
+                        </div>
+                      </div>
+
+                      <x-input-error :messages="$errors->get('otp')" style="color:red;" class="mt-2 x-input-error"  />
+
                     </div>
+                  </div>
                 </div>
+                
               </div>
             </div>
 
