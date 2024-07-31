@@ -27,7 +27,7 @@
             <div class="col-lg-9" style="background: #F5F6F8;border-radius: 38px;">
                 <div class="row top-heading padding-30px">
                     <div class="col-lg-6 d-flex align-items-center">
-                        <h1 class="complainant-heading">Your Registered Complaints</h1>
+                        <h1 class="complainant-heading">Complaints</h1>
                     </div>
                     <div class="col-lg-6 d-flex justify-content-end" style="gap: 25px;">
                         <div class="bell">
