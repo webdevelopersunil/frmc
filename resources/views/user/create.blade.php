@@ -1,28 +1,6 @@
 <x-app-layout>
 
 
-<div class="row top-heading padding-30px">
-    <div class="col-lg-6 d-flex align-items-center">
-        <h1 class="complainant-heading">Your Registered Complaints</h1>
-    </div>
-
-    <div class="col-lg-6 d-flex justify-content-end" style="gap: 25px;">
-        <div class="bell">
-            <a href=""><img src="{{ asset('assets/theme/image/Notification.png') }}" alt="" class="img-fluid"></a>
-            <p class="show-notification">2</p>
-        </div>
-        <div class="profile">
-            <img src="{{ asset('assets/theme/image/profile.png') }}" alt="" class="img-fluid">
-        </div>
-        <div class="profile-name d-flex justify-content-center align-items-center" style="gap: 10px;">
-            <a href="profile.html" class="d-flex justify-content-center align-items-center" style="gap: 10px;">
-            <h2 class="profile-name ">Profile Name</h2>
-            <img src="{{ asset('assets/theme/image/down arrow.png') }}" alt="">
-            </a>
-        </div>
-    </div>
-</div>
-
 <div style="margin-top: 50px;" ></div>
 
 <!-- Error Section Start Here 'message-block' -->
@@ -60,14 +38,24 @@
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">ONGC Work Centre</label>
                 <div class="input-container1">
+
+                    <!-- <select class="form-control placeholder-green-color" name="work_centre" id="workCentreSelect" required>
+                        <option selected disabled>Please Select</option>    
+                            @if($workCenters->isNotEmpty())
+                                @foreach($workCenters as $index => $workCenter)
+                                    <option value="{{ $workCenter->id }}">{{ $workCenter->name }}</option>
+                                @endforeach
+                            @endif
+                    </select> -->
+
                     <select class="form-control placeholder-green-color" name="work_centre" id="workCentreSelect" required>
                         <option selected disabled>Please Select</option>
-                        @if($workCenters->isNotEmpty())
-                            @foreach($workCenters as $index => $workCenter)
-                                <option value="{{ $workCenter->id }}">{{ $workCenter->name }}</option>
-                            @endforeach
-                        @endif
+                        <option value="Delhi">Delhi</option>
+                        <option value="Dehradun">Dehradun</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Ahmedabad">Ahmedabad</option>
                     </select>
+
                 </div>
                 <x-input-error :messages="$errors->get('work_centre')" style="color:red;" class="mt-2 err_mdy" />
             </div>
@@ -140,8 +128,6 @@
     </div>
 </form>
 
-
-
 <script>
         
         function toggleOtherInput() {
@@ -153,7 +139,7 @@
                 otherInput.disabled = true;
             }
         }
-        // Need to remove
+// Need to remove
         document.addEventListener('DOMContentLoaded', function() {
           document.querySelector('.addRowBtn').addEventListener('click', function() {
               var row = document.querySelector('.dub-row');
@@ -188,49 +174,52 @@
               othersInput.disabled = true;
           }
         }
-        
-        const workCentreOptions = {
-
-            '1': ['Delhi Department 1', 'Delhi Department 2'],
-            '3': ['Dehradun Department 1', 'Dehradun Department 2'],
-            '2': ['Mumbai Department 1', 'Mumbai Department 2'],
-            '4': ['Ahmedabad Department 1', 'Ahmedabad Department 2']
-        };
-
-        // Function to update department options based on selected work centre
-        function updateDepartmentOptions() {
-
-            const workCentreSelect = document.getElementById('workCentreSelect');
-            const departmentSelect = document.getElementById('departmentSelect');
-            const selectedWorkCentre = workCentreSelect.value;
-
-            var othersInput = document.getElementById('others-show');
-            othersInput.disabled = true;
-
-            // Clear existing options
-            departmentSelect.innerHTML = '<option selected disabled>Please Select</option>';
-
-            // Add options based on selected work centre
-            workCentreOptions[selectedWorkCentre].forEach(option => {
-                const optionElement = document.createElement('option');
-                optionElement.value = option;
-                optionElement.textContent = option;
-                departmentSelect.appendChild(optionElement);
-                // departmentSelect.appendChild('<option value="Others" >Others</option>');
-            });
-
-            var othersOption = document.createElement('option');
-            othersOption.value = 'Others';
-            othersOption.textContent = 'Others';
-            departmentSelect.appendChild(othersOption);
-            
-        }
-
-        // Event listener to update department options when work centre is changed
-        document.getElementById('workCentreSelect').addEventListener('change', updateDepartmentOptions);
-
-        // Initial call to update department options based on default selected work centre
-        updateDepartmentOptions();
     </script>
 
+
+<script>
+    
+    const workCentreOptions = {
+
+        'Delhi': ['Delhi Department 1', 'Delhi Department 2'],
+        'Dehradun': ['Dehradun Department 1', 'Dehradun Department 2'],
+        'Mumbai': ['Mumbai Department 1', 'Mumbai Department 2'],
+        'Ahmedabad': ['Ahmedabad Department 1', 'Ahmedabad Department 2']
+    };
+
+    // Function to update department options based on selected work centre
+    function updateDepartmentOptions() {
+
+        const workCentreSelect = document.getElementById('workCentreSelect');
+        const departmentSelect = document.getElementById('departmentSelect');
+        const selectedWorkCentre = workCentreSelect.value;
+
+        var othersInput = document.getElementById('others-show');
+        othersInput.disabled = true;
+
+        // Clear existing options
+        departmentSelect.innerHTML = '<option selected disabled>Please Select</option>';
+
+        // Add options based on selected work centre
+        workCentreOptions[selectedWorkCentre].forEach(option => {
+            const optionElement = document.createElement('option');
+            optionElement.value = option;
+            optionElement.textContent = option;
+            departmentSelect.appendChild(optionElement);
+            // departmentSelect.appendChild('<option value="Others" >Others</option>');
+        });
+
+        var othersOption = document.createElement('option');
+        othersOption.value = 'Others';
+        othersOption.textContent = 'Others';
+        departmentSelect.appendChild(othersOption);
+        
+    }
+
+    // Event listener to update department options when work centre is changed
+    document.getElementById('workCentreSelect').addEventListener('change', updateDepartmentOptions);
+
+    // Initial call to update department options based on default selected work centre
+    updateDepartmentOptions();
+</script>
 </x-app-layout>
