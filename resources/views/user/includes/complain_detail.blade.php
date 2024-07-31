@@ -22,7 +22,7 @@
 
 <div class="row padding-30px">
     <div class="col-lg-12" style="background: #02AC6F;padding: 15px;border-radius: 13px;color: #fff;">
-        <p class="text-center">Description of Complaint</p>
+        <p class="text-center description-part">Description of Complaint</p>
         <hr>
         <p class="text-center">
             @if( $complain->description == "" )

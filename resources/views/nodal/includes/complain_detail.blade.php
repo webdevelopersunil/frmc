@@ -1,6 +1,3 @@
-<!-- Preliminary Report By Nodal -->
-
-
 <div class="accordion col-lg-12" id="accordionExample">
     <div class="accordion-item mb-3">
         <h2 class="accordion-header">
@@ -47,8 +44,6 @@
             </tbody>
         </table>
             </div>
-
-            
         </div>
         </div>
     </div>
