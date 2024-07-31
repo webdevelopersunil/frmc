@@ -7,7 +7,7 @@
     @include('includes/message-block')
 <!-- Error Section Ends Here -->
 
-<form class="form-control" action="{{ route('user.complaint.store') }}" method="post" enctype="multipart/form-data">
+<form class="form-control" action="{{ route('user.complaint.store') }}" method="post" enctype="multipart/form-data" id="registerComplaintForm">
     @csrf
 
     <div class="row padding-30px">
@@ -124,7 +124,13 @@
                 Cancel
             </div>
         </a>
-        <button type="submit" class="btn btn-primary mr-2 add-btn">Submit</button>
+
+        <a href="javascript:void(0)" onclick="document.getElementById('registerComplaintForm').submit();" data-bs-dismiss="modal">
+            <div class="button-otp" style="background: green; #08AF73: 1px solid #000;color: white;">
+                Submit
+            </div>
+        </a>
+        <!-- <button type="submit" class="btn btn-success mr-2 add-btn">Submit</button> -->
     </div>
 </form>
 
