@@ -1,3 +1,4 @@
+<div style="margin-top: 10px;" ></div>
 <nav class="navbar navbar-expand-lg bg-white" data-bs-theme="dark">
     <div class="container-fluid">
         <div class="collapse navbar-collapse" id="navbarColor01">
@@ -47,7 +48,7 @@
 
                 <div>&nbsp &nbsp</div>
             
-                <button type="button" onclick="submitForm()" class="btn btn-success">Search</button>
+                <button type="button" onclick="submitForm()" style="background-color: #08AE72;" class="btn btn-success">Search</button>
 
                 <div>&nbsp &nbsp</div>
 
