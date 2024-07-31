@@ -10,7 +10,7 @@
         <div style="margin-top: 50px;" ></div>
 
         <div class="modal-footer justify-content-center" style="padding-top: 0;">
-            <a href="{{ route('user.dashboard') }}" data-bs-dismiss="modal">
+            <a href="{{ route('user.complaints') }}" data-bs-dismiss="modal">
                 <div class="button-otp" style="background: transparent;border: 1px solid #000;color: #5A5A5A;">
                     Cancel
                 </div>

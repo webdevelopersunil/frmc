@@ -50,8 +50,7 @@ class ComplaintController extends Controller{
 
         $lists  =   $query->paginate(10)->withQueryString();
 
-        return view('user.dashboard', compact('lists'));
-        // return view('user.list', compact('lists'));
+        return view('user.list', compact('lists'));
     }
 
     public function create(Request $request){
@@ -154,7 +153,7 @@ class ComplaintController extends Controller{
             }
         }
 
-        return redirect()->route('user.dashboard')->with('success', 'Complaint has been created and the complaint number is ' . $complain->complain_no);
+        return redirect()->route('user.complaints')->with('success', 'Complaint has been created and the complaint number is ' . $complain->complain_no);
         
     } catch (\Exception $e) {
         \Log::error('Complaint creation failed: ' . $e->getMessage());

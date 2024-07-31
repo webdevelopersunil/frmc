@@ -13,9 +13,14 @@
 
     <!-- User Links -->
     @if(auth()->user()->hasRole('user'))
-        <div class="com-button" style="position: absolute;right: 0;top: 248px; background:{{ Route::is('user.dashboard') ? '' : 'none' }}; ">
-            <a href="{{ route('user.dashboard') }}" style="text-decoration: none; color: #000; /* Change color to your preference */" alt="">
-                <img src="{{ asset('assets/theme/image/Content.png') }}"  alt="">
+        <div class="com-button" style="position: absolute;right: 0;top: 150px; background:{{ Route::is('user.dashboard') ? '' : 'none' }}; ">
+            <a href="{{ route('user.dashboard') }}" style="color: #000;"><img src="{{ asset('assets/theme/image/Content.png') }}" alt="">
+                <span style="font-size: 20px;">Dashboard</span>
+            </a>
+        </div>
+
+        <div class="com-button" style="position: absolute;right: 0;top: 248px; background:{{ Route::is('user.complaints') ? '' : 'none' }};">
+            <a href="{{ route('user.complaints') }}" style="color: #000;"><img src="{{ asset('assets/theme/image/Content.png') }}"  alt="">
                 <span style="font-size: 20px;">Complaint List</span>
             </a>
         </div>
