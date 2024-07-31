@@ -1,9 +1,5 @@
 <x-app-layout>
 
-    <!-- File Section Start Here 'message-block' -->
-        @include('filters.complain', ['route' => 'user.complaints'])
-    <!-- File Section Start Here 'message-block' -->
-
     <div class="row padding-15px" style="background: #fff;margin: 0 20px;">
 
         <div class="col-lg-12 d-flex justify-content-between align-items-center" style="margin: 20px 0;">
@@ -19,6 +15,11 @@
         <!-- Error Section Start Here 'message-block' -->
             @include('includes/message-block')
         <!-- Error Section Ends Here -->
+
+
+        <!-- File Section Start Here 'message-block' -->
+        @include('filters.complain', ['route' => 'user.complaints'])
+        <!-- File Section Start Here 'message-block' -->
 
         <div class="col-lg-12">
             <table class="table table-striped complainant-table">
