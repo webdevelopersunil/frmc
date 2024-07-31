@@ -126,7 +126,7 @@
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Area</label>
                 <!-- <div class="input-container input-container2"> -->
-                    <input type="text" class="form-control" id="exampleFormControlInput1" name="area" value="{{old('area', $user->area)}}">
+                    <input type="text" class="form-control" id="exampleFormControlInput1" name="area" value="{{old('area', $user->area)}}" placeholder="New Delhi" >
                 <!-- </div> -->
                 <x-input-error class="mt-2" :messages="$errors->get('area')" />
             </div>
@@ -149,7 +149,7 @@
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">City</label>
                 <!-- <div class="input-container input-container1"> -->
-                    <input type="text" name="city" class="form-control" id="exampleFormControlInput1" value="{{old('city', $user->city)}}" placeholder="HN:12 WN:34">
+                    <input type="text" name="city" class="form-control" id="exampleFormControlInput1" value="{{old('city', $user->city)}}" placeholder="New Delhi" >
                 <!-- </div> -->
                 <x-input-error class="mt-2" :messages="$errors->get('city')" />
             </div>
@@ -158,7 +158,7 @@
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">State</label>
                 <!-- <div class="input-container input-container2"> -->
-                    <input type="text" class="form-control" name="state" id="exampleFormControlInput1" value="{{old('state', $user->state)}}">
+                    <input type="text" class="form-control" name="state" id="exampleFormControlInput1" value="{{old('state', $user->state)}}" placeholder="New Delhi" >
                 <!-- </div> -->
                 <x-input-error class="mt-2" :messages="$errors->get('state')" />
             </div>
@@ -167,7 +167,7 @@
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Pincode</label>
                 <!-- <div class="input-container input-container1"> -->
-                    <input type="text" name="pincode" class="form-control" id="exampleFormControlInput1" value="{{old('pincode', $user->pincode)}}" placeholder="landmark">
+                    <input type="text" name="pincode" class="form-control" id="exampleFormControlInput1" value="{{old('pincode', $user->pincode)}}" placeholder="123456">
                 <!-- </div> -->
                 <x-input-error class="mt-2" :messages="$errors->get('pincode')" />
             </div>
