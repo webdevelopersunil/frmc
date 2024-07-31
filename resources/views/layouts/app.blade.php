@@ -11,47 +11,6 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/theme/css/style.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/theme/css/responsive/style.css') }}">
-        <style>
-            .profile-name {
-    position: relative;
-}
-
-.dropdown-menu {
-    position: absolute;
-    top: 100%; /* Position below the profile name */
-    right: 0;
-    background: #fff; /* Background color for the dropdown */
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-    display: none; /* Initially hidden */
-}
-
-.profile-name:hover .dropdown-menu {
-    display: block; /* Show dropdown on hover */
-}
-
-.dropdown-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.dropdown-list li {
-    padding: 10px;
-}
-
-.dropdown-list a {
-    text-decoration: none;
-    color: #00744A; /* Customize color */
-    display: block;
-}
-
-.dropdown-list a:hover {
-    background: #f0f0f0; /* Hover effect */
-}
-
-        </style>
     </head>
 
 <body>
