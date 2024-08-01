@@ -84,12 +84,12 @@ class ComplainantController extends Controller{
     
 
     public function update(Request $request){
-
+        
         try {
-
+            
             $complain = Complain::find($request->id);
             
-            if($request->hasFile('preliminary_report')){
+            if($request->file('preliminary_report')){
 
                 if ($complain) {
 
@@ -121,7 +121,7 @@ class ComplainantController extends Controller{
             return redirect()->route('user.nodal.view',$request->id)->with('success', 'Complain has been updated');
 
         } catch (\Exception $e) {
-dd($e);
+
             // Log the error
             \Log::error('Error updating complaint: ' . $e->getMessage());
 

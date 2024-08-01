@@ -19,7 +19,7 @@
                 <div style="width: 47px; height: 47px;line-height: 47px; background-color: #FFD2D2; display: inline-block; border-radius: 10px;">
                     <img src="{{ asset('assets/theme/image/list view red.png') }}" alt="">
                 </div><span style="text-align: center; margin-left: 10px;" class="text-start">Closed
-                    Complaints<br> 34</span>
+                    Complaints<br> 0</span>
             </button></a>
     </div>
 
@@ -32,7 +32,7 @@
                     style="width: 47px; height: 47px;line-height: 47px; background-color: #DEF9E7; display: inline-block; border-radius: 10px;">
                     <img src="{{ asset('assets/theme/image/In Progress.png') }}" alt="">
                 </div><span style="text-align: center; margin-left: 10px;" class="text-start">In
-                    Progress Complaints<br> 34</span>
+                    Progress Complaints<br> {{ $total }}</span>
             </button></a>
     </div>
 

@@ -20,12 +20,13 @@
               <label for="exampleFormControlInput1" class="form-label">Preliminary Report</label>
                 <div class="input-container1">
 
-                  <input type="file" 
+                  <!-- <input type="file" 
                     class="form-control placeholder-green-color" 
                     id="exampleFormControlInput1" 
                     {{ isset($complain->preliminaryReport->id) ? '' : 'required' }}
                     name="preliminary_report" 
-                    placeholder="file">
+                    placeholder="file"> -->
+                    <input type="file" class="form-control placeholder-green-color" id="exampleFormControlInput1" name="preliminary_report" placeholder="file">
 
                 </div>
             </div>
