@@ -18,6 +18,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Auth\Events\Registered;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\DB;
+
 
 class RegisteredUserController extends Controller
 {
@@ -206,41 +208,64 @@ class RegisteredUserController extends Controller
 
     }
 
+
+
+
+
     public function verifiedOtp(Request $request) {
 
+        if($request->otp === "phone") {
+            $phone_otp  = $request->phone_otp;
+            $otp        = $request->otp;
+            $username   = $request->username;
+            $email      = $request->email;
         
-        if(isset($request->username) && isset($request->phone_otp) ){
-            
-            $phoneOtpStatus     =   (new Otp)->validate($request->username, $request->phone_otp);
-            $phoneStatus        =   $phoneOtpStatus->status;
-            
-            if ($phoneStatus === false) {
-                return redirect()->back()->withErrors(['phone' => 'Please provide valid OTP.']);
-            }
-
-            $user = User::where(['username' => $request->username])->first();
-            
-            $phoneVerifiedStatus = true;
-
-            return redirect()->back()->withErrors(['phone' => 'Phone number has been verified.']);
-        }
-
-        if(isset($request->email) && isset($request->email_otp) ){
-            
-            $emailOtpStatus     =   (new Otp)->validate($request->email, $request->email_otp);
-            $emailStatus        =   $emailOtpStatus->status;
-            
-            if ($emailStatus === false) {
-                return redirect()->back()->withErrors(['email' => 'Please provide valid OTP.']);
-            }
-
-            $emailVerifiedStatus = true;
-
-            return redirect()->back()->withErrors(['phone' => 'Email Address has been verified.']);
-            
-        }
-
-        return redirect()->back();
+            $phoneStatus = (new Otp)->validate($username, $phone_otp);
         
+            $user = User::where('username', $username)->where('email', $email)->first();
+            
+            if (!$user) {
+                return response()->json(['error' => 'User not found'], 404);
+            }
+        
+            if ($phoneStatus->status == false) {
+                return response()->json(['error' => 'Invalid phone OTP'], 400);
+            }
+        
+            $user->phone_verified = 1;
+            $user->save();
+        
+            return response()->json([
+                'phone_verified' => $phoneStatus->status,
+                'message'        => "Provided phone number has been successfully verified"
+            ]);
+
+        } else if($request->otp === "email"){
+
+            $email_otp  = $request->email_otp;
+            $otp        = $request->otp;
+            $username   = $request->username;
+            $email      = $request->email;
+
+            $emailStatus    =   (new Otp)->validate($email, $email_otp);
+            $user           =   User::where('username', $username)->where('email', $email)->first();
+            
+            if (!$user) {
+                return response()->json(['error' => 'User not found'], 404);
+            }
+        
+            if ($emailStatus->status == false) {
+                return response()->json(['error' => 'Invalid email OTP'], 400);
+            }
+        
+            $user->email_verified = 1;
+            $user->save();
+        
+            return response()->json([
+                'email_verified' => $emailStatus->status,
+                'message'        => "Provided email address has been successfully verified"
+            ]);
+        }
     }
+    
 }

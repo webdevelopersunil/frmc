@@ -39,74 +39,98 @@
             </div>
 
             
-            <form method="POST" action="{{ route('verified.otp') }}" id="phoneVerified">
-              @csrf
-              <input type="hidden" value="{{$username}}" name="username">
-                <div class="otp mb-3">
-                  <div class="row">
-
-                    <!-- <div class="col-lg-6"> <p style="color: #FF0000;">Phone OTP Expires in: <span style="color: #00744A;"> 01:51</span></p> </div> -->
-                    <div class="col-lg-6"> <p style="color: #FF0000;">Phone OTP</p> </div>
-
-                    <div class="col-lg-6 d-flex justify-content-end">
-                      <img src="./image/cross.png" alt="" class="img-fluid" style="width: 18px;height: 18px;">
-                    </div>
-
-                    <div class="col-lg-6">
-                      <div class="mb-3">
-                        <x-text-input name="phone_otp" type="number" required class="form-control" id="exampleFormControlInput1" placeholder="Enter OTP" required />
-                      </div>
-                    </div>
-
-                    
-
-                    <div class="col-lg-4 d-flex" style="gap: 15px;">
-                      <div class="mb-3"> <a href="javascript:void(0)" onclick="document.getElementById('phoneVerified').submit();" > <div class="button-otp"> Submit OTP </div> </a> </div>
-                      
-                      <div class="mb-3"> <a href=""> <div class="button-otp" style="background: #FFC700;"> Resend OTP </div> </a> </div>
-                    </div>
-
-                  </div>
-                  <x-input-error :messages="$errors->get('phone')" style="color:red;" class="mt-2 err_mdy" />
-                </div>
-
-            </form>
+            
 
 
-            <form method="POST" action="{{ route('verified.otp') }}" id="emailVerified" >
-              @csrf
-              <input type="hidden" value="{{$email}}" name="email">
 
-              <div class="otp">
-                <div class="row">
 
-                  <!-- <div class="col-lg-6"> <p style="color: #FF0000;">Email OTP Expires in: <span style="color: #00744A;"> 01:51</span></p> </div> -->
-                  <div class="col-lg-6"> <p style="color: #FF0000;">Email OTP</p> </div>
 
-                  <div class="col-lg-6 d-flex justify-content-end">
-                    <img src="./image/cross.png" alt="" class="img-fluid" style="width: 18px;height: 18px;">
-                  </div>
 
-                  <div class="col-lg-6">
-                    <div class="mb-3">
-                      <x-text-input name="email_otp" required type="number" class="form-control" id="exampleFormControlInput1" placeholder="Enter OTP" required />
-                    </div>
-                  </div>
 
-                  <div class="col-lg-4 d-flex" style="gap: 15px;">
-                    <div class="mb-3">
-                      <div class="button-otp">
-                        <a href="javascript:void(0)" onclick="document.getElementById('emailVerified').submit();" >Submit OTP</a>
-                      </div> 
-                    </div>
 
-                    <div class="mb-3"> <div class="button-otp" style="background: #FFC700;"> <a href="javascript:void(0)">Resend OTP</a> </div> </div>
-                  </div>
 
-                </div>
-                <x-input-error :messages="$errors->get('email')" style="color:red;" class="mt-2 err_mdy" />
-              </div>
-            </form>
+
+            <input type="hidden" value="{{$username}}" name="username">
+<input type="hidden" value="{{$email}}" name="email">
+<input type="hidden" value="phone" name="otp">
+
+<div class="otp mb-3" id="phone_otp_Section" >
+    <div class="row">
+        <div class="col-lg-6">
+            <p style="color: #FF0000;">Phone OTP Expires in: <span style="color: #00744A;">01:51</span></p>
+        </div>
+        <div class="col-lg-6 d-flex justify-content-end">
+            <img src="./image/cross.png" alt="" class="img-fluid" style="width: 18px;height: 18px;">
+        </div>
+        <div class="col-lg-6">
+            <div class="mb-3">
+                <x-text-input name="phone_otp" type="number" required class="form-control" id="exampleFormControlInput1" placeholder="Enter OTP" />
+            </div>
+        </div>
+        <div class="col-lg-4 d-flex" style="gap: 15px;">
+            <div class="mb-3">
+                <a href="javascript:void(0)" id="submit-phone-otp" onclick="submitPhoneOtp();">
+                    <div class="button-otp">Submit OTP</div>
+                </a>
+            </div>
+            <div class="mb-3">
+                <a href="">
+                    <div class="button-otp" style="background: #FFC700;">Resend OTP</div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div id="otp-message"></div>
+        </div>
+    </div>
+</div>
+
+
+<div class="otp mb-3" id="email_otp_Section" >
+    <div class="row">
+        <div class="col-lg-6">
+            <p style="color: #FF0000;">Email OTP Expires in: <span style="color: #00744A;">01:51</span></p>
+        </div>
+        <div class="col-lg-6 d-flex justify-content-end">
+            <img src="./image/cross.png" alt="" class="img-fluid" style="width: 18px;height: 18px;">
+        </div>
+        <div class="col-lg-6">
+            <div class="mb-3">
+                <x-text-input name="email_otp" required type="number" class="form-control" id="exampleFormControlInput1" placeholder="Enter OTP" />
+            </div>
+        </div>
+        <div class="col-lg-4 d-flex" style="gap: 15px;">
+            <div class="mb-3">
+                <a href="javascript:void(0)" id="submit-email-otp" onclick="submitEmailOtp();">
+                    <div class="button-otp">Submit OTP</div>
+                </a>
+            </div>
+            <div class="mb-3">
+                <a href="javascript:void(0)">
+                    <div class="button-otp" style="background: #FFC700;">Resend OTP</div>
+                </a>
+            </div>    
+        </div>
+        <div class="col-lg-12">
+          <div id="email-message"></div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             <p class="modal-bottom-text">By creating an account , You agree to the <a href="" style="color: #08AF73;">Terms of service</a> & <a href="" style="color: #08AF73;">Privacy Policy</a>.</p>
 
@@ -133,5 +157,101 @@
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    
+
+    <script>
+      function submitPhoneOtp() {
+        var phoneOtp = document.querySelector('input[name="phone_otp"]').value;
+        var emailOtp = document.querySelector('input[name="email_otp"]').value;
+        var username = document.querySelector('input[name="username"]').value;
+        var email = document.querySelector('input[name="email"]').value;
+
+        $.ajax({
+            url: '{{ route('verified.otp') }}',
+            method: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                phone_otp: phoneOtp,
+                otp: "phone",
+                username: username,
+                email: email
+            },
+            success: function(response) {
+
+                let messageDiv = document.getElementById('otp-message');
+                if (response.phone_verified) {
+                    messageDiv.innerHTML = '<p style="color: green;">' + response.message + '</p>';
+                    document.querySelector('input[name="phone_otp"]').disabled = true;
+                    document.querySelector('#submit-phone-otp').style.display = 'none';
+
+                    setTimeout(function() {
+                        document.querySelector('#phone_otp_Section').style.display = 'none';
+                    }, 2000);
+                    
+                } else {
+                    messageDiv.innerHTML = '<p style="color: red;">' + response.message + '</p>';
+                }
+                // if (response.phone_verified && response.email_verified) {
+                //     window.location.href = response.redirect_to;
+                // }
+            },
+            error: function(xhr) {
+                let messageDiv = document.getElementById('otp-message');
+                let errorMessage = 'An error occurred. Please try again.';
+                if (xhr.responseJSON && xhr.responseJSON.error) {
+                    errorMessage = xhr.responseJSON.error;
+                }
+                messageDiv.innerHTML = '<p style="color: red;">' + errorMessage + '</p>';
+            }
+        });
+
+      }
+
+      function submitEmailOtp() {
+
+        var emailOtp = document.querySelector('input[name="email_otp"]').value;
+        var username = document.querySelector('input[name="username"]').value;
+        var email = document.querySelector('input[name="email"]').value;
+
+        $.ajax({
+            url: '{{ route('verified.otp') }}',
+            method: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                email_otp : emailOtp,
+                username  : username,
+                otp       : "email",
+                email     : email
+            },
+            success: function(response) {
+
+              let messageDiv = document.getElementById('email-message');
+
+                if (response.phone_verified) {
+                    messageDiv.innerHTML = '<p style="color: green;">' + response.message + '</p>';
+                    document.querySelector('input[name="email_otp"]').disabled = true;
+                    document.querySelector('#submit-phone-otp').style.display = 'none';
+
+                    setTimeout(function() {
+                        document.querySelector('#email_otp_Section').style.display = 'none';
+                    }, 2000);
+                } else {
+                    messageDiv.innerHTML = '<p style="color: green;">' + response.message + '</p>';
+                }
+                
+                // if (response.phone_verified && response.email_verified) {
+                //     window.location.href = response.redirect_to;
+                // }
+            },
+            error: function(xhr) {
+                let messageDiv = document.getElementById('email-message');
+                let errorMessage = 'An error occurred. Please try again.';
+                if (xhr.responseJSON && xhr.responseJSON.error) {
+                    errorMessage = xhr.responseJSON.error;
+                }
+                messageDiv.innerHTML = '<p style="color: red;">' + errorMessage + '</p>';
+            }
+        });
+      }
+
+    </script>
 </x-guest-layout>
