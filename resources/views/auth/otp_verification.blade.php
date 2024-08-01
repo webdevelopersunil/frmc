@@ -54,6 +54,7 @@
 <input type="hidden" value="{{$email}}" name="email">
 <input type="hidden" value="phone" name="otp">
 
+@if($phone_verified != 1)
 <div class="otp mb-3" id="phone_otp_Section" >
     <div class="row">
         <div class="col-lg-6">
@@ -84,8 +85,9 @@
         </div>
     </div>
 </div>
+@endif
 
-
+@if($email_verified != 1)
 <div class="otp mb-3" id="email_otp_Section" >
     <div class="row">
         <div class="col-lg-6">
@@ -116,7 +118,7 @@
         </div>
     </div>
 </div>
-
+@endif
 
 
 
@@ -190,9 +192,9 @@
                 } else {
                     messageDiv.innerHTML = '<p style="color: red;">' + response.message + '</p>';
                 }
-                // if (response.phone_verified && response.email_verified) {
-                //     window.location.href = response.redirect_to;
-                // }
+                if (response.phone_verified == 1 && response.email_verified == 1) {
+                  window.location.href = '{{route('login')}}';
+                }
             },
             error: function(xhr) {
                 let messageDiv = document.getElementById('otp-message');
@@ -238,9 +240,9 @@
                     messageDiv.innerHTML = '<p style="color: green;">' + response.message + '</p>';
                 }
                 
-                // if (response.phone_verified && response.email_verified) {
-                //     window.location.href = response.redirect_to;
-                // }
+                if (response.phone_verified == 1 && response.email_verified == 1) {
+                    window.location.href = '{{route('login')}}';
+                }
             },
             error: function(xhr) {
                 let messageDiv = document.getElementById('email-message');

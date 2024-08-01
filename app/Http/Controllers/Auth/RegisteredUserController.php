@@ -144,13 +144,13 @@ class RegisteredUserController extends Controller
     }
 
     public function otpVerification(Request $request){
-    // dd('otpVerification 1');
+    
         $username   =   $decrypted = Crypt::decryptString($request->token);
         $email      =   $decrypted = Crypt::decryptString($request->email);
         
         $user       =   User::where(['username'=>$username, 'email'=>$email])->first();
 
-        if($user->phone_verified == true || $user->email_verified == true){
+        if($user->phone_verified == true && $user->email_verified == true){
 
             if (Auth::check()) {
                 // If user is logged in, redirect to dashboard
@@ -168,48 +168,6 @@ class RegisteredUserController extends Controller
             return view('auth.otp_verification', compact('phone_verified','email_verified','username','email'));
         }
     }
-
-    public function verifiedOtp_otp(Request $request){
-
-
-        $username   =   $request->username;
-        $email      =   $request->email;
-        $phone_otp  =   $request->phone_otp;
-        $email_otp  =   $request->email_otp;
-
-
-        $phoneOtpStatus =   (new Otp)->validate($username, $phone_otp);
-        $emailOtpStatus =   (new Otp)->validate($email, $email_otp);
-
-        $phoneStatus    =   (new Otp)->validate($username, $phone_otp);
-        $emailStatus    =   (new Otp)->validate($email, $email_otp);
-
-        $user       =   User::where(['username'=>$username, 'email'=>$email])->first();
-        
-        if ($phoneStatus->status == false) {
-            
-            return redirect()->back()->withErrors(['otp' => 'Please enter valid OTP.']);   
-        }
-
-        if ($emailStatus->status == false) {
-            
-            return redirect()->back()->withErrors(['otp' => 'Please enter valid OTP.']);   
-        }
-
-        $user->is_phone_verified = '1';
-        $user->phone_verified = '1';
-        $user->email_verified = '1';
-
-        $user->save();
-
-        // Auth::login($user);
-
-        return redirect(RouteServiceProvider::HOME);
-
-    }
-
-
-
 
 
     public function verifiedOtp(Request $request) {
@@ -236,8 +194,10 @@ class RegisteredUserController extends Controller
             $user->save();
         
             return response()->json([
-                'phone_verified' => $phoneStatus->status,
-                'message'        => "Provided phone number has been successfully verified"
+                'phone_verified'    =>  $user->phone_verified,
+                'message'           =>  "Provided phone number has been successfully verified",
+                // 'redirect_to'       =>  route(RouteServiceProvider::HOME),
+                'email_verified'    => $user->email_verified
             ]);
 
         } else if($request->otp === "email"){
@@ -262,8 +222,10 @@ class RegisteredUserController extends Controller
             $user->save();
         
             return response()->json([
-                'email_verified' => $emailStatus->status,
-                'message'        => "Provided email address has been successfully verified"
+                'email_verified'    =>  $user->email_verified,
+                'message'           =>  "Provided email address has been successfully verified",
+                // 'redirect_to'       =>  route(RouteServiceProvider::HOME),
+                'email_verified'    =>  $user->email_verified
             ]);
         }
     }
