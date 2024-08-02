@@ -36,5 +36,4 @@ class CenterDepartment extends Model implements AuditableContract
     {
         return $this->belongsTo(WorkCenter::class, 'work_center_id');
     }
-
 }

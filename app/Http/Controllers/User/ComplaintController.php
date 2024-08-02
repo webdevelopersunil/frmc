@@ -8,6 +8,7 @@ use App\Models\WorkCenter;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Models\CenterDepartment;
 use App\Http\Controllers\Controller;
 use App\Models\UserAdditionalDetail;
 use Illuminate\Support\Facades\Auth;
@@ -62,9 +63,10 @@ class ComplaintController extends Controller{
     public function create(Request $request){
         
         $complainNo     =   Complain::getComplainNo();
-        $workCenters = WorkCenter::with('departments')->get();
+        $workCenters    =   WorkCenter::with('departments')->get();
+        $centerDepartment   =   CenterDepartment::all();
 
-        return view('user.create', compact('complainNo', 'workCenters'));
+        return view('user.create', compact('complainNo', 'workCenters', 'centerDepartment'));
     }
 
     public function store_old(Request $request){
@@ -118,8 +120,8 @@ class ComplaintController extends Controller{
 
     }
 
-    public function store(Request $request)
-{
+    public function store(Request $request) {
+
     // Validate the input data
     $attributes = $request->validate([
         'complain_no'           => ['required'],

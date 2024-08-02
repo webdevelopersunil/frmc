@@ -39,23 +39,14 @@
                 <label for="exampleFormControlInput1" class="form-label">ONGC Work Centre</label>
                 <div class="input-container1">
 
-                    <!-- <select class="form-control placeholder-green-color" name="work_centre" id="workCentreSelect" required>
+                    <select class="form-control placeholder-green-color" name="work_centre" id="workCentreSelect" required>
                         <option selected disabled>Please Select</option>    
                             @if($workCenters->isNotEmpty())
                                 @foreach($workCenters as $index => $workCenter)
                                     <option value="{{ $workCenter->id }}">{{ $workCenter->name }}</option>
                                 @endforeach
                             @endif
-                    </select> -->
-
-                    <select class="form-control placeholder-green-color" name="work_centre" id="workCentreSelect" required>
-                        <option selected disabled>Please Select</option>
-                        <option value="Delhi">Delhi</option>
-                        <option value="Dehradun">Dehradun</option>
-                        <option value="Mumbai">Mumbai</option>
-                        <option value="Ahmedabad">Ahmedabad</option>
                     </select>
-
                 </div>
                 <x-input-error :messages="$errors->get('work_centre')" style="color:red;" class="mt-2 err_mdy" />
             </div>
@@ -66,6 +57,13 @@
                 <div class="input-container1">
                     <select name="department_section" class="form-control placeholder-green-color" id="departmentSelect" onchange="handleSelectChange()" required>
                         <option selected disabled>Please Select</option>
+
+                        @if($centerDepartment->isNotEmpty())
+                            @foreach($centerDepartment as $index => $department)
+                                <option value="{{$department->name}}" >{{ $department->name }}</option>
+                            @endforeach
+                        @endif
+
                         <option value="Others">Others</option>
                     </select>
                 </div>
@@ -187,10 +185,10 @@
     
     const workCentreOptions = {
 
-        'Delhi': ['Delhi Department 1', 'Delhi Department 2'],
-        'Dehradun': ['Dehradun Department 1', 'Dehradun Department 2'],
-        'Mumbai': ['Mumbai Department 1', 'Mumbai Department 2'],
-        'Ahmedabad': ['Ahmedabad Department 1', 'Ahmedabad Department 2']
+        '1': ['Delhi Department 1', 'Delhi Department 2'],
+        '2': ['Dehradun Department 1', 'Dehradun Department 2'],
+        '3': ['Mumbai Department 1', 'Mumbai Department 2'],
+        '4': ['Ahmedabad Department 1', 'Ahmedabad Department 2']
     };
 
     // Function to update department options based on selected work centre
@@ -199,7 +197,7 @@
         const workCentreSelect = document.getElementById('workCentreSelect');
         const departmentSelect = document.getElementById('departmentSelect');
         const selectedWorkCentre = workCentreSelect.value;
-
+console.log(selectedWorkCentre);
         var othersInput = document.getElementById('others-show');
         othersInput.disabled = true;
 

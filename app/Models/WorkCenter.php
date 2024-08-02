@@ -34,5 +34,5 @@ class WorkCenter extends Model implements AuditableContract
     public function departments()
     {
         return $this->hasMany(CenterDepartment::class, 'work_center_id');
-    }
+    }    
 }
