@@ -28,7 +28,18 @@ class User extends Authenticatable implements Auditable {
         'username',
         'cpfNo',
         'address',
-        'phone'
+        'phone',
+        'dob',
+        'house_number',
+        'area',
+        'landmark',
+        'city',
+        'state',
+        'pincode',
+        'phone_verified',
+        'email_verified',
+        'phone_otp',
+        'email_otp'
     ];
 
     /**
@@ -39,6 +50,11 @@ class User extends Authenticatable implements Auditable {
     protected $hidden = [
         'password',
         'remember_token',
+
+        'phone_verified',
+        'email_verified',
+        'phone_otp',
+        'email_otp'
     ];
 
     /**
@@ -50,4 +66,28 @@ class User extends Authenticatable implements Auditable {
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+     /**
+     * Get the current role of a user by user ID.
+     *
+     * @param  int  $userId
+     * @return string|null
+     */
+    public static function getCurrentRole($userId)
+    {
+        $user = self::find($userId);
+
+        if ($user) {
+            $roles = $user->getRoleNames(); // This returns a collection of role names
+
+            return $roles->isNotEmpty() ? $roles->first() : null; // Return the first role if exists
+        }
+
+        return null; // Return null if user not found or no roles assigned
+    }
+
+    public static function getUserRoleCount(string $roleName): ?string
+    {
+        return  User::role(trim($roleName))->count();
+    }
 }

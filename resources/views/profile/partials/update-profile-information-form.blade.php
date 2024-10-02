@@ -1,64 +1,138 @@
-<section>
-    <header>
-        <h2 class="text-lg font-medium text-gray-900 main-heading">
-            {{ __('Profile Information') }}
-        </h2>
 
-        <p class="mt-1 text-sm text-gray-600 tag-line">
-            {{ __("Update your account's profile information and email address.") }}
-        </p>
-    </header>
+<form method="post" action="{{ route('profile.update') }}" id="formSubmitProfileUpdate" class="mt-6 space-y-6">
+    @csrf
+    @method('patch')
 
-    <form id="send-verification" method="post" action="{{ route('verification.send') }}">
-        @csrf
-    </form>
-
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
-        @csrf
-        @method('patch')
-
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+    <div class="row padding-30px">
+        <div class="col-lg-12" style="padding: 15px 0;">
+            <p style="color: #08AF73;">Personal Information <span style="color: #AB3336;">(*Update Your Account Profile Information & Email Address)</span></p>
         </div>
 
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
-            <x-input-error class="mt-2" :messages="$errors->get('email')" />
-
-            @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
-                <div>
-                    <p class="text-sm mt-2 text-gray-800">
-                        {{ __('Your email address is unverified.') }}
-
-                        <button form="send-verification" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            {{ __('Click here to re-send the verification email.') }}
-                        </button>
-                    </p>
-
-                    @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-600">
-                            {{ __('A new verification link has been sent to your email address.') }}
-                        </p>
-                    @endif
+        <div class="col-lg-6" style="padding: 0;">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Name</label>
+                <div class="input-container input-container1">
+                    <input type="text"  name="name" class="form-control" id="exampleFormControlInput1" value="{{old('name', $user->name)}}">
                 </div>
-            @endif
+                <x-input-error class="mt-2" :messages="$errors->get('name')" />
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Date of Birth</label>
+                <!-- <div class="input-container input-container2"> -->
+                    <input type="date" class="form-control" name="dob" id="exampleFormControlInput1" value="{{old('dob', $user->dob)}}">
+                <!-- </div> -->
+                <x-input-error class="mt-2" :messages="$errors->get('dob')" />
+            </div>
         </div>
 
-        <div class="flex items-center gap-4">
-            <x-primary-button class="add-btn" >{{ __('Save') }}</x-primary-button>
 
-            @if (session('status') === 'profile-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
-                >{{ __('Saved.') }}</p>
-            @endif
+
+
+
+
+        <div class="col-lg-12" style="padding: 15px 0;">
+            <p style="color: #08AF73;">Contact Information <span style="color: #AB3336;">(*Phone Number & Email Address)</span></p>
         </div>
-    </form>
-</section>
+        <div class="col-lg-6" style="padding: 0;">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Phone Number</label>
+                <div class="input-container input-container1">
+                    <input type="number" class="form-control" id="exampleFormControlInput1" value="{{old('name', $user->username)}}" disabled readonly>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="mb-3">
+                <label for="exampleFormControlInput5" class="form-label">Email Address</label>
+                <div class="input-container input-container2">
+                    <input type="email" class="form-control" id="exampleFormControlInput5" value="{{old('email', $user->email)}}" disabled readonly>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        
+        <div class="col-lg-12" style="padding: 15px 0;">
+            <p style="color: #08AF73;">Others</p>
+        </div>
+
+        <div class="col-lg-12">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Address</label>
+                <!-- <div class="input-container input-container2"> -->
+                    <textarea type="text" class="form-control" id="exampleFormControlInput1"  name="address" >{{old('address', $user->address)}}</textarea>
+                <!-- </div> -->
+                <x-input-error class="mt-2" :messages="$errors->get('address')" />
+            </div>
+        </div>
+
+
+
+        <div class="col-lg-4" style="padding: 0;">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">House Number</label>
+                <!-- <div class="input-container input-container1"> -->
+                    <input type="text" name="house_number" class="form-control" id="exampleFormControlInput1" value="{{old('house_number', $user->house_number)}}" placeholder="HN:12 WN:34">
+                <!-- </div> -->
+                <x-input-error class="mt-2" :messages="$errors->get('house_number')" />
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Area</label>
+                <!-- <div class="input-container input-container2"> -->
+                    <input type="text" class="form-control" id="exampleFormControlInput1" name="area" value="{{old('area', $user->area)}}" placeholder="New Delhi" >
+                <!-- </div> -->
+                <x-input-error class="mt-2" :messages="$errors->get('area')" />
+            </div>
+        </div>
+        <div class="col-lg-4" style="padding: 0;">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Landmark</label>
+                <!-- <div class="input-container input-container1"> -->
+                    <input type="text" name="landmark" class="form-control" id="exampleFormControlInput1" value="{{old('landmark', $user->landmark)}}" placeholder="landmark">
+                <!-- </div> -->
+                <x-input-error class="mt-2" :messages="$errors->get('landmark')" />
+            </div>
+        </div>
+
+
+
+
+
+        <div class="col-lg-4" style="padding: 0;">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">City</label>
+                <!-- <div class="input-container input-container1"> -->
+                    <input type="text" name="city" class="form-control" id="exampleFormControlInput1" value="{{old('city', $user->city)}}" placeholder="New Delhi" >
+                <!-- </div> -->
+                <x-input-error class="mt-2" :messages="$errors->get('city')" />
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">State</label>
+                <!-- <div class="input-container input-container2"> -->
+                    <input type="text" class="form-control" name="state" id="exampleFormControlInput1" value="{{old('state', $user->state)}}" placeholder="New Delhi" >
+                <!-- </div> -->
+                <x-input-error class="mt-2" :messages="$errors->get('state')" />
+            </div>
+        </div>
+        <div class="col-lg-4" style="padding: 0;">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Pincode</label>
+                <!-- <div class="input-container input-container1"> -->
+                    <input type="text" name="pincode" class="form-control" id="exampleFormControlInput1" value="{{old('pincode', $user->pincode)}}" placeholder="123456">
+                <!-- </div> -->
+                <x-input-error class="mt-2" :messages="$errors->get('pincode')" />
+            </div>
+        </div>
+
+    </div>
+
+</form>

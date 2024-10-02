@@ -19,7 +19,8 @@ class WorkCenter extends Model implements AuditableContract
      * @var array<int, string>
      */
     protected $fillable = [
-        'name'
+        'name',
+        'nodal_officer_id'
     ];
 
     /**
@@ -28,11 +29,19 @@ class WorkCenter extends Model implements AuditableContract
      * @var array<int, string>
      */
     protected $hidden = [
-        
     ];
 
     public function departments()
     {
         return $this->hasMany(CenterDepartment::class, 'work_center_id');
     }
+
+    /**
+     * Define a relationship to the User model using nodal_officer_id
+     */
+    public function nodalOfficer()
+    {
+        return $this->belongsTo(User::class, 'nodal_officer_id');
+    }
+
 }

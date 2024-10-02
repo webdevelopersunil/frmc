@@ -24,8 +24,8 @@ class PhoneUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => ['required', 'integer', 'digits:10'],
-            'phone' => ['required', 'integer', 'digits:10', 'different:username','unique:users,username'],
+            'username' => ['required', 'integer', 'digits:10', 'unique:users,username', 'different:username'],
+            // 'phone' => ['required', 'integer', 'digits:10', 'different:username','unique:users,username'],
         ];
     }
 }

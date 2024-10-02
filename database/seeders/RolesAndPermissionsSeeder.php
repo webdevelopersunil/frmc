@@ -37,10 +37,11 @@ class RolesAndPermissionsSeeder extends Seeder{
 
         // Define the roles and their permissions
         $rolesPermissions = [
-            'user' => ['create complain', 'view complain'],
-            'nodal' => ['delete complain', 'update complain', 'view complain'],
-            'fco' => ['delete complain', 'update complain', 'view complain'],
-            'super-admin' => Permission::all()->pluck('name')->toArray() // Give all permissions to super-admin
+            'user'          =>  ['create complain', 'view complain'],
+            'nodal'         =>  ['delete complain', 'update complain', 'view complain'],
+            'fco'           =>  ['delete complain', 'update complain', 'view complain'],
+            'frmc_user'     =>  ['view complain'],
+            'super-admin'   =>  Permission::all()->pluck('name')->toArray() // Give all permissions to super-admin
         ];
 
         // Create roles and assign permissions

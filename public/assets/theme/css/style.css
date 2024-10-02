@@ -349,3 +349,55 @@ td span{
     padding: 2px;
     border-radius: 4px;
 }
+
+
+
+
+
+/* Profile Dropdown custom CSS START */
+
+.profile-name {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%; /* Position below the profile name */
+    right: 0;
+    background: #fff; /* Background color for the dropdown */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    display: none; /* Initially hidden */
+}
+
+.profile-name:hover .dropdown-menu {
+    display: block; /* Show dropdown on hover */
+}
+
+.dropdown-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-list li {
+    padding: 10px;
+}
+
+.dropdown-list a {
+    text-decoration: none;
+    color: #00744A; /* Customize color */
+    display: block;
+}
+
+.dropdown-list a:hover {
+    background: #f0f0f0; /* Hover effect */
+}
+
+/* Profile Dropdown custom CSS END */
+
+
+.text-center.description-part {
+    font-weight: bold;
+  }

@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\Nodal\WorkCenterController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\SuperAdmin\RoleManagementController;
 
 use App\Http\Controllers\Nodal\DashboardController as NodalDashboardController;
 use App\Http\Controllers\Nodal\ComplainantController as NodalComplaintController;
@@ -16,6 +17,9 @@ use App\Http\Controllers\User\ComplaintController as UserComplaintController;
 
 use App\Http\Controllers\Fco\DashboardController as FcoDashboardController;
 use App\Http\Controllers\Fco\ComplainantController as FcoComplaintController;
+
+use App\Http\Controllers\FrmcUser\DashboardController as FrmcUserDashboardController;
+use App\Http\Controllers\FrmcUser\ComplaintController as FrmcComplaintController;
 
 use App\Services\OtpService;
 
@@ -30,28 +34,62 @@ use App\Services\OtpService;
 |
 */
 
+
+
+
+
+// Audit Logs Routes Start
 Route::get('/audits',                                   [AuditController::class, 'index'])->name('audit');
 Route::get('/view/audits/{id}',                         [AuditController::class, 'viewAudit'])->name('view.audit');
 
+
+// User Frontend Routes Start
 Route::get('/',                                         [FrontendController::class, 'index'])->name('welcome');
 Route::get('/admin',                                    [FrontendController::class, 'adminWelcome'])->name('admin');
 Route::get('/user/login',                               [FrontendController::class, 'userLogin'])->name('user.login');
 Route::get('/admin/login',                              [FrontendController::class, 'adminLogin'])->name('admin.login');
 Route::get('complainant/login',                         [FrontendController::class, 'complainantLogin'])->name('complainant.login');
-Route::get('/otp-verification/{token}',                 [FrontendController::class, 'otpVerification'])->name('otp-verification');
 Route::post('/confirm/otp-verification',                [RegisteredUserController::class, 'confirmOtpVerification'])->name('confirm.otp-verification');
 
-Route::middleware(['auth', 'verified', 'role:user,nodal,fco'])->group(function () {
+
+Route::middleware(['auth', 'verified', 'role:super-admin'])->group(function () {
+    // User Role Management Routes Start
+    Route::get('/users',                                    [RoleManagementController::class, 'index'])->name('user.roles.list');
+    Route::get('/user/edit/{token}',                        [RoleManagementController::class, 'edit'])->name('user.edit');
+    Route::patch('/user-role/{id}',                         [RoleManagementController::class, 'update'])->name('user.role.update');
+});
+
+
+// OTP Test Purpose Route
+Route::get('/send-otp', function () {
     
+    $otpService = new OtpService();
+    $status = $otpService->sendOtp(7876976192, 202422, 'ABCD1234');
+    echo $status;
+});
+
+Route::fallback([ProfileController::class, 'dashboard']);
+
+
+
+Route::middleware(['session.timeout'])->group(function () {
+
+
+// Authenticated User File Preview Routes
+Route::middleware(['auth', 'verified', 'role:user,nodal,fco'])->group(function () { 
     Route::get('/preview/file/{file_id}',               [CommonController::class, 'previewFile'])->name('preview.file');
 });
+
 
 // User Routes
 Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
 
     Route::get('/user-dashboard',                       [UserDashboardController::class, 'index'] )->name('user.dashboard');
     Route::get('/user-complaints/list',                 [UserComplaintController::class, 'index'] )->name('user.complaints');
-    Route::get('/user-complaints/edit',                 [UserComplaintController::class, 'edit'] )->name('user.complaint.edit');
+    Route::get('/user-complaints/edit/{id}',            [UserComplaintController::class, 'edit'] )->name('user.complaint.edit');
+
+    Route::post('/user-complaints/update',              [UserComplaintController::class, 'update'] )->name('user.complaint.update');
+
     Route::get('/user-complaint/create',                [UserComplaintController::class, 'create'] )->name('user.complaint.create');
     Route::post('/user-complaint/store',                [UserComplaintController::class, 'store'] )->name('user.complaint.store');
     Route::get('/user-complaint/view/{complain_id}',    [UserComplaintController::class, 'view'] )->name('user.complaint.view');
@@ -83,6 +121,15 @@ Route::middleware(['auth', 'verified', 'role:fco'])->group(function () {
 });
 
 
+// FRMC USER Officer Routes
+Route::middleware(['auth', 'verified', 'role:frmc_user'])->group(function () {
+
+    Route::get('/frmc-dashboard',                       [FrmcUserDashboardController::class, 'index'] )->name('frmc.dashboard');
+    Route::get('/frmc-complaints/list',                 [FrmcComplaintController::class, 'index'] )->name('frmc.complaints');
+    Route::get('/frmc-complaints/view/{complain_id}',   [FrmcComplaintController::class, 'view'] )->name('frmc.complaint.view');
+});
+
+
 Route::middleware('auth')->group(function () {
 
     // User Profile Routes
@@ -94,21 +141,29 @@ Route::middleware('auth')->group(function () {
     Route::patch('/update/phone',                       [ProfileController::class, 'updatePhone'])->name('phone.update');
     Route::post('/otp/verification',                    [ProfileController::class, 'otpVerification'])->name('otp.verification');
 
+
+    Route::post('/profile-send-otp',                    [ProfileController::class, 'profileSendOtp'])->name('profile.send.otp');
+    Route::get('/profile/{source}/{token}',             [ProfileController::class, 'profileEditOtp'])->name('profile.edit.otp');
+
     // Work Center Routes
     Route::resource('work-centers', WorkCenterController::class);
 });
 
+});
 
-// OTP Test Purpose Route
-Route::get('/send-otp', function () {
-    
-    $otpService = new OtpService();
-    $status = $otpService->sendOtp(7876976192, 202422, 'ABCD1234');
-    echo $status;
+Route::get('/send-test-sms', function () {
+    $response = Http::get('http://10.205.48.190:13013/cgi-bin/sendsms?username=ongc&password=ongc12&from=ONGC&to=8751982638&text=Your%20Complaint%20has%20been%20register%20with%20ticket%20no.%201213%20and%20status%20is%201313.%20Regards%20ONGC.&charset=UTF-8&meta-data=%3Fsmpp%3FEntityID%3D1001186049255234740%26ContentID%3D1407166814975984061');
+
+    // Return the response body or handle it as needed
+    return $response->body();
 });
 
 
-Route::fallback([ProfileController::class, 'dashboard']);
+Route::get('/phpinfo', function () {
+    return response()->make(phpinfo(), 200, [
+        'Content-Type' => 'text/html',
+    ]);
+});
 
 
 require __DIR__.'/auth.php';

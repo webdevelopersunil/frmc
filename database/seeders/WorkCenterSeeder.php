@@ -16,24 +16,65 @@ class WorkCenterSeeder extends Seeder
      */
     public function run(): void
     {
-        $dl     =   WorkCenter::create( ['name' => 'Delhi'] );
-                        CenterDepartment::create(['name'=>'Delhi Department 1', 'work_center_id'=>  $dl->id]);
-                        CenterDepartment::create(['name'=>'Delhi Department 2', 'work_center_id'=>  $dl->id]);
-                        CenterDepartment::create(['name'=>'Delhi Department 3', 'work_center_id'=>  $dl->id]);
 
-        $mb     =   WorkCenter::create( ['name' => 'Mumbai'] );
-                        CenterDepartment::create(['name'=>'Mumbai Department 1', 'work_center_id'=> $mb->id]);
-                        CenterDepartment::create(['name'=>'Mumbai Department 2', 'work_center_id'=> $mb->id]);
-                        CenterDepartment::create(['name'=>'Mumbai Department 3', 'work_center_id'=> $mb->id]);
+        $workCenters = [
+            'A&AA Basin- Jorhat',
+            'Ahmedabad Asset',
+            'Ankleshwar Asset',
+            'Assam Asset, Nazira',
+            'C2-C3 Plant, Vadodara',
+            'Cambay Asset',
+            'Cauvery Asset',
+            'Cauvery Basin, Chennai',
+            'CBM Asset, Bokaro',
+            'Dehradun',
+            'Delhi - Other',
+            'Delhi - Scope Minar',
+            'EOA Kaninada',
+            'Hazira Plant',
+            'IPEOT, Mumbai',
+            'IPSHEM- Goa',
+            'IRS- Ahmedabad',
+            'KDMIPE, Dehradun',
+            'MBA Basin Kolkata',
+            'Mehsana Asset',
+            'Rajahmundry Asset',
+            'RKOEA- Jodhpur',
+            'RO, Mumbai',
+            'Silchar- Expl. Asset',
+            'Tripura Asset, Agartala',
+            'Uran Plant',
+            'WOB- Vadodara'
+        ];
+        
+        $departments = ['HR', 'Finance', 'MM', 'Logistics', 'Other'];
 
-        $dh     =   WorkCenter::create( ['name' => 'Dehradun'] );
-                        CenterDepartment::create(['name'=>'Dehradun Department 1', 'work_center_id'=> $dh->id]);
-                        CenterDepartment::create(['name'=>'Dehradun Department 2', 'work_center_id'=> $dh->id]);
-                        CenterDepartment::create(['name'=>'Dehradun Department 3', 'work_center_id'=> $dh->id]);
+        $non_departments = ['HR', 'Finance', 'MM', 'Other'];
 
-        $ah     =   WorkCenter::create( ['name' => 'Ahmedabad'] );
-                        CenterDepartment::create(['name'=>'Ahmedabad Department 1', 'work_center_id'=> $ah->id]);
-                        CenterDepartment::create(['name'=>'Ahmedabad Department 2', 'work_center_id'=> $ah->id]);
-                        CenterDepartment::create(['name'=>'Ahmedabad Department 3', 'work_center_id'=> $ah->id]);
+        $centersToExclude   =   ['Delhi - Scope Minar', 'IPEOT, Mumbai', 'IRS- Ahmedabad', 'KDMIPE, Dehradun', 'RKOEA- Jodhpur'];
+        
+        foreach ($workCenters as $center) {
+
+            // Static Nodal Officer ID's
+            $nodal_officer_id   =   ($center == "WOB- Vadodara") ? 7 : 3;
+
+            $workCenter = WorkCenter::create(['name' => $center, 'nodal_officer_id'=>$nodal_officer_id]);
+            
+            if (!in_array($center, $centersToExclude)) {
+                
+                foreach ($departments as $department) {
+                    CenterDepartment::create(
+                        [ 'name' => $department, 'work_center_id' => $workCenter->id ]
+                    );
+                }
+            }else{
+                foreach ($non_departments as $department) {
+                    CenterDepartment::create(
+                        [ 'name' => $department, 'work_center_id' => $workCenter->id ]
+                    );
+                }
+            }
+        }
+
     }
 }

@@ -1,16 +1,34 @@
 <x-app-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <div class="content-wrapper">  
-      <div class="row">
-        <div class="card-body">
-          <div class="d-flex justify-content-end mb-3">
-              <a class="btn add-btn" href="{{ route('user.complaints') }}"> Go Back</a>
-          </div>
+<div style="margin-top: 50px;" >
+
+</div>
+
+<div class="row padding-15px" style="background: #fff;margin: 0 20px;">
+
+    <!-- Error Section Start Here 'message-block' -->
+    @include('includes/message-block')
+    <!-- Error Section Ends Here -->
+    
+    <div class="row padding-30px">
+
+        @include('user/includes/complain_detail')
+
+        <div style="margin-top: 10px;" ></div>
+
+        <div class="modal-footer justify-content-center" style="padding-top: 0;">
+            <a href="{{ route('user.complaints') }}" data-bs-dismiss="modal">
+                <div class="button-otp" style="background: transparent;border: 1px solid #000;color: #5A5A5A;">
+                    Cancel
+                </div>
+            </a>
+            
+            <a href="{{ route('user.complaint.edit', $complain->id) }}" >
+                <div class="button-otp"> Edit </div>
+            </a>
         </div>
-        @include('includes/complain_detail')
-      </div>
+
     </div>
-       
+</div>
+
 </x-app-layout>

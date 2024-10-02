@@ -10,7 +10,6 @@
     </div>
     
     <div class="row text-center">
-
         <div class="col-md-3">
             <div class="card-body">
                 <h4 class="card-title"> Complaint Number </h4>

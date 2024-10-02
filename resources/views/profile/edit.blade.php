@@ -1,43 +1,48 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
 
-<div class="content-wrapper">
-    <!-- <div class="row"> -->
+    <div class="row padding-15px" style="background: #fff;margin: 0 20px;">
 
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-profile-information-form')
-                </div>
-            </div>
-
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-phone')
-                </div>
-            </div>
-
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-password-form')
-                </div>
-            </div>
-
-            <!-- <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
-                </div>
-            </div> -->
+        <div class="col-lg-12 d-flex justify-content-between align-items-center" style="margin: 20px 0;">
+            <h3 class="profile-name">Update Profile</h3>
         </div>
+
+        <!-- Error Section Start Here 'message-block' -->
+        @include('includes/message-block')
+        <!-- Error Section Ends Here -->
+
+        <div class="col-lg-12">
+            @include('profile.partials.update-profile-information-form')
+        </div>
+
+        <div class="modal-footer justify-content-center" style="padding-top: 0;">
+            <a href="javascript:void(0)" onclick=" document.getElementById('formSubmitProfileUpdate').submit(); " >
+                <div class="button-otp"> 
+                    Submit
+                </div>
+            </a>
+        </div>
+        
     </div>
 
-<!-- </div> -->
-</div>
+
+    <!-- @if(auth()->user()->hasRole('user') ) -->
+    <div class="row padding-15px" style="background: #fff;margin: 0 20px;">
+        <div class="col-lg-12 d-flex justify-content-between align-items-center" style="margin: 20px 0;">
+            <h3 class="profile-name">Update Email & Phone Number</h3>
+        </div>
+
+        <div class="col-lg-12">
+            @include('profile.partials.update-phone-email')
+        </div>
+
+        <div class="modal-footer justify-content-center" style="padding-top: 0;">
+            <a href="javascript:void(0)" onclick=" document.getElementById('formSubmitProfileUpdate').submit(); " >
+                <div class="button-otp"> 
+                    Submit
+                </div>
+            </a>
+        </div>
+    </div>
+    <!-- @endif -->
+
 </x-app-layout>

@@ -16,6 +16,9 @@ return new class extends Migration
             $table->bigInteger('complain_id')->unsigned();
             $table->bigInteger('nodal_id')->unsigned();
             $table->text('description')->required();
+
+            $table->enum('flag',['document','preliminary_report'])->default('document');
+
             $table->bigInteger('file_id')->unsigned();
             $table->softDeletes();
             $table->timestamps();
