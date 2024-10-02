@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\PhoneUpdateRequest;
 use App\Http\Requests\ProfileUpdateRequest;
+use Illuminate\Validation\Rule;
 
 use Ichtrojan\Otp\Otp;
 use App\Services\OtpService;
@@ -19,7 +20,8 @@ class ProfileController extends Controller{
 
     public function __construct(OtpService $otpService)
     {
-        $this->otpService = $otpService;
+        $this->otpService       =   $otpService;
+        $this->OTP_VALID_TIME   =   config('otp.OTP_VALID_TIME');
     }
     
     public function dashboard(){
@@ -46,6 +48,98 @@ class ProfileController extends Controller{
             'user' => $request->user(),
         ]);
     }
+
+    public function profileSendOtp(Request $request): RedirectResponse {
+
+        $user   =   Auth::user();
+        
+        // For Send Phone NUmber OTP
+        if(isset($request->new_username) && $request->username_otp_verification != "true" ){
+
+            $validatedData = $request->validate(
+                [
+                'new_username' => [ 'required', 'numeric', 'digits:10', 'unique:users,username' ],
+                ]
+            );
+
+            // Generate OTP For Phone Number
+            $phone_otp    =   (new Otp)->generate($request->new_username, 'numeric', 6, $this->OTP_VALID_TIME);
+            // Sending OTP to Phone Number
+            $status = $this->otpService->sendOtp(intval($request->new_username), strval($phone_otp->token));
+            
+            return Redirect::route('profile.edit.otp', ['source' => 'phone', 'token' => $request->new_username])->with('success', 'OTP has been sent successfully');
+        }
+
+        // For Verification of Phone Number OTP
+        if(isset($request->username_otp_verification) && $request->username_otp_verification == "true" ){
+            
+            $status =   (new Otp)->validate($request->new_username, $request->username_otp);
+            
+            if($status->status){
+
+                $user->username =   $request->new_username;
+                $user->save();
+
+                return Redirect::route('profile.edit')->with('success', 'Phone Number has been successfully updated');
+            }else{
+                return redirect()->back()->with(['error' => 'Please enter valid OTP.']);
+            }
+        }
+
+
+        // For Send OTP on Email Address
+        if(isset($request->new_email) && $request->email_otp_verification != "true" ){
+
+            $validatedData = $request->validate(
+                [
+                    'new_email' => [ 'required', 'string', 'email', 'unique:users,email' ],
+                ]
+            );
+
+            // Generate OTP For Phone Number
+            $email_otp    =   (new Otp)->generate($request->new_email, 'numeric', 6, $this->OTP_VALID_TIME);
+            
+            // Sending OTP to Email Address
+            if( config('otp.OTP_EMAIL') == TRUE ){
+                Mail::to($user->email)->send(new SendOtp($email_otp->token));  #Priority
+            }
+            
+            return Redirect::route('profile.edit.otp', ['source' => 'email', 'token' => $request->new_email])->with('success', 'OTP has been sent successfully');
+        }
+        // OTP Verification of Email Address
+        if(isset($request->email_otp_verification) && $request->email_otp_verification == "true" ){
+            
+            $status =   (new Otp)->validate($request->new_email, $request->email_otp);
+            
+            if($status->status){
+
+                $user->email =   $request->new_email;
+                $user->save();
+                
+                return Redirect::route('profile.edit')->with('success', 'Email Address has been successfully updated');
+            }else{
+                return redirect()->back()->with(['error' => 'Please enter valid OTP.']);
+            }
+        }
+
+    }
+
+    public function profileEditOtp(Request $request): View{
+        
+        $user       = $request->user();
+        $source     = $request->source;
+
+        if($source=='email'){
+            $new_email      =   $request->token;
+            $new_username   =   "";
+        }else{
+            $new_username   =   $request->token;
+            $new_email      =   "";
+        }
+        
+        return view('profile.edit', compact('user', 'new_email', 'new_username','source'));
+    }
+
 
     /**
      * Update the user's profile information.
@@ -91,7 +185,7 @@ class ProfileController extends Controller{
 
     public function updatePhone(PhoneUpdateRequest $request): RedirectResponse {
 
-        $otp    =   (new Otp)->generate($request->phone, 'numeric', 6, 15);
+        $otp    =   (new Otp)->generate($request->phone, 'numeric', 6, $this->OTP_VALID_TIME);
         
         // OTP Sending
         $status = $this->otpService->sendOtp(intval($request->phone), strval($otp->token));
@@ -141,4 +235,7 @@ class ProfileController extends Controller{
 
         return Redirect::to('/');
     }
+
+
+    
 }

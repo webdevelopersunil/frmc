@@ -46,8 +46,12 @@ class AuthenticatedSessionController extends Controller
 
             return redirect(RouteServiceProvider::FCO);
 
+        }elseif ($user->hasRole('frmc_user')) {
+
+            return redirect(RouteServiceProvider::FRMCUSER);
+
         }
-        
+
     }
 
     /**

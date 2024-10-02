@@ -28,7 +28,7 @@
                                         {{ $complain->complain_no }}
                                 </a> </span>
                             </td>
-                            <td>{{ \Carbon\Carbon::parse($complain->created_at)->format('d F Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($detail->created_at)->format('d F Y, h:i A') }}</td>
                             <td style="border-top-right-radius: 10px;border-bottom-right-radius: 10px;">
                                 {{ Str::limit(ucfirst($detail->description), 800) }}
                             </td>

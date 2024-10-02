@@ -44,9 +44,7 @@
     @endif
     <!-- Nodal Officer Links -->
 
-
-
-    <!-- Nodal Officer Links -->
+    <!-- FCO Officer Links -->
     @if(auth()->user()->hasRole('fco'))
         <div class="com-button" style="position: absolute; right: 0; top: 150px;  background:{{ Route::is('fco.dashboard') ? '' : 'none' }}; ">
             <a href="{{ route('fco.dashboard') }}" style="color: #000;"><img src="{{ asset('assets/theme/image/Content.png') }}" alt="">
@@ -60,7 +58,39 @@
             </a>
         </div>
     @endif
-    <!-- Nodal Officer Links -->
+    <!-- FCO Officer Links -->
+
+    <!-- FRMC USER Officer Links -->
+    @if(auth()->user()->hasRole('frmc_user'))
+        <div class="com-button" style="position: absolute; right: 0; top: 150px;  background:{{ Route::is('fco.dashboard') ? '' : 'none' }}; ">
+            <a href="{{ route('frmc.dashboard') }}" style="color: #000;"><img src="{{ asset('assets/theme/image/Content.png') }}" alt="">
+                <span style="font-size: 20px;">Dashboard</span>
+            </a>
+        </div>
+
+        <div class="com-button" style="position: absolute;right: 0;top: 248px; background:{{ Route::is('fco.complaints') ? '' : 'none' }}; ">
+            <a href="{{ route('frmc.complaints') }}" style="color: #000;"><img src="{{ asset('assets/theme/image/Content.png') }}"  alt="">
+                <span style="font-size: 20px;">Complaint List</span>
+            </a>
+        </div>
+    @endif
+    <!-- FRMC USER Links -->
+
+    <!-- Super-Admin Links -->
+    @if(auth()->user()->hasRole('super-admin'))
+        <div class="com-button" style="position: absolute; right: 0; top: 150px;  background:{{ Route::is('fco.dashboard') ? '' : 'none' }}; ">
+            <a href="{{ route('user.roles.list') }}" style="color: #000;"><img src="{{ asset('assets/theme/image/Content.png') }}" alt="">
+                <span style="font-size: 20px;">Dashboard</span>
+            </a>
+        </div>
+
+        <div class="com-button" style="position: absolute;right: 0;top: 248px; background:{{ Route::is('fco.complaints') ? '' : 'none' }}; ">
+            <a href="{{ route('fco.complaints') }}" style="color: #000;"><img src="{{ asset('assets/theme/image/Content.png') }}"  alt="">
+                <span style="font-size: 20px;">Complaint List</span>
+            </a>
+        </div>
+    @endif
+    <!-- Super-Admin Links -->
 
 
     <div class="down-img">

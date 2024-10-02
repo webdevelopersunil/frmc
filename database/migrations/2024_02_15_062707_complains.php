@@ -17,17 +17,28 @@ return new class extends Migration
             $table->string('complain_no')->unique()->required();
             $table->bigInteger('complainant_id')->unsigned();
             $table->text('description');
-            $table->string('work_centre')->required();
-            $table->string('department_section')->required();
+
+            // Test Purpose Fields
+            // $table->string('work_centre')->nullable();
+            // $table->string('department_section')->nullable();
+            // Test Purpose Fields
+
+            $table->bigInteger('work_centre_id')->unsigned();
+            $table->bigInteger('department_section_id')->unsigned();
+            $table->string('other_section')->nullable();
+
             $table->string('against_persons')->nullable();
             $table->string('public_status')->nullable();
-            $table->string('complaint_status')->default('With Nodal Officer');
+            $table->bigInteger('complaint_status_id')->unsigned()->default(2);
             $table->bigInteger('preliminary_report')->unsigned()->nullable();
             $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('complainant_id')->references('id')->on('users');
             $table->foreign('preliminary_report')->references('id')->on('files');
+            $table->foreign('work_centre_id')->references('id')->on('work_centers');
+            $table->foreign('complaint_status_id')->references('id')->on('complaint_statuses');
+            $table->foreign('department_section_id')->references('id')->on('center_departments');
         });
     }
 

@@ -33,8 +33,8 @@
                             <div class="col-lg-12">
                                 <div class="mb-3">
                                     <div class="password-label d-flex justify-content-between">
-                                        <x-input-label for="exampleFormControlInput1" class="form-label redStar" :value="__('Password')" />
-                                        <label for="exampleFormControlInput1" class="form-label" style="color: #A93034;text-decoration: underline;">Forgot your password ?</label>
+                                        <!-- <x-input-label for="exampleFormControlInput1" class="form-label redStar" :value="__('Password')" />
+                                        <label for="exampleFormControlInput1" class="form-label" style="color: #A93034;text-decoration: underline;">Forgot your password ?</label> -->
                                     </div>
                                     <div class="input-container1 d-flex" style="position: relative;">
                                         <span class="input-group-text" style="position: absolute;top: 0;left: 0;height: 100%;background: transparent;border: none;">

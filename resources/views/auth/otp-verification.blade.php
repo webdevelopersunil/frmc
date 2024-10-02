@@ -1,5 +1,15 @@
 <x-guest-layout>
-  
+
+    <style>
+        .countdown-container {
+            color: #FF0000;
+        }
+        .countdown-time {
+            color: #00744A;
+        }
+    </style>
+    
+
   <div id="welcomepage">
     <div class="container">
       <div class="row" style="height: 100%;">
@@ -38,12 +48,13 @@
                   <div class="otp mb-3" id="_otp" >
                     <div class="row">
                       <div class="col-lg-12">
-                        <p style="color: #FF0000;">OTP Expires in: <span style="color: #00744A;"> 01:51</span></p> 
+                        <!-- <p style="color: #FF0000;">OTP Expires in: <span style="color: #00744A;"> 2 Minutes</span></p> -->
+                        <p class="countdown-container">OTP Expires in: <span id="countdown" class="countdown-time">2:00</span></p>
                       </div>
                       <div class="col-lg-6">
                         <div class="mb-3">
                           <!-- OTP Input Field -->
-                          <input type="number" name="otp" max="6" min="6" class="form-control" id="exampleFormControlInput1" placeholder="Enter OTP" >
+                          <input type="number" name="otp" max="6" min="6" class="form-control" id="exampleFormControlInput2" placeholder="Enter OTP" >
                           <input type="hidden" name="username" value="{{$phone}}" >
                         </div>
                       </div>
@@ -87,8 +98,57 @@
   </div>
 
   <script>
-    function resendOtp() { document.getElementById('resendOtp').submit(); }
-    function otpVerification() { document.getElementById('otp_verification').submit(); }
+
+    function disableButtons() {
+      document.getElementById('resendOtp').style.pointerEvents = 'none';
+      document.getElementById('otp_verification').style.pointerEvents = 'none';
+      setTimeout(enableButtons, 120000); // 120000 milliseconds = 2 minutes
+    }
+
+    function resendOtp() {
+      document.getElementById('resendOtp').submit(); 
+    }
+
+    function otpVerification() {
+      document.getElementById('otp_verification').submit();
+    }
+
   </script>
+
+
+
+<script>
+        // Countdown function
+        function startCountdown(duration, display) {
+            let timer = duration, minutes, seconds;
+
+            // Update the countdown every second
+            const interval = setInterval(function () {
+                // Calculate minutes and seconds
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                // Format minutes and seconds to always be two digits
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                // Display the countdown
+                display.textContent = minutes + ":" + seconds;
+
+                // When the timer reaches 0, stop the countdown
+                if (--timer < 0) {
+                    clearInterval(interval);
+                    display.textContent = "Expired";
+                }
+            }, 1000);
+        }
+
+        // Start the countdown on page load
+        window.onload = function () {
+            const countdownElement = document.getElementById('countdown');
+            const twoMinutes = 2 * 60; // 2 minutes in seconds
+            startCountdown(twoMinutes, countdownElement);
+        };
+    </script>
 
 </x-guest-layout>

@@ -6,11 +6,14 @@ use Auth;
 use App\Models\File;
 use App\Models\Complain;
 use Illuminate\Http\Request;
+use App\Models\WorkCenter;
+use App\Models\CenterDepartment;
 use App\Models\PreliminaryReport;
 use App\Services\FileUploadService;
 use App\Models\UserAdditionalDetail;
 use App\Http\Controllers\Controller;
 use App\Models\NodalAdditionalDetail;
+use App\Services\NotificationService;
 
 class ComplainantController extends Controller{
 
@@ -20,21 +23,41 @@ class ComplainantController extends Controller{
     public function __construct(FileUploadService $fileUploadService){
 
         $this->fileUploadService    =   $fileUploadService;
+        $this->middleware('prevent.user:nodal')->only('edit');
+        // $this->middleware('prevent.user:nodal')->only('update');
     }
 
 
     public function index(Request $request){
 
+        $workCenters    =   WorkCenter::with('departments')->get();
+
+        if (isset($request->work_centre) && !empty($request->work_centre)) {
+            $departments    =   CenterDepartment::where('work_center_id', trim($request->work_centre))->get();
+        }else{
+            $departments    =   NULL;
+        }
+
         $query  =   Complain::query();
 
         $perPage = 10;
 
+        // Records as per nodal officer
+        $query->whereHas('workCenter', function ($query) { $query->where('nodal_officer_id', Auth::user()->id ); });
+
         // Onclick Filteration
         if (isset($request->work_centre) && !empty($request->work_centre)) {
-            $query->where('work_centre', 'LIKE', '%' . $request->work_centre . '%');
+            $query->where('work_centre_id',$request->work_centre);
         }
         if (isset($request->department_section) && !empty($request->department_section)) {
-            $query->where('department_section', 'LIKE', '%' . $request->department_section . '%');
+            $query->where('department_section_id',$request->department_section);
+        }
+
+        if (isset($request->status) && !empty($request->status) && trim($request->status) == "closed" ) {
+            $query->whereIn('complaint_status_id',[5,6,7]);
+        }
+        if (isset($request->status) && !empty($request->status) && trim($request->status) == "in_progress" ) {
+            $query->whereIn('complaint_status_id',[1,2,3,4]);
         }
 
         // Filteration section
@@ -58,17 +81,17 @@ class ComplainantController extends Controller{
         
         // Pagination Objects Start
         // $lists  =   $query->paginate($perPage)->withQueryString();
-        $lists          =   $query->with('preliminaryReport')->paginate($perPage)->withQueryString();
+        $lists          =   $query->with('preliminaryReport','workCenter','centerDepartment','ComplaintStatus')->paginate($perPage)->withQueryString();
         $totalRecords   =   $lists->total();
         $totalPages     =   ceil($totalRecords / $perPage);
         // Pagination Objects End
 
-        return view('nodal.list', compact('lists','perPage','totalRecords','totalPages'));
+        return view('nodal.list', compact('lists','perPage','totalRecords','totalPages', 'workCenters', 'departments'));
     }
 
     public function edit($list_id){
 
-        $complain       =   Complain::with('preliminaryReport','userAdditionalDetails','nodalAdditionalDetails')->find($list_id);
+        $complain       =   Complain::with('nodalPreliminaryReports','userAdditionalDetails','nodalAdditionalDetails')->find($list_id);
 
         $nodalDocs      =   $complain->nodalAdditionalDetails;
 
@@ -77,13 +100,23 @@ class ComplainantController extends Controller{
 
     public function view($complain_id){
         
-        $complain                   =   Complain::with('preliminaryReport','nodalAdditionalDetails','userAdditionalDetails')->find($complain_id);
+        $complain                   =   Complain::with('nodalPreliminaryReports','nodalAdditionalDetails','userAdditionalDetails')->find($complain_id);
         
         return view('nodal.view', compact('complain'));
     }
     
 
     public function update(Request $request){
+        
+        // Validate the input data
+        $attributes = $request->validate([
+            'preliminary_report'        => ['nullable','file', 'max:15360'],
+            'files.*'                   => ['nullable','file', 'max:15360'],
+            'details.*'                 => ['nullable','string'],
+        ], [
+            'files.*.max'               => 'The document size must not exceed 15 MB.',
+            'preliminary_report.max'    => 'The document size must not exceed 15 MB.',
+        ]);
         
         try {
             
@@ -92,15 +125,32 @@ class ComplainantController extends Controller{
             if($request->file('preliminary_report')){
 
                 if ($complain) {
-
+                    
                     $file = File::upload($request->file('preliminary_report'), '/nodal/'.$complain->complain_no.'/preliminary_report/');
 
                     if ($file) {
                         
                         $complain->preliminary_report = $file->id;
                         $complain->save();
-                    } 
+
+                        $nodalAdditionalDetail              =   new NodalAdditionalDetail();
+                        $nodalAdditionalDetail->complain_id =   $request->id;
+                        $nodalAdditionalDetail->nodal_id    =   \Auth::user()->id;
+                        $nodalAdditionalDetail->description =   "---";
+                        $nodalAdditionalDetail->flag        =   "preliminary_report";
+                        $nodalAdditionalDetail->file_id     =   $file->id;
+                        $nodalAdditionalDetail->save();
+
+                        
+                    }
+                    // preliminary_report submission status change
+                    (new Complain)->updateStatus($complain, 1);
                 }
+            }
+
+            if($nodalAdditionalDetail){
+                // Notify Nodal Officer by SMS
+                (new NotificationService($complain, 'CREATED'))->nodalDocumentUpdate();
             }
             
             if( $request->hasFile('files') ){

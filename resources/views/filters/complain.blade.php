@@ -8,11 +8,16 @@
                 <li class="nav-item">
                     <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                         <select class="form-select filter-select-css radius-border" name="work_centre" onchange="updateUrl('work_centre', this.value)">
+
                             <option selected disabled value="">Select Work Centre</option>
-                            <option {{'Delhi' == request()->query('work_centre') ? 'selected' : ''}} value="Delhi">Delhi</option>
+                            @foreach ($workCenters as $workCenter )
+                                <option {{$workCenter->id == request()->query('work_centre') ? 'selected' : ''}} value="{{ $workCenter->id }}">{{ $workCenter->name }}</option>
+                            @endforeach
+
+                            <!-- <option {{'Delhi' == request()->query('work_centre') ? 'selected' : ''}} value="Delhi">Delhi</option>
                             <option {{'Dehradun' == request()->query('work_centre') ? 'selected' : ''}} value="Dehradun">Dehradun</option>
                             <option {{'Mumbai' == request()->query('work_centre') ? 'selected' : ''}} value="Mumbai">Mumbai</option>
-                            <option {{'Ahmedabad' == request()->query('work_centre') ? 'selected' : ''}} value="Ahmedabad">Ahmedabad</option>
+                            <option {{'Ahmedabad' == request()->query('work_centre') ? 'selected' : ''}} value="Ahmedabad">Ahmedabad</option> -->
                         </select>
                     </div>
                 </li>
@@ -24,14 +29,20 @@
                         <select class="form-select filter-select-css radius-border" name="department_section" onchange="updateUrl('department_section', this.value)" >
                         <!-- style="background-color: #08AE72; border-radius:9px; color: white;" -->
                             <option selected disabled value="">Select Department Section</option>
-                            <option {{'Delhi Department 1' == request()->query('department_section') ? 'selected' : ''}} value="Delhi Department 1">Delhi Department 1</option>
+                            @if($departments)
+                                @foreach ($departments as $department)
+                                    <option {{ $department->id == request()->query('department_section') ? 'selected' : ''}} value="{{ $department->id }}">{{ $department->name }}</option>
+                                @endforeach
+                            @endif
+
+                            <!-- <option {{'Delhi Department 1' == request()->query('department_section') ? 'selected' : ''}} value="Delhi Department 1">Delhi Department 1</option>
                             <option {{'Delhi Department 2' == request()->query('department_section') ? 'selected' : ''}} value="Delhi Department 2">Delhi Department 2</option>
                             <option {{'Dehradun Department 1' == request()->query('department_section') ? 'selected' : ''}} value="Dehradun Department 1">Dehradun Department 1</option>
                             <option {{'Dehradun Department 2' == request()->query('department_section') ? 'selected' : ''}} value="Dehradun Department 2">Dehradun Department 2</option>
                             <option {{'Mumbai Department 1' == request()->query('department_section') ? 'selected' : ''}} value="Mumbai Department 1">Mumbai Department 1</option>
                             <option {{'Mumbai Department 2' == request()->query('department_section') ? 'selected' : ''}} value="Mumbai Department 2">Mumbai Department 2</option>
                             <option {{'Ahmedabad Department 1' == request()->query('department_section') ? 'selected' : ''}} value="Ahmedabad Department 1">Ahmedabad Department 1</option>
-                            <option {{'Ahmedabad Department 2' == request()->query('department_section') ? 'selected' : ''}} value="Ahmedabad Department 2">Ahmedabad Department 2</option>
+                            <option {{'Ahmedabad Department 2' == request()->query('department_section') ? 'selected' : ''}} value="Ahmedabad Department 2">Ahmedabad Department 2</option> -->
                         </select>
                     </div>
                 </li>

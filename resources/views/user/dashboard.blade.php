@@ -6,7 +6,7 @@
             <!-- Dashboard Information Block Start -->
             <div class="row padding-30px">
                 <div class="col-lg-4">
-                    <a href="">
+                    <a href="{{ route('user.complaints') }}">
                         <button type="button" style="width: 301px; height: 106px; background-color: #08AF73; color: white; border-radius: 10px; display: flex; align-items: center; justify-content: center;" class="btn">
                             <div style="width: 47px; height: 47px;line-height: 47px; background-color: #DEF9E7; display: inline-block; border-radius: 10px;">
                                 <img src="{{ asset('assets/theme/image/List View green.png') }}" alt="">
@@ -16,18 +16,18 @@
                     </a>
                 </div>
                 <div class="col-lg-4">
-                    <a href="">
+                    <a href="{{ route('user.complaints') }}?status=closed">
                         <button type="button"
                             style="width: 301px; height: 106px; background-color: #db5585; color: white; border-radius: 10px;display: flex; align-items: center; justify-content: center;"
                             class="btn">
                             <div style="width: 47px; height: 47px;line-height: 47px; background-color: #FFD2D2; display: inline-block; border-radius: 10px;">
                                 <img src="{{ asset('assets/theme/image/list view red.png') }}" alt="">
-                            </div><span style="text-align: center; margin-left: 10px;" class="text-start">Closed
-                                Complaints<br> 0</span>
+                            </div><span style="text-align: center; margin-left: 10px;" class="text-start">
+                                Closed Complaints<br> {{ $closed != 0 ? $closed : 0 }}</span>
                         </button></a>
                 </div>
                 <div class="col-lg-4">
-                    <a href="">
+                    <a href="{{ route('user.complaints') }}?status=in_progress">
                         <button type="button"
                             style="width: 301px; height: 106px; background-color: #08AF73; color: white; border-radius: 10px;display: flex; align-items: center; justify-content: center;"
                             class="btn">
@@ -35,7 +35,7 @@
                                 style="width: 47px; height: 47px;line-height: 47px; background-color: #DEF9E7; display: inline-block; border-radius: 10px;">
                                 <img src="{{ asset('assets/theme/image/In Progress.png') }}" alt="">
                             </div><span style="text-align: center; margin-left: 10px;" class="text-start">In
-                                Progress Complaints<br> {{$total}}</span>
+                                Progress Complaints<br> {{ $progress != 0 ? $progress : 0 }}</span>
                         </button></a>
                 </div>
             </div>
@@ -54,8 +54,8 @@
                             <th scope="col" >complain_no</th>
                             <th scope="col">Date of Complaint</th>
                             <th scope="col">Complaint Against</th>
-                            <th scope="col">Department/<br>Section</th>
                             <th scope="col">ONGC Work Centre</th>
+                            <th scope="col">Department</th>
                             <th scope="col">Complaint Status</th>
                             <th scope="col">Public Detailed Status</th>
                             <th style="border-top-right-radius: 11px;border-bottom-right-radius: 11px;" scope="col">Action</th>
@@ -71,9 +71,9 @@
                                 <td>{{ $list->complain_no }}</td>
                                 <td>{{ \Carbon\Carbon::parse($list->created_at)->format('d F Y') }}</td>
                                 <td>{{ $list->against_persons }}</td>
-                                <td>{{ $list->department_section }}</td>
-                                <td>{{ $list->work_centre }}</td>
-                                <td>{{ $list->complaint_status }}</td>
+                                <td>{{ $list->workCenter->name }}</td>
+                                <td>{{ $list->centerDepartment->name }}</td>
+                                <td>{{ $list->ComplaintStatus->name }}</td>
                                 <td>{{ $list->public_status ? $list->public_status : '---' }}</td>
                                 <td style="border-top-right-radius: 11px;border-bottom-right-radius: 11px;">
                                     <a  href="{{ route('user.complaint.view', $list->id) }}">

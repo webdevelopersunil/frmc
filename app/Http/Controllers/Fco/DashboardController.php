@@ -11,11 +11,13 @@ class DashboardController extends Controller
 
     public function index(Request $request){
 
-        $lists  =   Complain::paginate(10);
+        $lists      =   Complain::with('workCenter','centerDepartment','ComplaintStatus')->paginate(10);
+        $total      =   Complain::count();
+        $closed     =   Complain::whereIn('complaint_status_id',[7, 5, 6])->count();
+        
+        $progress   =   $total - $closed;
 
-        $total  =   Complain::count();
-
-        return view('fco.dashboard', compact('lists','total'));
+        return view('fco.dashboard', compact('lists', 'total', 'closed','progress'));
     }
 
 }

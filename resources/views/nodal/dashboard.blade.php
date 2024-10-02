@@ -37,15 +37,15 @@
                                 <td>{{ \Carbon\Carbon::parse($list->created_at)->format('d F Y') }}</td>
                                 <td>{{ $list->against_persons }}</td>
                                 <!-- <td>{{ $list->department_section }}</td> -->
-                                <td>{{ $list->work_centre }}</td>
-                                <td>{{ $list->complaint_status }}</td>
+                                <td>{{ $list->workCenter->name }}</td>
+                                <td>{{ $list->ComplaintStatus->name }}</td>
                                 <td>
                                     @if( isset($list->preliminaryReport->id) )
-                                        <a href="{{ route('preview.file',$list->preliminaryReport->id) }}" target="_blank" class="d-block text-truncate text-color">
+                                        <a href="{{ route('preview.file',$list->preliminaryReport->id) }}" target="_blank" class="d-block text-truncate" style="color:white;" >
                                             View Report
                                         </a>
                                     @else
-                                        <a href="javascript:void(0)" class="text-white d-block text-truncate">
+                                        <a href="javascript:void(0)" class="text-white d-block text-truncate" style="color:white;" >
                                             No Report Found
                                         </a>
                                     @endif

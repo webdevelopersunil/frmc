@@ -27,22 +27,35 @@
         <p class="text-center">
             @if( $complain->description == "" )
                 {{ __('No Description Found') }}
+            @elseif(strlen($complain->description) > 800)
+                
+                <span class="description-truncated">
+                    <!-- Display the first 800 characters -->
+                    {{ Str::limit(ucfirst($complain->description), 800) }}
+                </span>
+                <span class="description-content" style="display: none;">
+                    <!-- Display the full description -->
+                    {{ ucfirst($complain->description) }}
+                </span>
+                <a href="javascript:void(0);" id="toggle-description" class="text-color" style="color:black;">. ..See More</a>
+
             @else
-                {{ Str::limit(ucfirst($complain->description), 800) }} 
-                @if(strlen($complain->description) > 800)
-                    &nbsp;&nbsp;<a href="#" class="text-color">see more</a>
-                @endif
+            
+                {{ $complain->description }}
+
             @endif
+
         </p>
     </div>
 </div>
+
 
 <div class="row padding-30px">
     <div class="col-lg-4">
         <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">ONGC Work Centre</label>
             <div class="input-container1">
-                <input type="text" class="form-control placeholder-green-color" readonly id="exampleFormControlInput1" placeholder="{{ ucfirst($complain->work_centre) }}">
+                <input type="text" class="form-control placeholder-green-color" readonly id="exampleFormControlInput1" placeholder="{{ ucfirst($complain->workCenter->name) }}">
             </div>
         </div>
     </div>
@@ -52,7 +65,7 @@
             <label for="exampleFormControlInput1" class="form-label">Department/Section</label>
             <div class="input-container1">
                 <input type="text" readonly class="form-control placeholder-green-color" id="exampleFormControlInput1"
-                placeholder="{{ ucfirst($complain->department_section) }}">
+                placeholder="{{ ucfirst($complain->centerDepartment->name) }}">
             </div>
         </div>
     </div>
@@ -61,7 +74,7 @@
         <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">Others</label>
             <div class="input-container1">
-                <input type="text" class="form-control placeholder-green-color" id="exampleFormControlInput1" placeholder="Mumbai">
+                <input type="text" class="form-control placeholder-green-color" id="exampleFormControlInput1" disabled readonly placeholder="{{ ucfirst($complain->other_section) }}" >
             </div>
         </div>
     </div>
@@ -70,11 +83,11 @@
 <div class="row padding-30px" style="padding-top: 5px;padding-bottom: 5px;">
     <div class="col-lg-3">
         <p>Complaint Status</p>
-        <p style="color: #02AC6F;">Closed</p>
+        <p style="color: #02AC6F;">{{ ucfirst($complain->ComplaintStatus->name) }}</p>
     </div>
     <div class="col-lg-4">
         <p>ONGC Comments</p>
-        <p style="color: #02AC6F;">Closed as per MOM attached</p>
+        <p style="color: #02AC6F;"> {{ $complain->public_status ? ucfirst($complain->public_status) : __('---') }} </p>
     </div>
 </div>
 
@@ -96,27 +109,31 @@
                     <table class="table complainant-view-table">
                         <thead>
                             <tr>
-                                <th>Documents Uploaded by complainant</th>
-                                <th>Upload Date & Time</th>
-                                <th>Description</th>
+                                <th style="text-align:center;" >Documents</th>
+                                <th style="text-align:center;" >Upload Date & Time</th>
+                                <th style="text-align:center;" >Description</th>
                             </tr>
                         </thead>
                         <tbody>
                             @if( count($complain->userAdditionalDetails) != 0 )
                                 @foreach($complain->userAdditionalDetails as $index => $detail)
-                                    <tr>
-                                        <td style="border-top-left-radius: 10px;border-bottom-left-radius: 10px;">
-                                            <span> <a href="{{ route('preview.file',$detail->file->id) }}" target="_blank" style="color: #02AC6F;" > 
+                                <tr style="text-align:center;" >
+                                    <td style="border-top-left-radius: 10px;border-bottom-left-radius: 10px; width: 150px;">
+                                        <span>
+                                            <a href="{{ route('preview.file',$detail->file->id) }}" target="_blank" style="color: #02AC6F;">
                                                 <img src="{{ asset('assets/theme/image/Document.png') }}" alt="">
-                                                    {{ $complain->complain_no }}
-                                            </a> </span>
-                                        </td>
-                                        <td>{{ \Carbon\Carbon::parse($complain->created_at)->format('d F Y') }}</td>
-                                        <td style="border-top-right-radius: 10px;border-bottom-right-radius: 10px;">
-                                            {{ Str::limit(ucfirst($detail->description), 800) }}
-                                        </td>
-                                    </tr>
-                                    <tr style="height: 15px;"></tr>
+                                                {{ $complain->complain_no }}
+                                            </a>
+                                        </span>
+                                    </td>
+                                    <td style="width: 200px; text-align:center; ">
+                                        {{ \Carbon\Carbon::parse($detail->created_at)->format('d F Y, h:i A') }}
+                                    </td>
+                                    <td style="border-top-right-radius: 10px;border-bottom-right-radius: 10px; width: 500px; text-align:center; ">
+                                        {{ Str::limit(ucfirst($detail->description), 800) }}
+                                    </td>
+                                </tr>
+                                <tr style="height: 15px;"></tr>
 
                                 @endforeach
                             @else
@@ -132,5 +149,36 @@
         </div>
     </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleLink = document.getElementById('toggle-description');
+    const fullDescription = document.querySelector('.description-content');
+    const truncatedDescription = document.querySelector('.description-truncated');
 
-        
+    // Check if the elements exist
+    if (!toggleLink || !fullDescription || !truncatedDescription) {
+        console.error('Missing elements for toggling description');
+        return;
+    }
+
+    // Initially hide the full description and show only truncated description
+    fullDescription.style.display = 'none';
+
+    // Handle click event to toggle description
+    toggleLink.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        if (fullDescription.style.display === 'none') {
+            // Show full description and change link text
+            fullDescription.style.display = 'inline';
+            truncatedDescription.style.display = 'none';
+            toggleLink.textContent = '. ..See Less';
+        } else {
+            // Show truncated description and change link text
+            fullDescription.style.display = 'none';
+            truncatedDescription.style.display = 'inline';
+            toggleLink.textContent = '. ..See More';
+        }
+    });
+});
+</script>

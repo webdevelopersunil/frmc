@@ -44,12 +44,6 @@
 
 
 
-
-
-
-
-
-
             <input type="hidden" value="{{$username}}" name="username">
 <input type="hidden" value="{{$email}}" name="email">
 <input type="hidden" value="phone" name="otp">
@@ -58,7 +52,9 @@
 <div class="otp mb-3" id="phone_otp_Section" >
     <div class="row">
         <div class="col-lg-6">
-            <p style="color: #FF0000;">Phone OTP Expires in: <span style="color: #00744A;">01:51</span></p>
+            <p style="color: #FF0000;">Phone OTP
+               Expires in: <span style="color: #00744A;"> (OTP Expires in 2 Minutes)</span>
+              </p>
         </div>
         <div class="col-lg-6 d-flex justify-content-end">
             <img src="./image/cross.png" alt="" class="img-fluid" style="width: 18px;height: 18px;">
@@ -75,9 +71,10 @@
                 </a>
             </div>
             <div class="mb-3">
-                <a href="">
+                <!-- <a href="javascript:void(0);" id="resendPhoneOtp" >
                     <div class="button-otp" style="background: #FFC700;">Resend OTP</div>
-                </a>
+                </a> -->
+                <a href="javascript:void(0)" class="phone-resend-btn" onclick="resendOtp('phone');"> <div class="button-otp" style="background: #FFC700;"  >  Resend OTP  </div> </a>
             </div>
         </div>
         <div class="col-lg-12">
@@ -91,7 +88,9 @@
 <div class="otp mb-3" id="email_otp_Section" >
     <div class="row">
         <div class="col-lg-6">
-            <p style="color: #FF0000;">Email OTP Expires in: <span style="color: #00744A;">01:51</span></p>
+            <p style="color: #FF0000;">Email OTP 
+              Expires in: <span style="color: #00744A;"> (OTP Expires in 2 Minutes)</span>
+            </p>
         </div>
         <div class="col-lg-6 d-flex justify-content-end">
             <img src="./image/cross.png" alt="" class="img-fluid" style="width: 18px;height: 18px;">
@@ -108,9 +107,8 @@
                 </a>
             </div>
             <div class="mb-3">
-                <a href="javascript:void(0)">
-                    <div class="button-otp" style="background: #FFC700;">Resend OTP</div>
-                </a>
+                <!-- <a href="javascript:void(0)"> <div class="button-otp" style="background: #FFC700;">Resend OTP</div> </a> -->
+                <a href="javascript:void(0)" class="email-resend-btn" onclick="resendOtp('email');"> <div class="button-otp" style="background: #FFC700;"  >  Resend OTP  </div> </a>
             </div>    
         </div>
         <div class="col-lg-12">
@@ -160,7 +158,65 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+  
     <script>
+
+
+function resendOtp(check) {
+    var username = document.querySelector('input[name="username"]').value;
+    var email = document.querySelector('input[name="email"]').value;
+
+    $.ajax({
+        url: '{{ route('resend.register.otp') }}',
+        method: 'POST',
+        data: {
+            _token: '{{ csrf_token() }}',
+            username: username,
+            email: email,
+            check: check
+        },
+        success: function(response) {
+
+            if(response.target == 'phone'){
+
+                let messageDiv = document.getElementById('otp-message');
+
+                if (response.status == true) {
+                    messageDiv.innerHTML = '<p style="color: green;">' + response.message + '</p>';
+                } else if(response.status == false) {
+                    messageDiv.innerHTML = '<p style="color: red;">' + response.message + '</p>';
+                }
+
+            }else if(response.target == 'email'){
+
+                let emailMessageDiv = document.getElementById('email-message');
+
+                if (response.status == true) {
+                    emailMessageDiv.innerHTML = '<p style="color: green;">' + response.message + '</p>';
+                  } else if(response.status == false) {
+                    emailMessageDiv.innerHTML = '<p style="color: red;">' + response.message + '</p>';
+                }
+            }
+        },
+        error: function(xhr) {
+            console.error('AJAX Error:', xhr);
+            let messageDiv = document.getElementById('otp-message');
+            let errorMessage = 'An error occurred. Please try again.';
+            if (xhr.responseJSON && xhr.responseJSON.error) {
+                errorMessage = xhr.responseJSON.error;
+            }
+            messageDiv.innerHTML = '<p style="color: red;">' + errorMessage + '</p>';
+        }
+    });
+}
+
+// Check if the function is called
+document.querySelector('#resendOtpButton').addEventListener('click', function() {
+    console.log('resendOtp function called');
+    resendOtp('some_check_value'); // Replace 'some_check_value' with the actual value you want to pass
+});
+
+
       function submitPhoneOtp() {
         var phoneOtp = document.querySelector('input[name="phone_otp"]').value;
         var emailOtp = document.querySelector('input[name="email_otp"]').value;
@@ -192,8 +248,8 @@
                 } else {
                     messageDiv.innerHTML = '<p style="color: red;">' + response.message + '</p>';
                 }
-                if (response.phone_verified == 1 && response.email_verified == 1) {
-                  window.location.href = '{{route('login')}}';
+                if (response.email_verified == 1 && response.email_verified == 1) {
+                  redirectToLogin();
                 }
             },
             error: function(xhr) {
@@ -228,7 +284,7 @@
 
               let messageDiv = document.getElementById('email-message');
 
-                if (response.phone_verified) {
+                if (response.email_verified) {
                     messageDiv.innerHTML = '<p style="color: green;">' + response.message + '</p>';
                     document.querySelector('input[name="email_otp"]').disabled = true;
                     document.querySelector('#submit-phone-otp').style.display = 'none';
@@ -236,12 +292,13 @@
                     setTimeout(function() {
                         document.querySelector('#email_otp_Section').style.display = 'none';
                     }, 2000);
+
                 } else {
                     messageDiv.innerHTML = '<p style="color: green;">' + response.message + '</p>';
                 }
                 
-                if (response.phone_verified == 1 && response.email_verified == 1) {
-                    window.location.href = '{{route('login')}}';
+                if (response.email_verified == 1 && response.email_verified == 1) {
+                  redirectToLogin();
                 }
             },
             error: function(xhr) {
@@ -253,6 +310,12 @@
                 messageDiv.innerHTML = '<p style="color: red;">' + errorMessage + '</p>';
             }
         });
+      }
+
+      function redirectToLogin(){
+        setTimeout(function() {
+            window.location.href = '{{route('login')}}';
+        }, 3000);
       }
 
     </script>

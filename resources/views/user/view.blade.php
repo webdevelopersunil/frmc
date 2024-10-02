@@ -1,8 +1,15 @@
 <x-app-layout>
 
-<div style="margin-top: 50px;" ></div>
+<div style="margin-top: 50px;" >
+
+</div>
 
 <div class="row padding-15px" style="background: #fff;margin: 0 20px;">
+
+    <!-- Error Section Start Here 'message-block' -->
+    @include('includes/message-block')
+    <!-- Error Section Ends Here -->
+    
     <div class="row padding-30px">
 
         @include('user/includes/complain_detail')
@@ -15,8 +22,12 @@
                     Cancel
                 </div>
             </a>
-            <!-- <a href="javascript:void(0)" onclick="submitCurrentForm()"> <div class="button-otp"> Edit </div> </a> -->
-        </div>    
+            
+            <a href="{{ route('user.complaint.edit', $complain->id) }}" >
+                <div class="button-otp"> Edit </div>
+            </a>
+        </div>
+
     </div>
 </div>
 

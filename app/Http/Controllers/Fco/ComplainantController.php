@@ -3,11 +3,16 @@
 namespace App\Http\Controllers\Fco;
 
 use Auth;
+use App\Models\User;
 use App\Models\Complain;
+use App\Models\WorkCenter;
 use Illuminate\Http\Request;
 use App\Models\DetailedStatus;
+use App\Models\ComplaintStatus;
 use Illuminate\Support\Facades\DB;
+use App\Models\CenterDepartment;
 use App\Http\Controllers\Controller;
+use App\Services\NotificationService;
 
 class ComplainantController extends Controller{
 
@@ -16,10 +21,20 @@ class ComplainantController extends Controller{
     public function __construct(){
         
         $this->user = Auth::user();
+        // $this->middleware('prevent.user:fco')->only('edit');
+        // $this->middleware('prevent.user:fco')->only('update');
     }
 
 
     public function index(Request $request){
+
+        $workCenters    =   WorkCenter::with('departments')->get();
+
+        if (isset($request->work_centre) && !empty($request->work_centre)) {
+            $departments    =   CenterDepartment::where('work_center_id', trim($request->work_centre))->get();
+        }else{
+            $departments    =   NULL;
+        }
 
         $query  =   Complain::query();
 
@@ -27,17 +42,24 @@ class ComplainantController extends Controller{
 
         // Onclick Filteration
         if (isset($request->work_centre) && !empty($request->work_centre)) {
-            $query->where('work_centre', 'LIKE', '%' . $request->work_centre . '%');
+            $query->where('work_centre_id', trim($request->work_centre));
         }
         if (isset($request->department_section) && !empty($request->department_section)) {
-            $query->where('department_section', 'LIKE', '%' . $request->department_section . '%');
+            $query->where('department_section_id', trim($request->department_section));
+        }
+
+        if (isset($request->status) && !empty($request->status) && trim($request->status) == "closed" ) {
+            $query->whereIn('complaint_status_id',[5,6,7]);
+        }
+        if (isset($request->status) && !empty($request->status) && trim($request->status) == "in_progress" ) {
+            $query->whereIn('complaint_status_id',[1,2,3,4]);
         }
 
         // Filteration section
         if (isset($request->text) && !empty($request->text)) {
             $query->where(function ($query) use ($request) {
                 $query->where('complain_no', 'LIKE', '%' . $request->text . '%')
-                    ->orWhere('work_centre', 'LIKE', '%' . $request->text . '%')
+                    // ->orWhere('work_centre_id',$request->text)
                     ->orWhere('against_persons', 'LIKE', '%' . $request->text . '%');
             });
         }
@@ -48,25 +70,24 @@ class ComplainantController extends Controller{
 
         } else if( $request->sort == 'os' ){
             $query->orderBy('operating_system', $by);
-            
         }
 
         // Pagination Objects Start
-        $lists  =   $query->paginate($perPage)->withQueryString();
+        $lists          =   $query->with('workCenter','centerDepartment','ComplaintStatus')->paginate($perPage)->withQueryString();
         $totalRecords   =   $lists->total();
         $totalPages     =   ceil($totalRecords / $perPage);
         // Pagination Objects End
 
-        return view('fco.list', compact('lists','perPage','totalRecords','totalPages'));
+        return view('fco.list', compact('lists','perPage','totalRecords','totalPages', 'workCenters', 'departments'));
     }
 
     public function edit($list_id){
 
         $complain           =   Complain::with('preliminaryReport','nodalAdditionalDetails')->find($list_id);
-        
         $detailedStatus     =   DetailedStatus::where(['complain_id'=>$list_id])->first();
-        
-        return view('fco.edit', compact('list_id','complain','detailedStatus'));
+        $complainStatus     =   ComplaintStatus::all();
+
+        return view('fco.edit', compact('list_id','complain','detailedStatus','complainStatus'));
     }
 
     public function update(Request $request){
@@ -80,10 +101,14 @@ class ComplainantController extends Controller{
             $complain = Complain::find($request->id);
             if ($complain) {
                 $complain->public_status    = $request->public;
-                $complain->complaint_status = trim($request->complaint_status);
+                $complain->complaint_status_id = trim($request->complaint_status);
                 $complain->save();
             }
 
+            if($complain){
+                // Mail & SMS Notification
+                (new NotificationService($complain, 'FCO_UPDATED'))->fcoDocumentUpload();
+            }
             // $complain->work_centre      = trim($request->work_centre);
 
             $detailedStatus = DetailedStatus::updateOrCreate(
@@ -119,10 +144,11 @@ class ComplainantController extends Controller{
 
     public function workCentreEdit($id){
 
-        $complain   =   Complain::with('preliminaryReport','nodalAdditionalDetails')->find($id);
+        $complain       =   Complain::with('workCenter')->find($id);
+        // $nodal_users    =   User::role('nodal')->get();
+        $work_centers    =   WorkCenter::whereNotNull('nodal_officer_id')->get();
         
-        return view('fco.work-centre.edit', compact('complain'));
-
+        return view('fco.work-centre.edit', compact('complain','work_centers'));
     }
 
     public function workCentreUpdate(Request $request){
@@ -134,14 +160,19 @@ class ComplainantController extends Controller{
 
             $complain = Complain::find($request->id);
             if ($complain) {
-                $complain->work_centre      = trim($request->work_centre);
+                $complain->work_centre_id      = trim($request->work_center_id);
                 $complain->save();
-            }            
+            }
+
+            if($complain){
+                // Notify Nodal Officer by SMS
+                (new NotificationService($complain, 'FCO_WORK_CENTER_UPDATED'))->fcoWorkCenterUpdate();
+            }
 
             DB::commit();
 
             // Redirect with success message
-            return redirect()->route('fco.complaints')->with('success', 'Complaint has been updated');
+            return redirect()->back()->with('success', 'Work Center has been updated');
             
         } catch (\Exception $e) {
             // Rollback the transaction in case of any exception

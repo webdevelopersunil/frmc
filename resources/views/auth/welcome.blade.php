@@ -20,7 +20,7 @@
                     <!-- <p class="para">Mobile Number Not Registered ? <a href="" class="register"> Register now</a></p> -->
                     <div class="button down-button">
                         <a href="" class="btn1 btn2">Sitemap</a>
-                        <a href="" class="btn1 btn2">Privacy & Policy</a>
+                        <!-- <a href="" class="btn1 btn2">Privacy & Policy</a> -->
                         <a href="" class="btn1 btn2">Terms Of Use</a>
                         <a href="" class="btn1 btn2">Privacy & Policy</a>
                     </div>

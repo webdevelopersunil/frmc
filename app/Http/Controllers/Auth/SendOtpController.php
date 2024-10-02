@@ -15,14 +15,15 @@ class SendOtpController extends Controller
 {
     protected $otpService;
 
-    public function __construct(OtpService $otpService)
-    {
-        $this->otpService = $otpService;
+    public function __construct(OtpService $otpService){
+
+        $this->otpService       =   $otpService;
+        $this->OTP_VALID_TIME   =   config('otp.OTP_VALID_TIME');
     }
 
-    public function sendOtp(Request $request)
-    {
-        // Define validation rules
+    // Send OTP While Login User
+    public function sendOtp(Request $request){
+
         $rules = [
             'username' => 'required|numeric|exists:users,username', // Check if username exists in the users table
         ];
@@ -35,9 +36,9 @@ class SendOtpController extends Controller
         }
 
         $phone = $request->username;
-        $otp = (new Otp)->generate($phone, 'numeric', 6, 5);
+        $otp = (new Otp)->generate(trim($phone), 'numeric', 6, $this->OTP_VALID_TIME);
 
-        // $this->otpService->sendOtp(intval($phone), strval($otp->token));
+        $status =   $this->otpService->sendOtp(intval($phone), strval($otp->token));
 
         $status = 'otp-sent';
 
@@ -65,7 +66,7 @@ class SendOtpController extends Controller
 
         // Validate the request data
         $validator = Validator::make($request->all(), $rules);
-
+        
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
         }
@@ -93,11 +94,11 @@ class SendOtpController extends Controller
             ], 400);
         }
     
-        $phone_otp = (new Otp)->generate($request->input('username'), 'numeric', 6, 5);
+        $phone_otp = (new Otp)->generate($request->input('username'), 'numeric', 6, $this->OTP_VALID_TIME);
         // Send Otp to Un-registered phone number
         $status = $this->otpService->sendOtp(intval($request->input('username')), strval($phone_otp->token));
         
-        $email_otp = (new Otp)->generate($request->input('email'), 'numeric', 6, 5);
+        $email_otp = (new Otp)->generate($request->input('email'), 'numeric', 6, $this->OTP_VALID_TIME);
 
     
         // Simulate OTP sending logic

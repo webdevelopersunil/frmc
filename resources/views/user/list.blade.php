@@ -29,8 +29,8 @@
                         <th scope="col" >complain_no</th>
                         <th scope="col">Date of Complaint</th>
                         <th scope="col">Complaint Against</th>
-                        <th scope="col">Department/<br>Section</th>
                         <th scope="col">ONGC Work Centre</th>
+                        <th scope="col">Department</th>
                         <th scope="col">Complaint Status</th>
                         <th scope="col">Public Detailed Status</th>
                         <th style="border-top-right-radius: 11px;border-bottom-right-radius: 11px;" scope="col">Action</th>
@@ -46,9 +46,9 @@
                             <td>{{ $list->complain_no }}</td>
                             <td>{{ \Carbon\Carbon::parse($list->created_at)->format('d F Y') }}</td>
                             <td>{{ $list->against_persons }}</td>
-                            <td>{{ $list->department_section }}</td>
-                            <td>{{ $list->work_centre }}</td>
-                            <td>{{ $list->complaint_status }}</td>
+                            <td>{{ $list->workCenter->name }}</td>
+                            <td>{{ $list->centerDepartment->name }}</td>
+                            <td>{{ $list->ComplaintStatus->name }}</td> 
                             <td>{{ $list->public_status ? $list->public_status : '---' }}</td>
                             <td style="border-top-right-radius: 11px;border-bottom-right-radius: 11px;">
                                 <a  href="{{ route('user.complaint.view', $list->id) }}">

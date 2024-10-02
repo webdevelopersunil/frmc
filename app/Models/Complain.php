@@ -18,11 +18,17 @@ class Complain extends Model implements Auditable{
         'complain_no',
         'complainant_id',
         'description',
-        'work_centre',
-        'department_section',
+
+        // 'work_centre',
+        // 'department_section',
+
+        'work_centre_id',
+        'department_section_id',
+        'other_section',
+
         'against_persons',
         'public_status',
-        'complaint_status',
+        'complaint_status_id', 
         'preliminary_report',
     ];
 
@@ -32,9 +38,8 @@ class Complain extends Model implements Auditable{
      * @var array<int, string>
      */
     protected $hidden = [
-        // 'against_persons',
-        // 'work_centre',
-        // 'department_section',
+        'work_centre_id',
+        'department_section_id',
     ];
 
     public static function getComplainNo(){
@@ -49,6 +54,21 @@ class Complain extends Model implements Auditable{
         return $this->hasOne(File::class, 'id', 'preliminary_report');
     }
 
+    public function workCenter(){
+
+        return $this->hasOne( WorkCenter::class, 'id', 'work_centre_id');
+    }
+
+    public function complaintStatus(){
+
+        return $this->hasOne( ComplaintStatus::class, 'id', 'complaint_status_id');
+    }
+
+    public function centerDepartment(){
+
+        return $this->hasOne( CenterDepartment::class, 'id', 'department_section_id');
+    }
+
     public function userAdditionalDetails(){
 
         return $this->hasMany(UserAdditionalDetail::class, 'complain_id', 'id')->with('file');
@@ -56,7 +76,20 @@ class Complain extends Model implements Auditable{
 
     public function nodalAdditionalDetails(){
 
-        return $this->hasMany(NodalAdditionalDetail::class, 'complain_id', 'id')->with('file');
+        return $this->hasMany(NodalAdditionalDetail::class, 'complain_id', 'id')->where('flag','document')->with('file');
     }
 
+    public function nodalPreliminaryReports(){
+
+        return $this->hasMany(NodalAdditionalDetail::class, 'complain_id', 'id')->where('flag','preliminary_report')->with('file');
+    }
+
+
+    public function updateStatus($complain,$status_id){
+
+        $complain->complaint_status_id  =   $status_id;
+        $complain->save();
+
+    }
+    
 }

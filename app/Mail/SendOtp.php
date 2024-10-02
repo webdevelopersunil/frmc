@@ -29,7 +29,7 @@ class SendOtp extends Mailable
      */
     public function build()
     {
-        return $this->markdown('mails.sendotp')->subject('Send Otp')->with('otp', $this->otp);
+        return $this->markdown('mails.sendotp')->subject('Your OTP Code for Secure Verification')->with('otp', $this->otp);
     }
 
     /**

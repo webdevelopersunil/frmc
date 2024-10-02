@@ -14,6 +14,7 @@
             <table class="table complainant-view-table">
             <thead>
                 <tr>
+                    <th>&nbsp</th>
                     <th>Preliminary Report</th>
                     <th>Upload Date & Time</th>
                 </tr>
@@ -21,17 +22,22 @@
 
             <tbody>
             
-            @if(isset($complain->preliminaryReport))
-                <tr>
-                    <td style="border-top-left-radius: 10px;border-bottom-left-radius: 10px;">
-                        <span> <a href="{{ route('preview.file',$complain->preliminaryReport->id) }}" target="_blank" style="color: #02AC6F;" > 
-                            <img src="{{ asset('assets/theme/image/Document.png') }}" alt="">
-                                View Report
-                        </a> </span>
-                    </td>
-                    <td>{{ \Carbon\Carbon::parse($complain->created_at)->format('d F Y') }}</td>
-                </tr>
-                <tr style="height: 15px;"></tr>
+            @if(isset($complain->nodalPreliminaryReports))
+                @foreach ( $complain->nodalPreliminaryReports as $index => $row )
+                    
+                    <tr>
+                        <td></td>
+                        <td style="border-top-left-radius: 10px;border-bottom-left-radius: 10px;">
+                            <span> <a href="{{ route('preview.file',$row->file->id) }}" target="_blank" style="color: #02AC6F;" > 
+                                <img src="{{ asset('assets/theme/image/Document.png') }}" alt="">
+                                    View Preliminary Reports Report
+                            </a> </span>
+                        </td>
+                        <td>{{ \Carbon\Carbon::parse($row->created_at)->format('d F Y, h:i A') }}</td>
+                    </tr>
+                    <tr style="height: 15px;"></tr>
+
+                @endforeach
             @else
                 <tr>
                     <td colspan="3" style="text-align:center;" >No Record Found</td>

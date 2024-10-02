@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use Database\Seeders\UsersSeeder;
 use Database\Seeders\WorkCenterSeeder;
 use Database\Seeders\RolesAndPermissionsSeeder;
+use Database\Seeders\ComplaintStatusesSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -25,7 +26,8 @@ class DatabaseSeeder extends Seeder
             [
                 RolesAndPermissionsSeeder::class,
                 UsersSeeder::class,
-                WorkCenterSeeder::class
+                WorkCenterSeeder::class,
+                ComplaintStatusesSeeder::class
             ]
         );
     }

@@ -29,7 +29,7 @@ class CenterDepartment extends Model implements AuditableContract
      * @var array<int, string>
      */
     protected $hidden = [
-        'work_center_id'
+        'work_center_id',
     ];
 
     public function workCenter()

@@ -14,11 +14,6 @@
         <div class="col-lg-6" style="position: relative;">
           <h1 class="heading login">Welcome</h1>
 
-
-
-
-
-
           <form method="POST" action="{{ route('send-otp') }}" id="login">
             @csrf
 
@@ -33,7 +28,7 @@
                 <div class="mb-3 d-flex" style="gap: 15px;">
                   <p style="margin-bottom: 0 !important;padding: 7px;background: #fff;border: 1px solid #ccc;border-radius: 10px;"> +91 </p>
                   <div class="input-container">
-                    <x-text-input class="form-control ph-no" id="exampleFormControlInput1" type="number" name="username" :value="old('username') ? old('username') : session('phone')" placeholder="9744448548252" required autofocus />
+                    <x-text-input class="form-control ph-no" id="exampleFormControlInput1" type="number" name="username" :value="old('username') ? old('username') : session('phone')" placeholder="98765-43210" required autofocus />
                   </div>
                 </div>
                 

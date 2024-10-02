@@ -27,13 +27,17 @@
             <div class="col-lg-9" style="background: #F5F6F8;border-radius: 38px;">
                 <div class="row top-heading padding-30px">
                     <div class="col-lg-6 d-flex align-items-center">
-                        <h1 class="complainant-heading">Complaints</h1>
+                        @if(isset($title))
+                                <h1 class="complainant-heading">{{ $title }}</h1>
+                            @else
+                                <h1 class="complainant-heading">Complaints</h1>
+                        @endif
                     </div>
                     <div class="col-lg-6 d-flex justify-content-end" style="gap: 25px;">
-                        <div class="bell">
+                        <!-- <div class="bell">
                             <a href=""><img src="{{ asset('assets/theme/image/Notification.png') }}" alt="" class="img-fluid"></a>
                             <p class="show-notification">2</p>
-                        </div>
+                        </div> -->
                     <div class="profile">
                         <img src="./image/profile.png" alt="" class="img-fluid">
                     </div>

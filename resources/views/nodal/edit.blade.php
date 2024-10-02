@@ -27,6 +27,7 @@
                     name="preliminary_report" 
                     placeholder="file"> -->
                     <input type="file" class="form-control placeholder-green-color" id="exampleFormControlInput1" name="preliminary_report" placeholder="file">
+                    <x-input-error :messages="$errors->get('preliminary_report')" style="color:red;"  />
 
                 </div>
             </div>
@@ -37,8 +38,9 @@
           <div class="row dub-row">
               <div class="col-md-5">
                   <div class="form-group">
-                      <label for="exampleInputUsername1" class="form-label">Document</label>
+                      <label for="exampleInputUsername1" class="form-label">Document <span style="color: #AB3336;">(*Max document size: 15 MB)</span></label>
                       <input type="file" class="form-control" name="files[]" id="exampleInputUsername1" placeholder="file">
+                      <x-input-error :messages="$errors->get('files.*')" style="color:red;" class="mt-2 err_mdy" />
                   </div>
               </div>
               
@@ -85,6 +87,9 @@
           var newRow = row.cloneNode(true);
           
           // Remove the "Add" button from the cloned row
+          newRow.querySelector('input[type="file"]').value = '';
+          newRow.querySelector('textarea[name="details[]"]').value = '';
+
           newRow.querySelector('.addRowBtn').remove();
 
           var removeBtn = document.createElement('input');

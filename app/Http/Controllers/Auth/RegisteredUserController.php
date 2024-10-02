@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Mail\SendOtp;
 use Ichtrojan\Otp\Otp;
@@ -28,7 +29,10 @@ class RegisteredUserController extends Controller
 
     public function __construct(OtpService $otpService)
     {
-        $this->otpService = $otpService;
+        $this->otpService       =   $otpService;
+        $this->OTP_VALID_TIME   =   config('otp.OTP_VALID_TIME');
+        $this->OTP_SMS          =   config('otp.OTP_SMS');
+        $this->OTP_EMAIL        =   config('otp.OTP_EMAIL');
     }
 
     /**
@@ -61,8 +65,8 @@ class RegisteredUserController extends Controller
 
         ]);
 
-        $phone_otp    =   (new Otp)->generate($request->username, 'numeric', 6, 5);
-        $email_otp    =   (new Otp)->generate($request->email, 'numeric', 6, 5);
+        $phone_otp    =   (new Otp)->generate($request->username, 'numeric', 6, $this->OTP_VALID_TIME);
+        $email_otp    =   (new Otp)->generate($request->email, 'numeric', 6, $this->OTP_VALID_TIME);
 
         $user = User::create([
             'name'       => $request->name,
@@ -74,54 +78,23 @@ class RegisteredUserController extends Controller
             'email_otp'  => $email_otp->token,
         ])->assignRole('user');
 
-        // Sending OTP to Email Address
-        // Mail::to($user->email)->send(new SendOtp($otp->token));  #Priority
+        if( $this->OTP_EMAIL == TRUE ){
+            // Sending OTP to Email Address
+            Mail::to($user->email)->send(new SendOtp($email_otp->token));  #Priority
+        }
         
-        // Sending OTP to Phone Number
-        // $status = $this->otpService->sendOtp(intval($request->username), strval($phone_otp->token)); #Priority
+        if($this->OTP_SMS == TRUE){
+            // Sending OTP to Phone Number
+            $status = $this->otpService->sendOtp(intval($request->username), strval($phone_otp->token)); #Priority
+        }
         
         event(new Registered($user));
         
         return redirect(RouteServiceProvider::OTP.'/'.Crypt::encryptString($request->username).'/'.Crypt::encryptString($request->email));
     }
 
-    public function store_old(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'username' => ['required', 'string', 'unique:'.User::class],
-            // 'address' => ['required', 'string'],
-            // 'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'username' => $request->username,
-            'address' => $request->address,
-            // 'password' => Hash::make($request->password),
-            'password' => Hash::make("password"),
-        ])->assignRole('user');
-
-        $otp    =   (new Otp)->generate($request->username, 'numeric', 6, 15);
-
-        Mail::to($user->email)->send(new SendOtp($otp->token));
-        // SendOtpEmail::dispatch($user->email, $otp->token);
-
-        // OTP Sending
-        $status = $this->otpService->sendOtp(intval($request->username), strval($otp->token));
-        
-        event(new Registered($user));
-        
-        return redirect(RouteServiceProvider::OTP.'/'.Crypt::encryptString($request->username));
-        
-        // Auth::login($user);
-        // return redirect(RouteServiceProvider::USER);
-    }
-
     public function confirmOtpVerification(Request $request){
-        dd('otpVerification 2');
+        
         $user   =   User::where('username',$request->username)->first();
 
         if($user->is_phone_verified == '0'){
@@ -222,11 +195,97 @@ class RegisteredUserController extends Controller
             $user->save();
         
             return response()->json([
-                'email_verified'    =>  $user->email_verified,
+                'phone_verified'    =>  $user->phone_verified,
                 'message'           =>  "Provided email address has been successfully verified",
                 // 'redirect_to'       =>  route(RouteServiceProvider::HOME),
                 'email_verified'    =>  $user->email_verified
             ]);
+        }
+    }
+
+    public function resendRegisterOtp(Request $request) {
+
+        $username   =   $request->username;
+        $email      =   $request->email;
+        $check      =   $request->check;
+
+        
+
+        if($request->check === "phone") {
+
+            $record     = DB::table('otps')->where('identifier', $username)->first();
+            $now        = Carbon::now();
+            $createdAt  = Carbon::parse($record->created_at);
+
+            if ($record) {
+                
+                if ($createdAt->diffInMinutes($now) > 2) {
+                    $otp = (new Otp)->generate(trim($username), 'numeric', 6, $this->OTP_VALID_TIME);
+                    $status =   $this->otpService->sendOtp(intval($username), strval($otp->token));
+                    $message    =   "OTP has been re-send successfully.";
+                    $status     =   TRUE;
+
+                } else {
+
+                    $message    =   "Please wait for 2 minutes before re-send OTP.";
+                    $status     =   FALSE;
+                }
+
+                return response()->json([
+                    'status'            =>  $status,
+                    'message'           =>  $message,
+                    'target'            =>  'phone'
+                ]);
+
+            } else {
+                
+                return response()->json([
+                    'status'            =>  FALSE,
+                    'message'           =>  "Err : Not Found",
+                    'target'            =>  'phone'
+                ]);
+            }
+
+        }else if($request->check === "email"){
+            
+
+            $record     = DB::table('otps')->where('identifier', $email)->first();
+            $now        = Carbon::now();
+            $createdAt  = Carbon::parse($record->created_at);
+
+
+            if ($record) {
+                
+                if ($createdAt->diffInMinutes($now) > 2) {
+
+                    $email_otp    =   (new Otp)->generate($request->email, 'numeric', 6, $this->OTP_VALID_TIME);
+                    Mail::to($request->email)->send(new SendOtp($email_otp->token));
+
+                    $message    =   "Email has been re-send successfully.";
+                    $status     =   TRUE;
+
+                } else {
+
+                    $message    =   "Please wait for 2 minutes before re-send OTP.";
+                    $status     =   FALSE;
+                }
+
+                return response()->json([
+                    'status'            =>  $status,
+                    'message'           =>  $message,
+                    'target'            =>  'email'
+                ]);
+
+            } else {
+                
+                return response()->json([
+                    'status'            =>  FALSE,
+                    'message'           =>  "Err : Not Found",
+                    'target'            =>  'email'
+                ]);
+            }
+
+
         }
     }
     

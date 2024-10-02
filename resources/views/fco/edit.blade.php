@@ -9,6 +9,16 @@
     @include('includes/message-block')
     <!-- Error Section Ends Here -->
 
+        <div class="modal-footer" style="padding-top: 0;">
+
+            <a href="{{ route('fco.change.work.centre',$list_id) }}" data-bs-dismiss="modal">
+                <div class="button-otp" style="background: transparent;border: 1px solid #000;color: #5A5A5A;">
+                    Work Center
+                </div>
+            </a>
+            
+        </div>
+
       <form class="forms-sample" action="{{ route('fco.complaint.update') }}" id="nodalComplainUpdate" method="post">
 
         @csrf
@@ -20,18 +30,12 @@
             <div class="mb-3">
               <label for="exampleFormControlInput1" class="form-label">Complaint Status</label>
                 <div class="input-container1">
-
                   <select name="complaint_status" class="form-control" id="exampleFormControlSelect1" >
-                    <option {{ $complain->complaint_status == "With Nodal Officer" ? 'selected' : '' }} value="With Nodal Officer" >With Nodal Officer</option>
-                    <option {{ $complain->complaint_status == "With FCO" ? 'selected' : '' }} value="With FCO" >With FCO</option>
-                    <option {{ $complain->complaint_status == "Under FRMC deliberations for Closure/Investigation" ? 'selected' : '' }} value="Under FRMC deliberations for Closure/Investigation" >Under FRMC deliberations for Closure/Investigation</option>
-                    <option {{ $complain->complaint_status == "Under Investigation" ? 'selected' : '' }} value="Under Investigation" >Under Investigation</option>
-                    <option {{ $complain->complaint_status == "Fraud Not Established after FRMC Deliberation" ? 'selected' : '' }} value="Fraud Not Established after FRMC Deliberation">Fraud Not Established after FRMC Deliberation</option>
-                    <option {{ $complain->complaint_status == "Fraud Established after FRMC Deliberation" ? 'selected' : '' }} value="Fraud Established after FRMC Deliberation">Fraud Established after FRMC Deliberation</option>
-                    <option {{ $complain->complaint_status == "Fraud Established after FRMC Deliberationas" ? 'selected' : '' }} value="Fraud Established after FRMC Deliberationas">Fraud Established after FRMC Deliberationas</option>
-                    <option {{ $complain->complaint_status == "Withdrawn – to be ignored" ? 'selected' : '' }} value="Withdrawn – to be ignored">Withdrawn – to be ignored</option>
+                    <option SELECTED DISABLED >Please Select</option>
+                    @foreach ( $complainStatus as $index => $status )
+                      <option {{ $complain->complaint_status_id == $status->id ? 'selected' : '' }} value="{{ $status->id }}">{{$status->name}}</option>
+                    @endforeach
                   </select>
-
               </div>
             </div>
           </div>

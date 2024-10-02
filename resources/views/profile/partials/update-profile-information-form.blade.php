@@ -28,79 +28,38 @@
         </div>
 
 
-        <!-- Phone Number Section Start-->
+
+
+
+
         <div class="col-lg-12" style="padding: 15px 0;">
-            <p style="color: #08AF73;">Contact Information <span style="color: #AB3336;">(*Update Your Phone Number & Email Address)</span></p>
+            <p style="color: #08AF73;">Contact Information <span style="color: #AB3336;">(*Phone Number & Email Address)</span></p>
         </div>
-        <div class="col-lg-5" style="padding: 0;">
+        <div class="col-lg-6" style="padding: 0;">
             <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Current Phone Number</label>
-                <!-- {{  print_r($user)  }} -->
-                <div class="input-container">
-                    <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="{{ $user->username }}" disabled readable>
+                <label for="exampleFormControlInput1" class="form-label">Phone Number</label>
+                <div class="input-container input-container1">
+                    <input type="number" class="form-control" id="exampleFormControlInput1" value="{{old('name', $user->username)}}" disabled readonly>
                 </div>
-                <x-input-error class="mt-2" :messages="$errors->get('username')" />
             </div>
         </div>
-        <div class="col-lg-5">
+        <div class="col-lg-6">
             <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">New Phone Number</label>
-                <div class="input-container">
-                    <input type="number" name="new_username" class="form-control" id="exampleFormControlInput1" placeholder="1234567890">
-                </div>
-                <!-- Display Error message here -->
-            </div>
-        </div>
-        <div class="col-lg-2">
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label" style="visibility: hidden;">Emailid</label>
-                <a href="javascript:void(void)">
-                    <div class="button-otp">
-                    Send OTP
-                    </div>
-                </a>
-            </div>
-        </div>
-        <!-- Phone Number Section End-->
-
-
-        <!-- Email Address Section Start-->
-        <div class="col-lg-5" style="padding: 0;">
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Emailid</label>
+                <label for="exampleFormControlInput5" class="form-label">Email Address</label>
                 <div class="input-container input-container2">
-                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="{{old('email', $user->email)}}" disabled readable>
+                    <input type="email" class="form-control" id="exampleFormControlInput5" value="{{old('email', $user->email)}}" disabled readonly>
                 </div>
-                <x-input-error class="mt-2" :messages="$errors->get('email')" />
             </div>
         </div>
-        <div class="col-lg-5">
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">New Email Address</label>
-                <div class="input-container input-container2">
-                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Example@gmail.com">
-                </div>
-                <!-- <x-input-error class="mt-2" :messages="$errors->get('name')" /> -->
-            </div>
-        </div>
-        <div class="col-lg-2">
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label" style="visibility: hidden;">Emailid</label>
-                <a href="javascript:void(0)">
-                    <div class="button-otp">
-                    Send OTP
-                    </div>
-                </a>
-            </div>
-        </div>
-        <!-- Email Address Section End-->
 
 
 
+
+
+        
         <div class="col-lg-12" style="padding: 15px 0;">
             <p style="color: #08AF73;">Others</p>
         </div>
-
 
         <div class="col-lg-12">
             <div class="mb-3">
@@ -111,6 +70,7 @@
                 <x-input-error class="mt-2" :messages="$errors->get('address')" />
             </div>
         </div>
+
 
 
         <div class="col-lg-4" style="padding: 0;">
