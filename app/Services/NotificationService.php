@@ -83,7 +83,7 @@ class NotificationService {
         // Sending SMS
         $this->sendSMS($this->nodal['user']->phone, "CREATED");
         $this->sendSMS($this->fco['user']->phone, "CREATED");
-        $this->sendSMS($this->complainant['user']->phone, "CREATED");
+        $this->sendSMS($this->complainant['user']->username, "CREATED");
     }
 
     public function userComplainUpdate() {
@@ -94,7 +94,7 @@ class NotificationService {
         $this->sendEmail($this->complainant['user'], UserComplainMail::class, $this->complainant['user']->name);
 
         // Sending SMS
-        $this->sendSMS($this->complainant['user']->phone, "UPDATED");
+        $this->sendSMS($this->complainant['user']->username, "UPDATED");
         $this->sendSMS($this->nodal['user']->phone, "UPDATED");
         $this->sendSMS($this->fco['user']->phone, "UPDATED");
     }
@@ -107,7 +107,7 @@ class NotificationService {
         $this->sendEmail($this->complainant['user'], NodalComplainMail::class, $this->complainant['user']->name);
 
         // Sending SMS
-        $this->sendSMS($this->complainant['user']->phone, "NODAL_UPDATED");
+        $this->sendSMS($this->complainant['user']->username, "NODAL_UPDATED");
         $this->sendSMS($this->nodal['user']->phone, "NODAL_UPDATED");
         $this->sendSMS($this->fco['user']->phone, "NODAL_UPDATED");
     }
@@ -120,7 +120,7 @@ class NotificationService {
         $this->sendEmail($this->complainant['user'], FcoComplainMail::class, $this->complainant['user']->name);
 
         // Sending SMS
-        $this->sendSMS($this->complainant['user']->phone, "FCO_UPDATED");
+        $this->sendSMS($this->complainant['user']->username, "FCO_UPDATED");
         $this->sendSMS($this->nodal['user']->phone, "FCO_UPDATED");
         $this->sendSMS($this->fco['user']->phone, "FCO_UPDATED");
     }
@@ -133,7 +133,7 @@ class NotificationService {
         $this->sendEmail($this->complainant['user'], FcoComplainMail::class, $this->complainant['user']->name);
 
         // Sending SMS
-        $this->sendSMS($this->complainant['user']->phone, "FCO_WORK_CENTER_UPDATED");
+        $this->sendSMS($this->complainant['user']->username, "FCO_WORK_CENTER_UPDATED");
         $this->sendSMS($this->nodal['user']->phone, "FCO_WORK_CENTER_UPDATED");
         $this->sendSMS($this->fco['user']->phone, "FCO_WORK_CENTER_UPDATED");
     }
