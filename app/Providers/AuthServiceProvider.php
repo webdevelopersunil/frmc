@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Policies\FilePolicy;
 use App\Models\File;
+use App\Models\User;
 
 
 class AuthServiceProvider extends ServiceProvider{
@@ -28,6 +29,10 @@ class AuthServiceProvider extends ServiceProvider{
 
         Gate::define('preview.file', function (User $user, File $file) {
             return $user->role === $file->role;
+        });
+
+        Gate::define('is-active', function ($user) {
+            return $user->status === 'active';
         });
     }
 }

@@ -15,11 +15,15 @@ use App\Http\Controllers\Nodal\ComplainantController as NodalComplaintController
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\ComplaintController as UserComplaintController;
 
+use App\Http\Controllers\Fco\ReportController as FcoReportController;
 use App\Http\Controllers\Fco\DashboardController as FcoDashboardController;
 use App\Http\Controllers\Fco\ComplainantController as FcoComplaintController;
+use App\Http\Controllers\Fco\UserReportsController  as FcoUserReportsController;
 
 use App\Http\Controllers\FrmcUser\DashboardController as FrmcUserDashboardController;
 use App\Http\Controllers\FrmcUser\ComplaintController as FrmcComplaintController;
+
+use App\Http\Controllers\UserManagementController;
 
 use App\Services\OtpService;
 
@@ -33,14 +37,6 @@ use App\Services\OtpService;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-
-
-
-
-// Audit Logs Routes Start
-Route::get('/audits',                                   [AuditController::class, 'index'])->name('audit');
-Route::get('/view/audits/{id}',                         [AuditController::class, 'viewAudit'])->name('view.audit');
 
 
 // User Frontend Routes Start
@@ -97,7 +93,7 @@ Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
 
 
 // Nodal Officer Routes
-Route::middleware(['auth', 'verified', 'role:nodal'])->group(function () {
+Route::middleware(['checkUserStatus', 'auth', 'verified', 'role:nodal'])->group(function () {
     
     Route::get('/nodal-dashboard',                      [NodalDashboardController::class, 'index'] )->name('nodal.dashboard');
     Route::get('/nodal-complaints/list',                [NodalComplaintController::class, 'index'] )->name('nodal.complaints');
@@ -111,6 +107,9 @@ Route::middleware(['auth', 'verified', 'role:nodal'])->group(function () {
 // FCO Officer Routes
 Route::middleware(['auth', 'verified', 'role:fco'])->group(function () {
 
+    Route::get('/complains/export', [FcoComplaintController::class, 'export'])->name('complains.export');
+
+    Route::get('/fco-report',                           [FcoReportController::class, 'index'] )->name('fco.report');
     Route::get('/fco-dashboard',                        [FcoDashboardController::class, 'index'] )->name('fco.dashboard');
     Route::get('/fco-complaints/list',                  [FcoComplaintController::class, 'index'] )->name('fco.complaints');
     Route::get('/fco-complaints/edit/{list_id}',        [FcoComplaintController::class, 'edit'] )->name('fco.complaint.edit');
@@ -118,6 +117,27 @@ Route::middleware(['auth', 'verified', 'role:fco'])->group(function () {
     Route::post('/fco-complaints/update',               [FcoComplaintController::class, 'update'] )->name('fco.complaint.update');
     Route::get('/fco-complaints/{id}/change-work-centre', [FcoComplaintController::class, 'workCentreEdit'] )->name('fco.change.work.centre');
     Route::post('/fco-complaints/update-work-centre',   [FcoComplaintController::class, 'workCentreUpdate'] )->name('fco.complaint.work-centre.update');
+
+    // User  Report
+    Route::get('/fco/user-reports',                      [FcoUserReportsController::class, 'index'])->name('fco.user.report');
+    Route::get('/fco/user-reports/export',               [FcoUserReportsController::class, 'reportExport'])->name('user.report.export');
+    Route::get('/fco/user-profile/{user_id}',            [FcoUserReportsController::class, 'profileView'])->name('fco.user.profile');
+    Route::post('/fco/user-profile',                     [FcoUserReportsController::class, 'UserProfileUpdate'])->name('fco.user-profile.update');
+    
+    // Audit Logs Routes Start
+    Route::get('/audits',                               [AuditController::class, 'index'])->name('audit');
+    Route::get('/view/audits/{id}',                     [AuditController::class, 'viewAudit'])->name('view.audit');
+    Route::get('/set-audit/filter/',                    [AuditController::class, 'setFilter'])->name('set.filter');
+
+    // User Management
+    Route::get('/user-management/{type}',               [UserManagementController::class, 'index'])->name('user.manage.index');
+    Route::post('/user-management/create',              [UserManagementController::class, 'registrationForm'])->name('user.manage.registration.form');
+
+    Route::post('/user-management/revoke-access',       [UserManagementController::class, 'revokeAccess'])->name('user.manage.revoke.access');
+
+    Route::post('/user-management/delegate-complaints', [UserManagementController::class, 'delegateComplaints'])->name('user.manage.delegate.complaints');
+    Route::post('/user-management/delegate-complaints/to-nodal', [UserManagementController::class, 'delegateComplaintsToNodal'])->name('user.manage.delegate.complaints.to.nodal');
+
 });
 
 

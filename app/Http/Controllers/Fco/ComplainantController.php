@@ -14,6 +14,10 @@ use App\Models\CenterDepartment;
 use App\Http\Controllers\Controller;
 use App\Services\NotificationService;
 
+use App\Exports\FilteredComplainsExport;
+use Maatwebsite\Excel\Facades\Excel;
+
+
 class ComplainantController extends Controller{
 
     protected $user;
@@ -45,6 +49,7 @@ class ComplainantController extends Controller{
             $query->where('work_centre_id', trim($request->work_centre));
         }
         if (isset($request->department_section) && !empty($request->department_section)) {
+            // dd($request->department_section);
             $query->where('department_section_id', trim($request->department_section));
         }
 
@@ -184,6 +189,34 @@ class ComplainantController extends Controller{
             // Redirect with error message
             return redirect()->back()->with('error', 'Failed to update complaint. Please try again.'. $e->getMessage());
         }
+    }
+
+    public function export(Request $request){
+
+        $query = Complain::query();
+        // Apply the same filters from the index() method
+        if ($request->work_centre) {
+            $query->where('work_centre_id', trim($request->work_centre));
+        }
+        if ($request->department_section) {
+            $query->where('department_section_id', trim($request->department_section));
+        }
+        if ($request->status) {
+            if (trim($request->status) == "closed") {
+                $query->whereIn('complaint_status_id', [5, 6, 7]);
+            } elseif (trim($request->status) == "in_progress") {
+                $query->whereIn('complaint_status_id', [1, 2, 3, 4]);
+            }
+        }
+        if ($request->text) {
+            $query->where(function ($query) use ($request) {
+                $query->where('complain_no', 'LIKE', '%' . $request->text . '%')
+                    ->orWhere('against_persons', 'LIKE', '%' . $request->text . '%');
+            });
+        }
+
+        // Generate and download the Excel file
+        return Excel::download(new FilteredComplainsExport($query), 'filtered_complains.xlsx');
     }
 
 }

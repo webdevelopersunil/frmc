@@ -2,35 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Complain;
 use Illuminate\Http\Request;
+use OwenIt\Auditing\Models\Audit;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class AuditController extends Controller{
     
-    public function index(){
+    public function index(Request $request){
+        
+        $perPage  =   20;
+        $query          =   Audit::query();
 
-        // Get first available Article
-        $article = Complain::first();
+        $users = User::role($request->role)->get(['id','name']);
+        
+        if (isset($request->role) && !empty($request->role)) {
+            // dd($request->role);
+            if (isset($request->user) && !empty($request->user)) {
+                $query->where('user_id', $request->user);
+            }
+        }
 
-        // // Get latest Audit
-        // $audit = $article->audits()->latest()->first();
 
-        // // dd($audit->getMetadata());
+        $lists  =   $query->orderBy('created_at', 'desc')->paginate($perPage)->withQueryString();
 
+        
+        $totalRecords = $lists->total();
+        $totalPages = ceil($totalRecords / $perPage);
+        // Pagination Objects End
 
-        $lists  =   Complain::paginate(20);
- 
-        return view('audits.index', compact('lists'));
+        return view('audits.index', compact('lists','perPage','totalRecords','totalPages','users'));
 
     }
 
     public function viewAudit($id){
         
-        $complain   =   Complain::first();
-        // $audit      =   $article->audits()->latest()->first();
-
-        $lists = $complain->audits()->paginate(20);
+        $audit   =   Audit::find($id);
+        $user   =   User::with('roles')->where('id', $audit->user_id)->first(['name','email','cpfNo','phone']);
         
-        return view('audits.detail', compact('lists'));
+        return view('audits.detail', compact('audit','user'));
     }
 }

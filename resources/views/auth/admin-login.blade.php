@@ -64,7 +64,7 @@
 
                     </form>
                     
-                    <!-- <p class="para">Mobile Number Not Registered ? <a href="" class="register" data-bs-toggle="modal" data-bs-target="#exampleModal"> Register now</a></p> -->
+                    <p class="para">Forgot Your Password ? <a href="{{ route('password.email') }}" class="register" > Recover Here</a></p>
                     
                     <img src="{{ asset('assets/theme/image/welcome page bottom image.png') }}" alt="" class="img-fluid bottom-img">
                     
@@ -75,8 +75,8 @@
             </div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  
+    <script src="{{ asset('assets/theme/js/bootstrap.bundle.min.js') }}" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/5cac7ad27a.js" crossorigin="anonymous"></script>
     
     <script>

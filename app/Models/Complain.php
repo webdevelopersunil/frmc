@@ -42,6 +42,13 @@ class Complain extends Model implements Auditable{
         'department_section_id',
     ];
 
+    public function transformAudit(array $data): array
+    {
+        // Attach the complaint ID to the audit record
+        $data['complain_no'] = $this->complain_no;
+        return $data;
+    }
+
     public static function getComplainNo(){
 
         $lastInsertedId =   self::latest()->first('id');

@@ -1,81 +1,123 @@
 <x-app-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <div class="content-wrapper">
-        <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
-                <div class="card">
-                    <div class="card-body">
+    <div style="margin-top: 50px;" ></div>
+    
+    <div class="row padding-15px" style="background: #fff;margin: 0 20px;">
+    
+        <!-- Error Section Start Here 'message-block' -->
+        @include('includes/message-block')
+        <!-- Error Section Ends Here -->
+    
+        <div class="row padding-30px">
+        
+            <div class="col-lg-4">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">User Name</label>
+                    <div class="input-container1">
+                        <input type="text" class="form-control placeholder-green-color" value="{{ ucfirst($user->name) }}" id="exampleFormControlInput1" disabled >
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">CPF Number</label>
+                    <div class="input-container1">
+                        <input type="text" class="form-control placeholder-green-color" value="{{ ucfirst($user->cpfNo) }}" readonly id="exampleFormControlInput1" disabled>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Email</label>
+                    <div class="input-container1">
+                        <input type="text" class="form-control placeholder-green-color" value="{{ ucfirst($user->email) }}" readonly id="exampleFormControlInput1" disabled >
+                    </div>
+                </div>
+            </div>
                     
-                        <h4 class="card-title">Complaints List</h4>
-                        <p class="card-description">
-                            <!-- Add class <code>.table-striped</code> -->
-                        </p>
+            </div>
 
-                        <div class="d-flex justify-content-end mb-3">
-                            <a class="btn btn-primary" href="{{ route('audit') }}">Go  Back</a>
+            <div class="row padding-30px">
+                <div class="col-lg-4">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Phone Number</label>
+                        <div class="input-container1">
+                            <input type="text" class="form-control placeholder-green-color" value="{{ ucfirst($user->phone) }}" readonly id="exampleFormControlInput1" disabled>
                         </div>
-
-                        <!-- Error Section Start Here 'message-block' -->
-                            @include('includes/message-block')
-                        <!-- Error Section Ends Here -->
-
-
-                        <div class="table-responsive">
-                            <table id="example" class="display expandable-table" style="width:100%">
-                                <thead>
-                                    <tr>
-                                    <th> #Index </th>
-                                    <th> User </th>
-                                    <th> Event </th>
-                                    <th> Old Changes </th>
-                                    <th> New Changes </th>
-                                    <th> created At </th>
-                                    <th> Ip Address </th>
-                                    <!-- <th> Action </th> -->
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if( count($lists) == 0 )
-                                        <tr>
-                                            <td colspan="9" >
-                                                <div class="alert alert-primary text-center" role="alert">
-                                                    No data found
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endif
-                                    @foreach($lists as $index => $list)
-                                        <tr>
-                                            <td> {{ $index + 1 }} </td>
-                                            <td> {{ json_encode($list->user_id) }} </td>
-                                            <td> {{ json_encode(ucfirst($list->event)) }} </td>
-                                            <td> {{ json_encode($list->old_values) }} </td>
-                                            <td> {{ json_encode($list->new_values) }} </td>
-                                            <!-- <td> {{ $list }} </td> -->
-                                            <td> {{ json_encode(\Carbon\Carbon::parse($list->created_at)->format('d F Y')) }}</td>
-                                            <td> {{ json_encode($list->ip_address) }} </td>
-                                            <!-- <td>
-                                                <a href="" class="btn btn-sm">
-                                                    <i class="ti-eye "></i>
-                                                </a>
-                                            </td> -->
-                                        </tr>
-                                    @endforeach
-
-                                </tbody>
-
-                            </table>
-
-                            {{ $lists->links() }}
-
+                    </div>
+                </div>
+            
+                {{-- <div class="col-lg-4">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Role</label>
+                        <div class="input-container1">
+                            <input type="text" readonly class="form-control placeholder-green-color" id="exampleFormControlInput1"
+                            placeholder="newnew">
+                        </div>
+                    </div>
+                </div> --}}
+            
+                <div class="col-lg-4">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Updated On</label>
+                        <div class="input-container1">
+                            <input type="text" class="form-control placeholder-green-color" value="{{ \Carbon\Carbon::parse($audit->created_at)->format('d F Y') }}" id="exampleFormControlInput1" disabled readonly >
                         </div>
                     </div>
                 </div>
             </div>
+
+
+            <div class="row padding-30px">
+                <div class="col-lg-12" style="background: #02AC6F; padding: 15px; border-radius: 13px; color: #fff;">
+                    <p class="text-center description-part">Old Changes</p>
+                    <hr>
+                    <div class="text-center">
+                        @if(is_array($audit->old_values))
+                            <ul class="list-unstyled">
+                                @foreach($audit->old_values as $key => $value)
+                                    <li><strong>{{ ucfirst($key) }}:</strong> {{ is_array($value) ? json_encode($value) : $value }}</li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p>{{ $audit->old_values }}</p>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="row padding-30px">
+                <div class="col-lg-12" style="background: #02AC6F; padding: 15px; border-radius: 13px; color: #fff;">
+                    <p class="text-center description-part">New Changes</p>
+                    <hr>
+                    <div class="text-center">
+                        @if(is_array($audit->new_values))
+                            <ul class="list-unstyled">
+                                @foreach($audit->new_values as $key => $value)
+                                    <li><strong>{{ ucfirst($key) }}:</strong> {{ is_array($value) ? json_encode($value) : $value }}</li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p>{{ $audit->new_values }}</p>
+                        @endif
+                    </div>
+                </div>
+            </div>
+            
+
+    
+            <div class="modal-footer justify-content-center" style="padding-top: 0;">
+                {{-- <a href="{{ route('fco.complaints') }}" data-bs-dismiss="modal">
+                    <div class="button-otp" style="background: transparent;border: 1px solid #000;color: #5A5A5A;">
+                        Cancel 
+                    </div>
+                </a> --}}
+                <a href="{{ route('audit') }}"> <div class="button-otp"> Go Back </div> </a>
+            </div>
         </div>
     </div>
-<!-- content-wrapper ends -->
-
-</x-app-layout>
+    
+    </x-app-layout>

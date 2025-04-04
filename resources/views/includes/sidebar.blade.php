@@ -2,7 +2,7 @@
     $currentRoute = Route::currentRouteName();
 @endphp
 
-<div class="col-lg-3" style="position: relative;background: linear-gradient(0deg, #EC9A9B, #EFFFF6);">
+<div class="col-lg-3" style="position: relative; background: linear-gradient(0deg, #EC9A9B, #EFFFF6); min-height: 900px;">
     <div class="top-logo-img">
         <img src="{{ asset('assets/theme/image/logo.png') }}" alt="" class="img-fluid" style="width: 167px;">
     </div>
@@ -55,6 +55,29 @@
         <div class="com-button" style="position: absolute;right: 0;top: 248px; background:{{ Route::is('fco.complaints') ? '' : 'none' }}; ">
             <a href="{{ route('fco.complaints') }}" style="color: #000;"><img src="{{ asset('assets/theme/image/Content.png') }}"  alt="">
                 <span style="font-size: 20px;">Complaint List</span>
+            </a>
+        </div>
+
+        <div class="com-button" style="position: absolute;right: 0;top: 348px; background:{{ Route::is('fco.report') ? '' : 'none' }}; ">
+            <a href="{{ route('fco.report') }}" style="color: #000;"><img src="{{ asset('assets/theme/image/Content.png') }}"  alt="">
+                <span style="font-size: 20px;">Complaint Report</span>
+            </a>
+        </div>
+        <div class="com-button" style="position: absolute;right: 0;top: 448px; background:{{ Route::is('fco.user.report') ? '' : 'none' }}; ">
+            <a href="{{ route('fco.user.report') }}" style="color: #000;"><img src="{{ asset('assets/theme/image/Content.png') }}"  alt="">
+                <span style="font-size: 20px;">User Report</span>
+            </a>
+        </div>
+
+        <div class="com-button" style="position: absolute;right: 0;top: 548px; background:{{ Route::is('audit') ? '' : 'none' }}; ">
+            <a href="{{ route('audit') }}" style="color: #000;"><img src="{{ asset('assets/theme/image/Content.png') }}"  alt="">
+                <span style="font-size: 20px;">Audit History</span>
+            </a>
+        </div>
+
+        <div class="com-button" style="position: absolute;right: 0;top: 648px; background:{{ Route::is('user.manage.index') ? '' : 'none' }}; ">
+            <a href="{{ route('user.manage.index', ['type' => 'registration-form']) }}" style="color: #000;"><img src="{{ asset('assets/theme/image/Content.png') }}"  alt="">
+                <span style="font-size: 20px;">User Management</span>
             </a>
         </div>
     @endif

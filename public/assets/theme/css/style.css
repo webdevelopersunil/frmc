@@ -311,7 +311,8 @@ td span{
 .com-button {
     background: #fff;
     height: 58px;
-    width: 239px;
+    /* width: 239px;  old menu styles */
+    width: 260px;
     text-align: center;
     line-height: 58px;
     border-top-left-radius: 16px;

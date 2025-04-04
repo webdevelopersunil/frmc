@@ -32,6 +32,7 @@ class User extends Authenticatable implements Auditable {
         'dob',
         'house_number',
         'area',
+        'status',
         'landmark',
         'city',
         'state',
@@ -90,4 +91,10 @@ class User extends Authenticatable implements Auditable {
     {
         return  User::role(trim($roleName))->count();
     }
+
+    public function workCenter()
+    {
+        return $this->hasOne(WorkCenter::class, 'nodal_officer_id');
+    }
+
 }

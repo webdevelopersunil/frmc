@@ -85,7 +85,7 @@
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Against Whom <span style="color:red;" >*</span></label>
                 <div class="input-container1">
-                    <input type="text" name="against_persons" value="{{ old('against_persons') }}" required>
+                    <input class="form-control placeholder-green-color" type="text" name="against_persons" value="{{ old('against_persons') }}" required>
                 </div>
                 <x-input-error :messages="$errors->get('against_persons')" style="color:red;" class="mt-2 err_mdy" />
             </div>

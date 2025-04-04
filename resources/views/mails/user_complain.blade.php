@@ -3,7 +3,7 @@
 # Subject: Acknowledgment of Complaint Lodged – Complaint ID {{ $complain['complain_no'] }}
 
 <p>Dear {{ $sendTo }},</p>
-<p>We acknowledge the receipt of your complaint lodged on [Date of Complaint]. Below are the details of your complaint:</p>
+<p>We acknowledge the receipt of your complaint lodged on $complain['created_at']. Below are the details of your complaint:</p>
 
 <h3>Complaint Details:</h3>
 <ul>

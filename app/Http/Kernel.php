@@ -69,5 +69,7 @@ class Kernel extends HttpKernel
         'session.timeout' => \App\Http\Middleware\SessionTimeout::class,
         'prevent.user' => \App\Http\Middleware\PreventUserMiddleware::class,
 
+        'checkUserStatus' => \App\Http\Middleware\CheckUserStatus::class,
+
     ];
 }

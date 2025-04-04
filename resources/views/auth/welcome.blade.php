@@ -11,7 +11,7 @@
                     <img src="{{ asset('assets/theme/image/logo.png') }}" alt="" class="img-fluid logo-img">
                 </div>
                 <div class="col-lg-6" style="position: relative;">
-                    <h1 class="heading">Welcome to Fraud<br> Prevential Policy Portal</h1>
+                    <h1 class="heading">Welcome to Fraud<br> Prevention Policy Portal</h1>
                     <h2 class="sub-heading">Login as a</h2>
                     <div class="button" style="margin-bottom: 120px;">
                         <a href="{{ route('login') }}" class="btn1">Complainant</a>

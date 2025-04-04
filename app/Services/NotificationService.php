@@ -9,6 +9,7 @@ use App\Models\WorkCenter;
 use App\Services\OtpService;
 use App\Mail\FcoComplainMail;
 use App\Mail\UserComplainMail;
+use App\Mail\ComplainUpdateMail;
 use App\Mail\NodalComplainMail;
 use Illuminate\Support\Facades\Mail;
 
@@ -61,7 +62,8 @@ class NotificationService {
 
         if ($this->OTP_EMAIL == TRUE && filter_var($recipient->email, FILTER_VALIDATE_EMAIL)) {
             Mail::to($recipient->email)->send(
-                new $mailClass($this->complain, $this->action, $this->complainant['user'], $this->nodal['user'], $name)
+                // new $mailClass($this->complain, $this->action, $this->complainant['user'], $this->nodal['user'], $name)
+                new $mailClass($this->complain, $this->action, $this->complainant['user'], $this->nodal['user'], $this->fco['user'], $name)
             );
         }
     }
@@ -76,25 +78,25 @@ class NotificationService {
     public function userComplainCreate() {
 
         // Sending Emails
-        $this->sendEmail($this->nodal['user'], UserComplainMail::class, $this->nodal['user']->name);
-        $this->sendEmail($this->fco['user'], UserComplainMail::class, $this->fco['user']->name);
+        // $this->sendEmail($this->nodal['user'], UserComplainMail::class, $this->nodal['user']->name);
+        // $this->sendEmail($this->fco['user'], UserComplainMail::class, $this->fco['user']->name);
         $this->sendEmail($this->complainant['user'], UserComplainMail::class, $this->complainant['user']->name);
 
         // Sending SMS
         $this->sendSMS($this->nodal['user']->phone, "CREATED");
         $this->sendSMS($this->fco['user']->phone, "CREATED");
-        $this->sendSMS($this->complainant['user']->phone, "CREATED");
+        $this->sendSMS($this->complainant['user']->username, "CREATED");
     }
 
     public function userComplainUpdate() {
 
         // Sending Emails
-        $this->sendEmail($this->nodal['user'], UserComplainMail::class, $this->nodal['user']->name);
-        $this->sendEmail($this->fco['user'], UserComplainMail::class, $this->fco['user']->name);
-        $this->sendEmail($this->complainant['user'], UserComplainMail::class, $this->complainant['user']->name);
+        // $this->sendEmail($this->nodal['user'], ComplainUpdateMail::class, $this->nodal['user']->name);
+        // $this->sendEmail($this->fco['user'], ComplainUpdateMail::class, $this->fco['user']->name);
+        $this->sendEmail($this->complainant['user'], ComplainUpdateMail::class, $this->complainant['user']->name);
 
         // Sending SMS
-        $this->sendSMS($this->complainant['user']->phone, "UPDATED");
+        $this->sendSMS($this->complainant['user']->username, "UPDATED");
         $this->sendSMS($this->nodal['user']->phone, "UPDATED");
         $this->sendSMS($this->fco['user']->phone, "UPDATED");
     }
@@ -102,12 +104,12 @@ class NotificationService {
     public function nodalDocumentUpdate() {
 
         // Sending Emails
-        $this->sendEmail($this->nodal['user'], NodalComplainMail::class, $this->nodal['user']->name);
-        $this->sendEmail($this->fco['user'], NodalComplainMail::class, $this->fco['user']->name);
+        // $this->sendEmail($this->nodal['user'], NodalComplainMail::class, $this->nodal['user']->name);
+        // $this->sendEmail($this->fco['user'], NodalComplainMail::class, $this->fco['user']->name);
         $this->sendEmail($this->complainant['user'], NodalComplainMail::class, $this->complainant['user']->name);
 
         // Sending SMS
-        $this->sendSMS($this->complainant['user']->phone, "NODAL_UPDATED");
+        $this->sendSMS($this->complainant['user']->username, "NODAL_UPDATED");
         $this->sendSMS($this->nodal['user']->phone, "NODAL_UPDATED");
         $this->sendSMS($this->fco['user']->phone, "NODAL_UPDATED");
     }
@@ -115,12 +117,12 @@ class NotificationService {
     public function fcoDocumentUpload() {
 
         // Sending Emails
-        $this->sendEmail($this->nodal['user'], FcoComplainMail::class, $this->nodal['user']->name);
-        $this->sendEmail($this->fco['user'], FcoComplainMail::class, $this->fco['user']->name);
+        // $this->sendEmail($this->nodal['user'], FcoComplainMail::class, $this->nodal['user']->name);
+        // $this->sendEmail($this->fco['user'], FcoComplainMail::class, $this->fco['user']->name);
         $this->sendEmail($this->complainant['user'], FcoComplainMail::class, $this->complainant['user']->name);
 
         // Sending SMS
-        $this->sendSMS($this->complainant['user']->phone, "FCO_UPDATED");
+        $this->sendSMS($this->complainant['user']->username, "FCO_UPDATED");
         $this->sendSMS($this->nodal['user']->phone, "FCO_UPDATED");
         $this->sendSMS($this->fco['user']->phone, "FCO_UPDATED");
     }
@@ -128,12 +130,12 @@ class NotificationService {
     public function fcoWorkCenterUpdate() {
 
         // Sending Emails
-        $this->sendEmail($this->nodal['user'], FcoComplainMail::class, $this->nodal['user']->name);
-        $this->sendEmail($this->fco['user'], FcoComplainMail::class, $this->fco['user']->name);
+        // $this->sendEmail($this->nodal['user'], FcoComplainMail::class, $this->nodal['user']->name);
+        // $this->sendEmail($this->fco['user'], FcoComplainMail::class, $this->fco['user']->name);
         $this->sendEmail($this->complainant['user'], FcoComplainMail::class, $this->complainant['user']->name);
 
         // Sending SMS
-        $this->sendSMS($this->complainant['user']->phone, "FCO_WORK_CENTER_UPDATED");
+        $this->sendSMS($this->complainant['user']->username, "FCO_WORK_CENTER_UPDATED");
         $this->sendSMS($this->nodal['user']->phone, "FCO_WORK_CENTER_UPDATED");
         $this->sendSMS($this->fco['user']->phone, "FCO_WORK_CENTER_UPDATED");
     }

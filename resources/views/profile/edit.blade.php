@@ -26,6 +26,7 @@
 
 
     <!-- @if(auth()->user()->hasRole('user') ) -->
+    <!-- @endif -->
     <div class="row padding-15px" style="background: #fff;margin: 0 20px;">
         <div class="col-lg-12 d-flex justify-content-between align-items-center" style="margin: 20px 0;">
             <h3 class="profile-name">Update Email & Phone Number</h3>
@@ -43,6 +44,5 @@
             </a>
         </div>
     </div>
-    <!-- @endif -->
 
 </x-app-layout>

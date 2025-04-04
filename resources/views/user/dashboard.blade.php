@@ -51,7 +51,7 @@
                     <thead>
                         <tr>
                             <th style="border-top-left-radius: 11px;border-bottom-left-radius: 11px;" scope="col">ID</th>
-                            <th scope="col" >complain_no</th>
+                            <th scope="col" >Complaint No</th>
                             <th scope="col">Date of Complaint</th>
                             <th scope="col">Complaint Against</th>
                             <th scope="col">ONGC Work Centre</th>

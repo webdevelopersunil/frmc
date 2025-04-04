@@ -1,49 +1,71 @@
 <x-guest-layout>
   
-  <div class="box-root padding-top--48 padding-bottom--24 flex-flex flex-justifyContent--center">
-    <h1>
-      <a href="" rel="dofollow">Password Recovery</a>
-    </h1>
-  </div>
-  
-  <div class="formbg-outer">
-    <div class="formbg">
-      <div class="formbg-inner padding-horizontal--48">
+  <!-- Session Status -->
+  <!-- <x-auth-session-status class="mb-4" :status="session('status')" /> -->
 
-        <span class="padding-bottom--15">
-            {{ __('Forgot your password?') }}
-        </span><br>
+  <div id="welcomepage">
+    <div class="container">
+      <div class="row" style="height: 100%;">
+        <div class="col-lg-6" style="height: 100%;position: relative;padding: 0 !important;">
+          <img src="{{ asset('assets/theme/image/boat 1.png')}}" alt="" class="img-fluid welcome-img">
+          <img src="{{ asset('assets/theme/image/logo.png') }}" alt="" class="img-fluid logo-img">
+        </div>
 
-        <span class="padding-bottom--15" style="font-size:16px; font-weight:300;" >
-            {{ __('No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
-        </span><br>
+        <div class="col-lg-6" style="position: relative;">
+          <h1 class="heading login">Password Recovery</h1>
 
-        <!-- Session Status -->
+          
         <x-auth-session-status class="mb-4" :status="session('status')" />
 
-        <form method="POST" action="{{ route('password.email') }}">
-            @csrf
 
-          <div class="field padding-bottom--24">
-                <x-input-label for="email" :value="__('Email Address')" />
-                <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        <form method="POST" action="{{ route('password.email') }}" id="send_reset_link">
+        @csrf
+
+            <div class="row welcome-log-in">
+              <div class="col-lg-12">
+
+                <div class="mb-3 d-flex" style="gap: 15px;">
+                  <P style="margin-bottom: 0.5rem;"></P>
+                  <label for="exampleFormControlInput1" class="form-label">Email Address</label>
+                </div>
+
+                <div class="mb-3 d-flex" style="gap: 15px;">
+                  <!-- <p style="margin-bottom: 0 !important;padding: 7px;background: #fff;border: 1px solid #ccc;border-radius: 10px;"> @ </p> -->
+                  <div class="input-container">
+
+                    <!-- <x-input-label for="email" :value="__('Email Address')" /> -->
+                    <x-text-input id="email" placeholder="abc@gmail.com" class="form-control ph-no" type="email" name="email" :value="old('email')" required autofocus />
+                    <x-input-error style="color:red" :messages="$errors->get('email')" class="mt-2" />
+                  </div>
+                </div>
+                
+                <x-input-error :messages="$errors->get('username')" style="color:red;" class="mt-2 x-input-error"  />
+
+              </div>
+            </div>
+
+            <div class="log-in-button">
+              <a href="Javascript:void(0)" class="btn4" data-bs-toggle="modal" data-bs-target="#exampleModal2" onclick="submitForm()" >{{ __('Email Password Reset Link') }}</a>
+            </div>
+
+          </form>
+
+          
+          <p class="para">Back To ? <a href="{{ route('admin.login') }}" class="register" > Login</a> </p>
+          <img src="{{ asset('assets/theme/image/welcome page bottom image.png') }}" alt="" class="img-fluid bottom-img">
+
+          <div class="button" style="margin-bottom: 120px;">
+            <a href="{{ route('welcome') }}" class="btn1">Home</a>
           </div>
 
-
-          <div class="field padding-bottom--24">
-            <input type="submit" name="submit" value="{{ __('Email Password Reset Link') }}">
-          </div>
-
-          <div class="field">
-            <a class="ssolink" href="{{ route('complainant.login') }}">← Back to Login</a>
-          </div>
-
-        </form>
+        </div>
 
       </div>
     </div>
-
   </div>
+
+  <script>
+    function submitForm() { document.getElementById('send_reset_link').submit(); }
+  </script>
 
 </x-guest-layout>

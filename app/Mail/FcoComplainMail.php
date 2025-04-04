@@ -17,17 +17,19 @@ class FcoComplainMail extends Mailable
     public $action;
     public $complainant_user;
     public $nodal;
+    public $fco;
     public $sendTo;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($complain, $action, $complainant_user, $nodal, $sendTo)
+    public function __construct($complain, $action, $complainant_user, $nodal, $fco, $sendTo)
     {
         $this->complain         =   $complain;
         $this->action           =   $action;
         $this->complainant_user =   $complainant_user;
         $this->nodal            =   $nodal;
+        $this->fco              =   $fco;
         $this->sendTo           =   $sendTo;
     }
 
@@ -36,8 +38,10 @@ class FcoComplainMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('mails.user_complain')
-                    ->subject('Complain Updated')
+        return $this->markdown('mails.user_complain_update')
+                    ->subject('Acknowledgment of Complaint Lodged – Complaint ID '.$this->complain['complain_no'])
+                    ->cc([$this->nodal['email'], $this->fco['email']])    // CC recipient(s)
+                    ->attach(public_path('assets/Fraud_Prevention_Policy.pdf'))
                     ->with([
                         'complain'          =>  $this->complain,
                         'action'            =>  $this->action,
@@ -53,7 +57,7 @@ class FcoComplainMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'mails.fco_complain',
+            markdown: 'mails.user_complain_update',
         );
     }
 

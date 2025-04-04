@@ -53,7 +53,13 @@ class LoginRequest extends FormRequest
 
         $this->ensureIsNotRateLimited();
         $isUserFound =   User::where('username', $this->input('username'))->first();
-
+        
+        if($isUserFound->status != 'active'){
+            throw ValidationException::withMessages([
+                'username' => trans('auth.inactive'),
+            ]);
+        }
+        
         if ( !empty($this->input('username')) && !empty($this->input('otp'))) {
             
             if ((new Otp)->validate($this->input('username'), $this->input('otp'))->status === false) {
